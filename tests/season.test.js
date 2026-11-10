@@ -6,6 +6,7 @@ const vm = require("node:vm");
 const { createRequire } = require("node:module");
 const database = require("../data/players.json");
 const { makeDoubleRoundRobin } = require("../server/cricket");
+const { makeSeasonSnapshot } = require("../server/seasons");
 
 test("a ten-team league and playoffs finish with consistent standings", () => {
   const file = path.resolve(__dirname, "../server/game.js");
@@ -98,6 +99,15 @@ test("a ten-team league and playoffs finish with consistent standings", () => {
   assert.equal(room.phase, "complete");
   assert.equal(room.matchResults.length, 94);
   assert.ok(room.championId);
+  const archive = makeSeasonSnapshot(room);
+  assert.equal(archive.matches.length, 94);
+  assert.equal(
+    archive.matches.filter((match) => match.type !== "league").length,
+    4,
+  );
+  assert.ok(
+    archive.matches.every((match) => match.ballByBall.innings.length === 2),
+  );
   assert.ok(
     room.matchResults.every((match) =>
       match.innings.every((innings) => !innings.events),

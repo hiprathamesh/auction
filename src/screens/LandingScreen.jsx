@@ -23,6 +23,9 @@ export function LandingScreen(props) {
   return (
     <main className="landing wrap">
       <section className="hero-copy">
+        <a className="archive-landing-link" href="/seasons">
+          ↗ Explore past seasons
+        </a>
         <div className="eyebrow">
           <span className="eyebrow-line" /> YOUR FRIEND GROUP. YOUR AUCTION.
         </div>

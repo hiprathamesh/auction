@@ -44,6 +44,13 @@ Completely disconnected rooms expire after 24 hours by default. Set `ROOM_IDLE_H
 
 The first restart after upgrading from the previous in-memory version ends any currently active game. Start the upgraded server between sessions; old browser sessions do not contain the new private reconnect credentials and will need to join a new room.
 
+## Recorded seasons
+
+At the end of a season, the host can choose **Record this season** on the champion screen. Nothing is archived automatically, so test seasons remain temporary. Once recorded, the link appears for everyone in the room. Visit `/seasons` to browse recorded seasons, or share a direct link such as `https://your-game.example.com/s1`. Anyone who can reach the site can view these pages; they do not need a room code. The archive includes the teams and final XIs, league standings, all match results and scorecards, player statistics, auction results and trades. Newly simulated matches also include ball-by-ball commentary; those deliveries are loaded only when requested. Player statistics follow the game's existing rules and exclude super-over statistics.
+
+Season records are stored on the server in `.local/seasons.sqlite` using SQLite. They persist across server restarts and are ignored by Git; they are not automatically backed up or uploaded to GitHub. Stop the server before backing up the database and copy the SQLite file and any accompanying `-wal` and `-shm` files. Keep those backups if you move the project or replace the machine. To store the database elsewhere, set `SEASONS_DB_PATH` to an absolute file path before starting the server. A single local server is the intended deployment; a future multi-server deployment would need shared database storage rather than independent local SQLite files.
+
+Only data available to the current server can be recorded. Upgrading and restarting without room checkpoints ends any active in-memory game, and seasons that were already lost cannot be reconstructed. Matches completed before this version can still be recorded if their room was restored from a checkpoint, but their previously discarded ball-by-ball commentary is unavailable.
 ## Development and checks
 
 Run the API/socket server and Vite separately:
@@ -101,8 +108,10 @@ server/handlers/            Auction, trade, lineup, and tournament actions
 server/game.js              Room state, auction lifecycle, standings, and playback
 server/cricket.js           Seedable ball-by-ball simulation and fixtures
 server/checkpoints.js       Optional local room recovery
+server/seasons.js           Persistent versioned season snapshots
 server/playerDatabase.js    Runtime data validation
 src/screens/                Lobby, auction, squads, lineup, and simulation screens
+src/archive/                Public season history and scorecards
 src/components/             Shared interface components
 shared/rules.json           Shared franchises, limits, and bid ladder
 data/                       Player source, overrides, and runtime database

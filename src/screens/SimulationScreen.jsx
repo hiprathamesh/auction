@@ -21,7 +21,7 @@ export function SimulationScreen(props) {
   return (
     <main className="wrap page-content sim-page">
       {room.phase === "complete" ? (
-        <ChampionScreen room={room} openStats={openStats} />
+        <ChampionScreen room={room} openStats={openStats} isHost={isHost} />
       ) : room.phase === "finalReady" ? (
         <FinalistsScreen
           room={room}

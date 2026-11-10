@@ -13,6 +13,8 @@ const { createCheckpointStore } = require("./checkpoints");
 const { validatePlayerDatabase } = require("./playerDatabase");
 const { expireInactiveRooms } = require("./roomLifecycle");
 const { safeOn } = require("./safeEvents");
+const { createSeasonStore, makeSeasonSnapshot } = require("./seasons");
+const zlib = require("node:zlib");
 
 const PORT = Number(process.env.PORT || 4173);
 const ROOT = path.join(__dirname, "..");
@@ -50,6 +52,11 @@ const io = new Server(server, {
 });
 const rooms = new Map();
 const socketByUser = new Map();
+const seasonStore = createSeasonStore(
+  process.env.SEASONS_DB_PATH
+    ? path.resolve(process.env.SEASONS_DB_PATH)
+    : path.join(ROOT, ".local", "seasons.sqlite"),
+);
 const idleHours = Math.max(
   1,
   Math.min(168, Number(process.env.ROOM_IDLE_HOURS) || 24),
@@ -96,6 +103,67 @@ app.get("/api/players/count", (_req, res) =>
     sets: DB.setOrder.length,
   }),
 );
+app.get("/api/seasons", (req, res) => {
+  const before = Number(req.query.before || Number.MAX_SAFE_INTEGER);
+  if (!Number.isSafeInteger(before) || before < 1)
+    return res.status(400).json({ error: "Invalid page." });
+  try {
+    res
+      .set("Cache-Control", "no-store")
+      .json({ seasons: seasonStore.list(before) });
+  } catch (error) {
+    console.error("Could not list seasons:", error);
+    res.status(500).json({ error: "Season archive is unavailable." });
+  }
+});
+app.get("/api/seasons/:id/matches/:matchId/balls", (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id < 1)
+    return res.status(404).json({ error: "Season not found." });
+  try {
+    const season = seasonStore.get(id);
+    const match = season?.matches.find(
+      (entry) => entry.id === req.params.matchId,
+    );
+    if (!match) return res.status(404).json({ error: "Match not found." });
+    const expand = (entries) =>
+      (entries || []).map((data) =>
+        data
+          ? JSON.parse(
+              zlib.inflateSync(Buffer.from(data, "base64")).toString("utf8"),
+            )
+          : [],
+      );
+    res.set("Cache-Control", "no-store").json(
+      match.ballByBall
+        ? {
+            innings: expand(match.ballByBall.innings),
+            superOver: expand(match.ballByBall.superOver),
+          }
+        : { innings: [], superOver: [] },
+    );
+  } catch (error) {
+    console.error("Could not read match deliveries:", error);
+    res.status(500).json({ error: "Match deliveries are unavailable." });
+  }
+});
+app.get("/api/seasons/:id", (req, res) => {
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id < 1)
+    return res.status(404).json({ error: "Season not found." });
+  try {
+    const season = seasonStore.get(id);
+    if (!season) return res.status(404).json({ error: "Season not found." });
+    season.matches = season.matches.map(({ ballByBall, ...match }) => ({
+      ...match,
+      hasBallByBall: Boolean(ballByBall),
+    }));
+    res.set("Cache-Control", "no-store").json(season);
+  } catch (error) {
+    console.error("Could not read season:", error);
+    res.status(500).json({ error: "Season archive is unavailable." });
+  }
+});
 app.use(
   express.static(DIST, {
     maxAge: "1h",
@@ -450,6 +518,44 @@ io.on("connection", (socket) => {
     if (!room || !user)
       return emitError(socket, "Rejoin the room to synchronize.");
     game.sendSnapshot(socket, room, user);
+  });
+
+  onAction("host:recordSeason", (acknowledgement) => {
+    const { room, user } = getRoomAndUser(socket);
+    const fail = (message) => {
+      emitError(socket, message);
+      if (typeof acknowledgement === "function")
+        acknowledgement({ ok: false, message });
+    };
+    if (!room || !user || !game.hostCheck(room, user.id))
+      return fail("Only the host can record this season.");
+    if (room.phase !== "complete")
+      return fail("Only a completed season can be recorded.");
+    try {
+      room.seasonKey ||= crypto
+        .createHash("sha256")
+        .update(`${room.code}:${room.createdAt}:${room.hostId}`)
+        .digest("hex");
+      const saved = seasonStore.save(room.seasonKey, makeSeasonSnapshot(room));
+      room.archivedSeasonId = saved.id;
+      room.lastNotice = {
+        kind: "seasonRecorded",
+        text: `Season ${saved.id} was recorded.`,
+      };
+      game.broadcast(io, room);
+      if (typeof acknowledgement === "function")
+        acknowledgement({
+          ok: true,
+          id: saved.id,
+          path: `/s${saved.id}`,
+          created: saved.created,
+        });
+    } catch (error) {
+      console.error("Could not record season:", error);
+      fail(
+        "Could not record the season. Check the server logs and storage, then try again.",
+      );
+    }
   });
 
   onAction("room:recoverHost", ({ code, recoveryToken } = {}) => {

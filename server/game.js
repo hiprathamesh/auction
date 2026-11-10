@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const zlib = require("node:zlib");
 const { shuffle, simulateMatch, createSeededRandom } = require("./cricket");
 const rules = require("../shared/rules.json");
 
@@ -62,6 +63,7 @@ function canUserAcquirePlayer(user, player, price, settings = {}) {
 function createRoom(code, owner, playerDB) {
   const room = {
     code,
+    seasonKey: crypto.randomUUID(),
     createdAt: Date.now(),
     hostId: owner.id,
     phase: "lobby",
@@ -430,6 +432,7 @@ function publicRoom(room, viewerId) {
     matchResults: room.matchResults.slice(-10).map(publicMatchResult),
     playoff: room.playoff,
     championId: room.championId,
+    archivedSeasonId: room.archivedSeasonId || null,
     lastNotice: room.lastNotice,
   };
 }
@@ -1052,9 +1055,17 @@ function settleLot(io, room, forced = false, fastClosed = false) {
 }
 
 function updateStandingsAndStats(room, match) {
-  // Per-ball events are needed while a match is being animated, but not once
-  // it is complete. Keep scorecards and statistics, and release the much larger
-  // transient event arrays from both regulation innings and any super over.
+  // Retain compact delivery records for an optional season archive, then release
+  // the much larger transient event arrays used by live playback.
+  const compress = (innings) =>
+    innings.events
+      ? zlib.deflateSync(JSON.stringify(innings.events)).toString("base64")
+      : null;
+  match.ballByBall = {
+    encoding: "deflate-base64",
+    innings: (match.innings || []).map(compress),
+    superOver: (match.superOver || []).map(compress),
+  };
   for (const innings of match.innings || []) delete innings.events;
   for (const innings of match.superOver || []) delete innings.events;
   room.matchResults.push(match);
@@ -1321,6 +1332,7 @@ function finishLeaguePhase(io, room) {
   // league table and declare its top team champion.
   if (room.users.length < 4) {
     room.phase = "complete";
+    room.completedAt = Date.now();
     room.championId = room.standings[0]?.userId || null;
     const champion = room.users.find((u) => u.id === room.championId);
     room.lastNotice = {
@@ -1360,6 +1372,7 @@ function advanceAfterMatch(io, room, match) {
     advancePlayoffs(io, room, match);
   } else if (room.phase === "final") {
     room.phase = "complete";
+    room.completedAt = Date.now();
     room.championId = match.winnerId;
     room.lastNotice = {
       kind: "champion",

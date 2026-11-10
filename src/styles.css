@@ -5032,3 +5032,23 @@ p {
     font-size: 10px;
   }
 }
+.archive-landing-link {
+  display: inline-block;
+  margin-top: 14px;
+  color: #f8b17d;
+  font-weight: 700;
+  text-decoration: none;
+}
+.archive-landing-link:hover {
+  text-decoration: underline;
+}
+.archive-record-error {
+  color: #ffaaa0;
+  font-size: 13px;
+  margin-top: 10px;
+}
+.archive-awaiting {
+  color: #b9c4d1;
+  font-size: 12px;
+  margin-top: 10px;
+}
