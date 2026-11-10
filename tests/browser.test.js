@@ -73,8 +73,20 @@ test(
     await expect(friend.locator(".auction-player-name")).toHaveText(
       await host.locator(".auction-player-name").textContent(),
     );
+    await expect(host.locator(".timer-orb strong")).toHaveText(/^[1-6]$/, {
+      timeout: 7000,
+    });
     await host.locator(".bid-button").click();
     await expect(host.locator(".bid-button")).toContainText("HIGHEST BIDDER");
+    await expect(host.locator(".timer-orb strong")).toHaveText(/^(9|10)$/);
+    await expect(friend.locator(".timer-orb strong")).toHaveText(/^(9|10)$/);
+    await expect(friend.locator(".timer-orb strong")).toHaveText(/^[1-6]$/, {
+      timeout: 7000,
+    });
+    await friend.locator(".bid-button").click();
+    await expect(friend.locator(".bid-button")).toContainText("HIGHEST BIDDER");
+    await expect(host.locator(".timer-orb strong")).toHaveText(/^(9|10)$/);
+    await expect(friend.locator(".timer-orb strong")).toHaveText(/^(9|10)$/);
     if (process.env.AUCTION_TEST_SCREENSHOTS) {
       fs.mkdirSync(process.env.AUCTION_TEST_SCREENSHOTS, { recursive: true });
       await host.screenshot({
@@ -94,7 +106,7 @@ test(
     }
     await host.reload();
     await expect(host.locator(".auction-player-name")).toBeVisible();
-    await expect(host.locator(".bid-button")).toContainText("HIGHEST BIDDER");
+    await expect(friend.locator(".bid-button")).toContainText("HIGHEST BIDDER");
     await expect(friend.locator(".connection")).toBeVisible();
     await friend.setViewportSize({ width: 320, height: 740 });
     const headerFits = await friend.evaluate(() => {

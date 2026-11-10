@@ -14,7 +14,7 @@ export function AuctionTimer({ lot, paused, bidSeconds }) {
     if (paused) return undefined;
     const timer = window.setInterval(update, 200);
     return () => window.clearInterval(timer);
-  }, [lot.id, lot.timerRemainingMs, paused]);
+  }, [lot.id, lot.endsAt, lot.timerRemainingMs, paused]);
   return (
     <>
       <div className="bid-price-line">
