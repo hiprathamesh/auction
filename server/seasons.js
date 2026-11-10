@@ -76,10 +76,18 @@ function createSeasonStore(file) {
       .all(before, limit)
       .map((row) => ({ ...row, id: Number(row.id) }));
   }
+  function remove(id) {
+    return (
+      Number(
+        open().prepare("DELETE FROM seasons WHERE id = ?").run(id).changes,
+      ) > 0
+    );
+  }
   return {
     save,
     get,
     list,
+    remove,
     close: () => {
       if (db) {
         db.close();

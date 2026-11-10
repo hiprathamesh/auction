@@ -124,8 +124,12 @@ test(
       ROOM_CHECKPOINTS: "1",
       ROOM_DATA_DIR: roomDir,
       SEASONS_DB_PATH: file,
+      ARCHIVE_OWNER_KEY: "",
     };
     const server = await startServer(t, env);
+    const ownerKey = fs
+      .readFileSync(path.join(directory, "archive-owner-key"), "utf8")
+      .trim();
     assert.deepEqual(
       (await (await fetch(`${server.url}/api/seasons`)).json()).seasons,
       [],
@@ -169,14 +173,49 @@ test(
     await new Promise((resolve) => server.child.once("exit", resolve));
     const restarted = await startServer(t, env);
     assert.equal(
+      fs.readFileSync(path.join(directory, "archive-owner-key"), "utf8").trim(),
+      ownerKey,
+    );
+    assert.equal(
       (await (await fetch(`${restarted.url}/api/seasons/1`)).json()).champion
         .teamName,
       record.champion.teamName,
     );
+    assert.equal(
+      (await fetch(`${restarted.url}/api/seasons/1`, { method: "DELETE" }))
+        .status,
+      401,
+    );
+    assert.equal(
+      (
+        await fetch(`${restarted.url}/api/seasons/1`, {
+          method: "DELETE",
+          headers: { Authorization: "Bearer wrong" },
+        })
+      ).status,
+      401,
+    );
+    assert.equal((await fetch(`${restarted.url}/api/seasons/1`)).status, 200);
+    assert.equal(
+      (
+        await fetch(`${restarted.url}/api/seasons/1`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${ownerKey}`,
+          },
+        })
+      ).status,
+      200,
+    );
+    assert.equal((await fetch(`${restarted.url}/api/seasons/1`)).status, 404);
     host.disconnect();
     friend.disconnect();
     restarted.child.kill();
     await new Promise((resolve) => restarted.child.once("exit", resolve));
+    const afterDelete = await startServer(t, env);
+    assert.equal((await fetch(`${afterDelete.url}/api/seasons/1`)).status, 404);
+    afterDelete.child.kill();
+    await new Promise((resolve) => afterDelete.child.once("exit", resolve));
   },
 );
 
@@ -194,6 +233,7 @@ test(
       ROOM_CHECKPOINTS: "1",
       ROOM_DATA_DIR: roomDir,
       SEASONS_DB_PATH: path.join(directory, "archive.sqlite"),
+      ARCHIVE_OWNER_KEY: "",
     });
     const { createServer } = await import("vite");
     const react = (await import("@vitejs/plugin-react")).default;
@@ -304,12 +344,88 @@ test(
           fullPage: true,
         });
       }
+      const ownerKey = fs
+        .readFileSync(path.join(directory, "archive-owner-key"), "utf8")
+        .trim();
+      assert.equal(ownerKey.length, 43);
+      await host.goto(url);
+      await expect(
+        host.getByRole("link", { name: /view season 1/i }),
+      ).toBeVisible();
+      await mobile
+        .getByRole("button", { name: /owner: delete this season/i })
+        .click();
+      await mobile.getByLabel("Server owner key").fill("wrong key");
+      await mobile.getByLabel(/I understand that season 1/).check();
+      await mobile
+        .getByRole("button", { name: /permanently delete season/i })
+        .click();
+      await expect(mobile.getByRole("alert")).toHaveText(
+        "Incorrect owner key.",
+      );
+      await expect(
+        host.getByRole("link", { name: /view season 1/i }),
+      ).toBeVisible();
+      await mobile.getByLabel("Server owner key").fill(ownerKey);
+      await mobile
+        .getByRole("button", { name: /permanently delete season/i })
+        .click();
+      await expect(mobile.getByText("The story starts here.")).toBeVisible();
+      await expect(
+        host.getByRole("button", { name: /record this season/i }),
+      ).toBeVisible();
+      await host.getByRole("button", { name: /record this season/i }).click();
+      await expect(
+        host.getByRole("link", { name: /view season 2/i }),
+      ).toBeVisible();
       assert.deepEqual(errors, []);
     } finally {
       await browser.close();
       await vite.close();
       backend.child.kill();
       await new Promise((resolve) => backend.child.once("exit", resolve));
+    }
+  },
+);
+
+test(
+  "owner key attempts are rate-limited without deleting the season",
+  { timeout: 15000 },
+  async (t) => {
+    const directory = temporary(t);
+    const file = path.join(directory, "archive.sqlite");
+    const { room } = sampleRoom();
+    const store = createSeasonStore(file);
+    store.save(room.seasonKey, makeSeasonSnapshot(room));
+    store.close();
+    const server = await startServer(t, { SEASONS_DB_PATH: file });
+    try {
+      for (let attempt = 0; attempt < 8; attempt++) {
+        assert.equal(
+          (
+            await fetch(`${server.url}/api/seasons/1`, {
+              method: "DELETE",
+              headers: { Authorization: "Bearer incorrect" },
+            })
+          ).status,
+          401,
+        );
+      }
+      assert.equal(
+        (
+          await fetch(`${server.url}/api/seasons/1`, {
+            method: "DELETE",
+            headers: {
+              Authorization: "Bearer test-only-owner-key-0123456789abcdef",
+            },
+          })
+        ).status,
+        429,
+      );
+      assert.equal((await fetch(`${server.url}/api/seasons/1`)).status, 200);
+    } finally {
+      server.child.kill();
+      await new Promise((resolve) => server.child.once("exit", resolve));
     }
   },
 );

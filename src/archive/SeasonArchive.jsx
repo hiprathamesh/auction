@@ -789,6 +789,94 @@ function Auction({ season }) {
   );
 }
 
+function DeleteSeason({ season }) {
+  const [open, setOpen] = useState(false);
+  const [key, setKey] = useState("");
+  const [confirmed, setConfirmed] = useState(false);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState("");
+  const remove = async (event) => {
+    event.preventDefault();
+    if (!confirmed || !key || busy) return;
+    setBusy(true);
+    setError("");
+    try {
+      const response = await fetch(`/api/seasons/${season.id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${key}` },
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error || "Could not delete this season.");
+      window.location.assign("/seasons");
+    } catch (failure) {
+      setError(failure.message);
+      setBusy(false);
+    }
+  };
+  return (
+    <section className="archive-owner">
+      {!open ? (
+        <button className="archive-owner-toggle" onClick={() => setOpen(true)}>
+          Owner: delete this season
+        </button>
+      ) : (
+        <form className="archive-owner-form" onSubmit={remove}>
+          <h2>Delete season {season.id}?</h2>
+          <p>
+            This permanently removes this season and its scorecards from the
+            archive. Other seasons are unaffected.
+          </p>
+          <label htmlFor="archive-owner-key">Server owner key</label>
+          <p>
+            Find the key in the <code>archive-owner-key</code> file beside the
+            server’s season database, or use the configured owner key.
+          </p>
+          <input
+            id="archive-owner-key"
+            type="password"
+            value={key}
+            onChange={(event) => setKey(event.target.value)}
+            autoComplete="off"
+            maxLength={256}
+            required
+          />
+          <label className="archive-owner-confirm">
+            <input
+              type="checkbox"
+              checked={confirmed}
+              onChange={(event) => setConfirmed(event.target.checked)}
+            />{" "}
+            I understand that season {season.id} will be permanently deleted.
+          </label>
+          {error && (
+            <p role="alert" className="archive-owner-error">
+              {error}
+            </p>
+          )}
+          <div>
+            <button type="submit" disabled={!confirmed || !key || busy}>
+              {busy ? "Deleting…" : "Permanently delete season"}
+            </button>
+            <button
+              type="button"
+              disabled={busy}
+              onClick={() => {
+                setOpen(false);
+                setKey("");
+                setConfirmed(false);
+                setError("");
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+    </section>
+  );
+}
+
 function SeasonDetail({ season }) {
   const [tab, setTab] = useState("overview");
   const champion = season.champion;
@@ -961,6 +1049,7 @@ function SeasonDetail({ season }) {
           {tab === "stats" && <Statistics season={season} />}
           {tab === "auction" && <Auction season={season} />}
         </div>
+        <DeleteSeason season={season} />
         <footer className="archive-footer">
           <a href="/seasons">← ALL SEASONS</a>
           <span>AUCTION ARENA · BUILT FOR THE GROUP CHAT</span>

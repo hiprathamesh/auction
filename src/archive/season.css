@@ -1030,3 +1030,82 @@ select:focus-visible {
   font-size: 12px;
   font-weight: 700;
 }
+.archive-owner {
+  margin: 0 0 24px;
+}
+.archive-owner-toggle {
+  border: 0;
+  background: none;
+  color: #8fa0ae;
+  font-size: 11px;
+  padding: 8px 0;
+  text-decoration: underline;
+}
+.archive-owner-form {
+  max-width: 620px;
+  background: #1a222b;
+  border: 1px solid #704640;
+  padding: 22px;
+}
+.archive-owner-form h2 {
+  font:
+    800 25px "Barlow Condensed",
+    sans-serif;
+  text-transform: uppercase;
+  margin: 0 0 10px;
+}
+.archive-owner-form p {
+  color: #aab8c2;
+  font-size: 12px;
+  line-height: 1.6;
+}
+.archive-owner-form label {
+  display: block;
+  color: #e4ebee;
+  font-size: 12px;
+  font-weight: 700;
+}
+.archive-owner-form input[type="password"] {
+  width: 100%;
+  max-width: 450px;
+  padding: 11px;
+  border: 1px solid #53616a;
+  background: #101922;
+  color: white;
+  margin: 0 0 18px;
+}
+.archive-owner-form .archive-owner-confirm {
+  display: flex;
+  gap: 10px;
+  align-items: start;
+  line-height: 1.5;
+  color: #cbd5da;
+  font-weight: 500;
+}
+.archive-owner-form .archive-owner-confirm input {
+  margin: 2px 0 0;
+}
+.archive-owner-form div {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+.archive-owner-form button {
+  border: 1px solid #ab5d54;
+  background: #a84f45;
+  color: white;
+  font-size: 12px;
+  padding: 11px 14px;
+  font-weight: 700;
+}
+.archive-owner-form button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.archive-owner-form button[type="button"] {
+  background: transparent;
+  border-color: #52616b;
+}
+.archive-owner-form .archive-owner-error {
+  color: #ffaaa0;
+}

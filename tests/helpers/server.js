@@ -35,7 +35,13 @@ async function startServer(t, extraEnv = {}) {
   `;
   const child = spawn(process.execPath, ["-e", bootstrap], {
     cwd: require("node:path").resolve(__dirname, "../.."),
-    env: { ...process.env, PORT: "0", ROOM_CHECKPOINTS: "0", ...extraEnv },
+    env: {
+      ...process.env,
+      PORT: "0",
+      ROOM_CHECKPOINTS: "0",
+      ARCHIVE_OWNER_KEY: "test-only-owner-key-0123456789abcdef",
+      ...extraEnv,
+    },
     stdio: ["ignore", "pipe", "pipe"],
     windowsHide: true,
   });

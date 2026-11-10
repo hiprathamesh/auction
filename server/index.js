@@ -52,11 +52,45 @@ const io = new Server(server, {
 });
 const rooms = new Map();
 const socketByUser = new Map();
-const seasonStore = createSeasonStore(
-  process.env.SEASONS_DB_PATH
-    ? path.resolve(process.env.SEASONS_DB_PATH)
-    : path.join(ROOT, ".local", "seasons.sqlite"),
+const seasonDatabasePath = process.env.SEASONS_DB_PATH
+  ? path.resolve(process.env.SEASONS_DB_PATH)
+  : path.join(ROOT, ".local", "seasons.sqlite");
+const seasonStore = createSeasonStore(seasonDatabasePath);
+const ownerKeyPath = path.join(
+  path.dirname(seasonDatabasePath),
+  "archive-owner-key",
 );
+let ownerKey = process.env.ARCHIVE_OWNER_KEY;
+if (!ownerKey) {
+  try {
+    fs.mkdirSync(path.dirname(ownerKeyPath), { recursive: true, mode: 0o700 });
+    try {
+      fs.writeFileSync(
+        ownerKeyPath,
+        `${crypto.randomBytes(32).toString("base64url")}\n`,
+        { mode: 0o600, flag: "wx" },
+      );
+    } catch (error) {
+      if (error.code !== "EEXIST") throw error;
+    }
+    ownerKey = fs.readFileSync(ownerKeyPath, "utf8").trim();
+  } catch (error) {
+    console.error(
+      `Archive deletion disabled: could not load owner key: ${error.message}`,
+    );
+  }
+}
+if (ownerKey && (ownerKey.length < 32 || ownerKey.length > 256)) {
+  console.error(
+    "Archive deletion disabled: owner key must be 32 to 256 characters.",
+  );
+  ownerKey = null;
+}
+const ownerKeyHash = ownerKey
+  ? crypto.createHash("sha256").update(ownerKey).digest()
+  : null;
+let failedOwnerAttempts = 0;
+let ownerLockUntil = 0;
 const idleHours = Math.max(
   1,
   Math.min(168, Number(process.env.ROOM_IDLE_HOURS) || 24),
@@ -87,7 +121,6 @@ const cleanupInterval = setInterval(() => {
 cleanupInterval.unref();
 
 app.disable("x-powered-by");
-// The HTTP API is read-only; no request body parser is needed.
 app.get("/api/health", (_req, res) =>
   res.json({
     ok: true,
@@ -162,6 +195,58 @@ app.get("/api/seasons/:id", (req, res) => {
   } catch (error) {
     console.error("Could not read season:", error);
     res.status(500).json({ error: "Season archive is unavailable." });
+  }
+});
+app.delete("/api/seasons/:id", (req, res) => {
+  res.set("Cache-Control", "no-store");
+  if (!ownerKeyHash)
+    return res
+      .status(503)
+      .json({ error: "Season deletion is not configured on this server." });
+  if (Date.now() < ownerLockUntil)
+    return res
+      .status(429)
+      .json({ error: "Too many attempts. Try again later." });
+  const supplied = req.get("Authorization") || "";
+  const candidate = crypto
+    .createHash("sha256")
+    .update(supplied.startsWith("Bearer ") ? supplied.slice(7) : "")
+    .digest();
+  if (!crypto.timingSafeEqual(candidate, ownerKeyHash)) {
+    if (++failedOwnerAttempts >= 8) {
+      ownerLockUntil = Date.now() + 15 * 60 * 1000;
+      failedOwnerAttempts = 0;
+    }
+    return res.status(401).json({ error: "Incorrect owner key." });
+  }
+  failedOwnerAttempts = 0;
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id < 1)
+    return res.status(404).json({ error: "Season not found." });
+  try {
+    if (!seasonStore.remove(id))
+      return res.status(404).json({ error: "Season not found." });
+    for (const room of rooms.values()) {
+      if (room.archivedSeasonId === id) {
+        room.archivedSeasonId = null;
+        room.lastNotice = {
+          kind: "seasonDeleted",
+          text: `Season ${id} was deleted from the archive.`,
+        };
+        try {
+          game.broadcast(io, room);
+        } catch (error) {
+          console.error(
+            "Could not notify a room of the deleted season:",
+            error,
+          );
+        }
+      }
+    }
+    return res.json({ ok: true });
+  } catch (error) {
+    console.error("Could not delete season:", error);
+    return res.status(500).json({ error: "The season could not be deleted." });
   }
 });
 app.use(
