@@ -344,8 +344,16 @@ export function AuctionScreen(props) {
                     className="button bid-multiplier-button"
                     disabled={!canBidAt(n)}
                     onClick={() => placeBid(n)}
-                    title={`Bid ${n} increments: ${money(bidPriceFor(n))}`}
-                    aria-label={`Bid ${n} increments: ${money(bidPriceFor(n))}`}
+                    title={
+                      currentLot.currentBidderId
+                        ? `Bid ${n} increments: ${money(bidPriceFor(n))}`
+                        : `Opening bid: ${money(bidPriceFor(n))} (base plus ${n - 1} increments)`
+                    }
+                    aria-label={
+                      currentLot.currentBidderId
+                        ? `Bid ${n} increments: ${money(bidPriceFor(n))}`
+                        : `Opening bid: ${money(bidPriceFor(n))} (base plus ${n - 1} increments)`
+                    }
                   >
                     ×{n}
                   </button>

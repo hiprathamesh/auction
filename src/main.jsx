@@ -167,9 +167,9 @@ const bidAmount = (lot, multiplier = 1) => {
   const current = lot.currentBidderId
     ? Number(lot.currentBid)
     : Number(lot.basePrice);
-  if (!lot.currentBidderId) return Number((current * multiplier).toFixed(2));
   let amount = current;
-  for (let step = 0; step < multiplier; step++)
+  const increments = lot.currentBidderId ? multiplier : multiplier - 1;
+  for (let step = 0; step < increments; step++)
     amount = Number((amount + bidIncrement(amount)).toFixed(2));
   return amount;
 };

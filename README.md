@@ -74,6 +74,7 @@ The tests use isolated loopback servers, simulated seasons, and a headless brows
 
 - Up to ten people can manage unique franchises. There are no bot teams.
 - The database contains 288 active-pool players and 52 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, and trades.
+- On an opening bid, the base price counts as the first step: for example, ×2 bids the base plus one increment. After bidding begins, ×2 adds two increments to the current bid. Increments follow the price ladder and may change at its thresholds.
 - Squads hold at most 25 players, including at most eight overseas players. A starting XI has at most four overseas players and four legends. Each team chooses five bowlers, a batting order, and tactics.
 - Two or three teams play a league-only season; four or more teams also play the four-team IPL-style playoff bracket. Each league pairing meets twice.
 - A tied match uses a super over. If that also ties, an attribute-weighted draw picks the winner.

@@ -523,8 +523,8 @@ function basePriceIncrement(price) {
   ).increment;
 }
 
-// multiplier=1 is the normal next bid. On the opening bid, x2/x3 multiply
-// the base-price bid; after bidding starts, they add two/three bid increments.
+// The opening base price is the first bid step; after that, each step advances
+// the price ladder. Once a bid exists, every step is an additional increment.
 function calculateBidAmount(lot, multiplier = 1) {
   if (!lot) return 0;
   const factor = Number(multiplier);
@@ -533,11 +533,11 @@ function calculateBidAmount(lot, multiplier = 1) {
   const current = lot.currentBidderId
     ? Number(lot.currentBid)
     : Number(lot.basePrice);
-  if (!lot.currentBidderId) return Number((current * factor).toFixed(2));
   // Count true bid-ladder steps. Re-evaluate the increment after each step
   // because the ladder can change at price thresholds (for example ₹1 Cr).
   let bid = current;
-  for (let step = 0; step < factor; step++) {
+  const increments = lot.currentBidderId ? factor : factor - 1;
+  for (let step = 0; step < increments; step++) {
     bid = Number((bid + basePriceIncrement(bid)).toFixed(2));
   }
   return bid;

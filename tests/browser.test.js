@@ -73,11 +73,59 @@ test(
     await expect(friend.locator(".auction-player-name")).toHaveText(
       await host.locator(".auction-player-name").textContent(),
     );
+    const base = Number(
+      (await host.locator(".base-price-line strong").textContent()).replace(
+        /[^\d.]/g,
+        "",
+      ),
+    );
+    const openingAmount = (multiplier) => {
+      let amount = base;
+      for (let step = 1; step < multiplier; step += 1) {
+        const increment =
+          amount < 1
+            ? 0.05
+            : amount < 2
+              ? 0.1
+              : amount < 5
+                ? 0.2
+                : amount < 10
+                  ? 0.25
+                  : 0.5;
+        amount = Number((amount + increment).toFixed(2));
+      }
+      return amount;
+    };
+    for (const multiplier of [2, 5, 10]) {
+      const amount = openingAmount(multiplier).toFixed(2).replace(/\.00$/, "");
+      await expect(
+        host
+          .locator(".bid-multiplier-button")
+          .filter({ hasText: `×${multiplier}` }),
+      ).toHaveAttribute(
+        "aria-label",
+        `Opening bid: ₹${amount} Cr (base plus ${multiplier - 1} increments)`,
+      );
+    }
     await expect(host.locator(".timer-orb strong")).toHaveText(/^[1-6]$/, {
       timeout: 7000,
     });
-    await host.locator(".bid-button").click();
+    await host
+      .locator(".bid-multiplier-button")
+      .filter({ hasText: "×10" })
+      .click();
     await expect(host.locator(".bid-button")).toContainText("HIGHEST BIDDER");
+    await expect(
+      friend.locator(".bid-price-line > div:first-child strong"),
+    ).toHaveText(`₹${openingAmount(10).toFixed(2).replace(/\.00$/, "")} Cr`);
+    const accepted = Number(
+      (
+        await friend
+          .locator(".bid-price-line > div:first-child strong")
+          .textContent()
+      ).replace(/[^\d.]/g, ""),
+    );
+    assert.equal(accepted, openingAmount(10));
     await expect(host.locator(".timer-orb strong")).toHaveText(/^(9|10)$/);
     await expect(friend.locator(".timer-orb strong")).toHaveText(/^(9|10)$/);
     await expect(friend.locator(".timer-orb strong")).toHaveText(/^[1-6]$/, {
