@@ -1,0 +1,323 @@
+Marquee Set 1
+Aiden Markram
+Arshdeep Singh
+Axar Patel
+Bhuvneshwar Kumar
+Hardik Pandya
+Heinrich Klaasen
+Ishan Kishan
+Jofra Archer
+Jos Buttler
+Josh Hazlewood
+Kagiso Rabada
+Kuldeep Yadav
+Lockie Ferguson
+Marco Jansen
+Marcus Stoinis
+Mitchell Marsh
+Mitchell Starc
+Mohammad Shami
+Mohammad Siraj
+MS Dhoni
+Noor Ahmad
+Pat Cummins
+Phil Salt
+Rashid Khan
+Ravindra Jadeja
+Rinku Singh
+Rishabh Pant
+Ruturaj Gaikwad
+Sam Curran
+Shimron Hetmyer
+Shivam Dube
+Shubman Gill
+Sunil Narine
+Suryakumar Yadav
+Tim David
+Travis Head
+Trent Boult
+Varun Chakravarthy
+Virat Kohli
+Will Jacks
+Yuzvendra Chahal
+Jasprit Bumrah
+KL Rahul
+Nicholas Pooran
+Rohit Sharma
+Sanju Samson
+Shreyas Iyer
+Yashasvi Jaiswal
+Cameron Green
+David Miller
+Devon Conway
+Jake Fraser-McGurk
+Prithvi Shaw
+Sarfaraz Khan
+Deepak Hooda
+Gus Atkinson
+Liam Livingstone
+Rachin Ravindra
+Venkatesh Iyer
+Wanindu Hasaranga
+Wiaan Mulder
+Ben Duckett
+Finn Allen
+Jamie Smith
+Jonny Bairstow
+K.S. Bharat
+Quinton De Kock
+Rahmanullah Gurbaz
+
+Set 1
+Abhishek Sharma
+Avesh Khan
+Azmatullah Omarzai
+Deepak Chahar
+Dhruv Jurel
+Glenn Phillips
+Harshal Patel
+Khaleel Ahmed
+Krunal Pandya
+Mayank Yadav
+Mitchell Santner
+Prasidh Krishna
+Rajat Patidar
+Riyan Parag
+Romario Shepherd
+Rovman Powell
+Sai Sudharsan
+Shardul Thakur
+Sherfane Rutherford
+T. Natarajan
+Tilak Varma
+Tristan Stubbs
+Washington Sundar
+
+Set 2
+Allah Ghazanfar
+Brydon Carse
+Corbin Bosch
+Dewald Brevis
+Dushmantha Chameera
+Jacob Bethell
+Jamie Overton
+Jaydev Unadkat
+Kamindu Mendis
+Matthew Breetzke
+Mitchell Owen
+Mukesh Kumar
+Nandre Burger
+Nathan Ellis
+Nitish Rana
+Nuwan Thushara
+Rahul Tewatia
+Ryan Rickelton
+Xavier Bartlett
+
+Set 3
+Ajinkya Rahane
+Devdutt Padikkal
+Harshit Rana
+Ishant Sharma
+Jayant Yadav
+Jitesh Sharma
+Karun Nair
+Manish Pandey
+Nitish Kumar Reddy
+R. Sai Kishore
+Sandeep Sharma
+Shahbaz Ahmed
+Shahrukh Khan
+Tushar Deshpande
+Umran Malik
+Yash Dayal
+
+Set 4
+Abdul Samad
+Abhinandan Singh
+Abhishek Porel
+Ajay Mandal
+Akash Singh
+Angkrish Raghuvanshi
+Aniket Verma
+Anshul Kamboj
+Anuj Rawat
+Anukul Roy
+Arjun Tendulkar
+Arshin Kulkarni
+Ashutosh Sharma
+Ashwani Kumar
+Ayush Badoni
+Ayush Mhatre
+Digvesh Rathi
+Donovan Ferreira
+Eshan Malinga
+Gurjapneet Singh
+Gurnoor Brar
+Harnoor Pannu
+Harpreet Brar
+Harsh Dubey
+Himmat Singh
+Kumar Kushagra
+Kwena Maphaka
+Lhuan-Dre Pretorious
+M. Siddharth
+Madhav Tiwari
+Manav Suthar
+Mayank Markande
+Mohd. Arshad Khan
+Mohsin Khan
+Mukesh Choudhary
+Musheer Khan
+Naman Dhir
+Nehal Wadhera
+Nishant Sindhu
+Prabhsimran Singh
+Prince Yadav
+Priyansh Arya
+Pyla Avinash
+Raghu Sharma
+Raj Angad Bawa
+Ramakrishna Ghosh
+Ramandeep Singh
+Rasikh Salam
+Robin Minz
+Sameer Rizvi
+Shashank Singh
+Shreyas Gopal
+Shubham Dubey
+Smaran Ravichandaran
+Suryansh Shedge
+Suyash Sharma
+Swapnil Singh
+Tripurana Vijay
+Urvil Patel
+Vaibhav Arora
+Vaibhav Suryavanshi
+Vipraj Nigam
+Vishnu Vinod
+Vyshak Vijaykumar
+Yash Thakur
+Yudhvir Charak
+Zeeshan Ansari
+
+FA1
+Akash Deep
+Anrich Nortje
+Fazalhaq Farooqi
+Gerald Coetzee
+Jacob Duffy
+Matheesha Pathirana
+Matt Henry
+Shivam Mavi
+Spencer Johnson
+
+SP1
+Akeal Hosein
+Maheesh Theekshana
+Mujeeb Rahman
+Rahul Chahar
+Ravi Bishnoi
+
+UBA1
+Aarya Desai
+Abhinav Manohar
+Abhinav Tejrana
+Anmolpreet Singh
+Atharva Taide
+Yash Dhull
+
+UAL1
+Auqib Dar
+Edhen Tom
+Kamlesh Nagarkoti
+Mahipal Lomror
+Prashant Veer
+Rajvardhan Hangargekar
+Sanvir Singh
+Shivang Kumar
+Tanush Kotian
+Vijay Shankar
+
+UWK1
+Kartik Sharma
+Mukul Choudhary
+Ruchit Ahir
+Tejasvi Singh
+Tushar Raheja
+Vansh Bedi
+
+UFA1
+Akash Madhwal
+Ashok Sharma
+Kartik Tyagi
+Naman Tiwari
+Raj Limbani
+Simarjeet Singh
+Sushant Mishra
+
+USP1
+Karn Sharma
+Kumar Kartikeya Singh
+Prashant Solanki
+Shivam Shukla
+Vignesh Puthur
+Wahidullah Zadran
+Yash Raj Punja
+
+BA2
+Ackeem Auguste
+Mayank Agarawal
+Pathum Nissanka
+Rahul Tripathi
+Reeza Hendricks
+Sediqullah Atal
+Steve Smith
+Tim Robinson
+
+AL2
+Ben Dwarshuis
+Daniel Sams
+Daryl Mitchell
+Dasun Shanaka
+Jason Holder
+Matthew Short
+Michael Bracewell
+Sean Abbott
+
+WK2
+Benjamin McDermott
+Jordan Cox
+Josh Inglis
+Kusal Mendis
+Kusal Perera
+Shai Hope
+Tim Seifert
+Tom Banton
+
+FA2
+Adam Milne
+Chetan Sakariya
+Kuldeep Sen
+Kyle Jamieson
+Lungisani Ngidi
+Mustafizur Rahman
+Saqib Mahmood
+Umesh Yadav
+William Orourke
+
+SP2
+Mohammad Waqar Salamkheil
+Qais Ahmad
+Rishad Hossain
+Viyaskanth Vijayakanth
+
+UBA2
+Akshat Raghuwanshi
+Aman Rao Perala
+Ankit Kumar
+Danish Malewar
+Manan Vohra
+Pukhraj Mann
+Rohan Kunnummal
+Salman Nizar
