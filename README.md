@@ -1,110 +1,110 @@
 # IPL Auction Arena
 
-A self-hosted multiplayer IPL auction and T20 league simulator. One person runs the Node.js server; everyone joins the same room from their own browser. Room state and live bidding are synchronized through Socket.IO.
-
-## What's included
-
-- Private room codes, host/player roles, unique franchise selection, ready checks, reconnect support, and mid-auction joining.
-- Host-configurable starting purse, bid timer, optional legend pool, and ratings visibility.
-- Auction sets and active-player names imported from the supplied `auction_players_list.txt` in the original set order. Players are shuffled only within their set.
-- 46 optional IPL legends, all auctioned in Marquee Set 1, with a maximum of four legends per squad.
-- A 334-player JSON database (288 active-pool players and 46 optional legends) with role, Indian/overseas flag, set, base price, OVR, batting, bowling, and fielding ratings.
-- Live bidding with purse checks, a 25-player squad limit, eight overseas slots per squad, and a 4-over bowling limit in simulation.
-- Squad strength summaries using the top 11 by OVR, starting-XI selection, a user-ordered batting lineup, a five-bowler unit, three tactical choices, a 4-overseas-player playing-XI limit, and ready checks.
-- Ball-by-ball T20 simulation, wicket/boundary effects, targets, scorecards, NRR/points table, leaderboards, top four playoffs, and a final.
-- Responsive dark UI designed for desktop and mobile browsers.
+A self-hosted multiplayer IPL auction and T20 league game. One person runs the Node.js server and friends join from their browsers using a room code or invite link. The server controls bids, squads, timers, match results, and tournament progression.
 
 ## Requirements
 
-- Node.js 20 or newer (Node 22 recommended).
+- Node.js 22.13 or newer; Node.js 24 LTS is recommended.
 - npm.
-- A stable connection on the host computer. Friends need a browser and the public URL from your tunnel provider.
+- Python 3 for regenerating the player database and running the full test suite.
+- A stable host connection. Friends need a browser and access to the host's local network or HTTPS tunnel.
 
-## Run locally
+## Run the production build
 
-Open a terminal in this project folder and run:
+From the project directory:
 
-```bash
-npm install
+```powershell
+npm ci
 npm run build
 npm start
 ```
 
-Then open **http://localhost:4173**. Create a room, choose your franchise, and share the invite URL or the 5-character room code. The host is also a player and must click **I'm ready** before starting the auction.
+Open `http://localhost:4173`. Create a room, choose a franchise, and share the invite link or five-character room code. The host is a player and must also mark themselves ready.
 
-To run the Vite development server instead, use two terminals:
+The server listens on `0.0.0.0:4173` by default. For a Cloudflare Tunnel, point the tunnel at `http://localhost:4173` and share your HTTPS subdomain. Your existing tunnel does not need to change. You may set `PORT` and `HOST` before starting the server; for example, `HOST=127.0.0.1` restricts the listener to the host machine while still allowing a local tunnel.
 
-```bash
-# Terminal 1 — application server and Socket.IO
+The room code controls entry to the game; anyone with the code can try to join. Seat and host recovery credentials are separate private secrets. Socket origin restrictions can be enabled with `ALLOWED_ORIGINS`, a comma-separated list of full origins such as `https://your-game.example.com,http://localhost:5173`. If this variable is not set, origins are unrestricted to keep local and tunnel setups simple. Apply any Cloudflare access restrictions separately if desired.
+
+## Reconnect, host recovery, and saved rooms
+
+Each seat has a private reconnect credential stored in the player's browser. Refreshing or reconnecting restores the seat while the room exists. Opening the same seat in another tab replaces the older connection. An invite link and public user ID do not grant control of another seat.
+
+The host can open **Host recovery and transfer** in the game, save the private recovery code, generate a new code, or transfer host control to a connected player. Anyone who has both the room code and recovery code can reclaim the host seat, so keep the recovery code private. After recovery or transfer, the old recovery code is invalidated.
+
+Rooms are held in memory by default. A server restart therefore ends existing games unless optional checkpoints are enabled. In PowerShell:
+
+```powershell
+$env:ROOM_CHECKPOINTS = '1'
+npm start
+```
+
+Checkpoints are written locally to `.local/rooms/`, which is ignored by Git. Set `ROOM_DATA_DIR` to use another directory. Checkpoints contain game state and credential verifiers, so keep that directory private. When restored, auctions and active tournament simulations are paused for the host to resume. A restored live match may replay some animation from the most recent checkpoint; completed results are not counted twice. Checkpoint write failures are logged, and local checkpointing cannot guarantee recovery from every disk or power failure.
+
+Completely disconnected rooms expire after 24 hours by default. Set `ROOM_IDLE_HOURS` to a value from 1 to 168 to change the grace period. `MAX_ROOMS` controls the room limit (default 100, maximum 1000). Expiring a room also removes its checkpoint.
+
+The first restart after upgrading from the previous in-memory version ends any currently active game. Start the upgraded server between sessions; old browser sessions do not contain the new private reconnect credentials and will need to join a new room.
+
+## Development and checks
+
+Run the API/socket server and Vite separately:
+
+```powershell
+# Terminal 1
 npm run dev:server
 
-# Terminal 2 — Vite development UI
+# Terminal 2
 npm run dev
 ```
 
-Open **http://localhost:5173** in development mode. For a friend-facing tunnel, use the built application on port **4173**, not the Vite development server.
+Open `http://localhost:5173`. For remote play, serve the production build on port 4173 rather than exposing the Vite development server.
 
-## Let friends join over the internet
-
-The Node server listens on `0.0.0.0:4173`, so the tunnel should point to that port.
-
-**Cloudflare Tunnel quick URL** (with `cloudflared` installed):
-
-```bash
-cloudflared tunnel --url http://localhost:4173
+```powershell
+npm run check
+npm run lint
+npm run format:check
+npm test
+npm run build
+npm audit
+npm run analyze:simulation -- 5000
 ```
 
-**ngrok** (with `ngrok` installed and configured):
+The tests use isolated loopback servers, simulated seasons, and a headless browser. If a local Chromium/Chrome installation is unavailable, install Playwright's browser with `npx playwright install chromium`. The simulation analysis compares identical teams using repeatable seeds and reports pre-super-over ties. GitHub Actions runs the checks on Windows and Linux. The scoped `minimatch` override in `package.json` supplies the patched version to ESLint until its dependency range catches up.
 
-```bash
-ngrok http 4173
-```
+## Game rules
 
-**LocalTunnel**:
+- Up to ten people can manage unique franchises. There are no bot teams.
+- The database contains 288 active-pool players and 52 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, and trades.
+- Squads hold at most 25 players, including at most eight overseas players. A starting XI has at most four overseas players and four legends. Each team chooses five bowlers, a batting order, and tactics.
+- Two or three teams play a league-only season; four or more teams also play the four-team IPL-style playoff bracket. Each league pairing meets twice.
+- A tied match uses a super over. If that also ties, an attribute-weighted draw picks the winner.
+- The simulation is an arcade model using estimated ratings, tactics, and batting positions. The home team bats first; there is no toss or pitch model. Extras are simplified, and the game does not require a specialist wicketkeeper or bowler role in the XI.
+- The host can pause or end the auction, resume remaining or unsold lots, and skip match animation without changing the generated result.
 
-```bash
-npx localtunnel --port 4173
-```
+## Player data
 
-Share the generated HTTPS URL plus your room code. The room code may also be placed in the URL as `?room=ABCDE`; a fresh visitor will see the join flow automatically. Keep the terminal/server running for the entire game. If the tunnel URL changes, share the new one.
+`data/auction_players_list.txt` defines the active pool and auction-set order. `data/players.json` is the runtime database. Ratings, base prices, roles, nationality flags, and RTM associations are game-balancing estimates, not official valuations or current-form predictions.
 
-This is designed as a friends-only game, not a public service. Anyone who receives the tunnel URL and room code can attempt to join while the room is open, so share them only with your group. Room state is held in memory; restarting the server ends the current game.
+Manual changes belong in `data/player-overrides.json`, keyed by player ID. Existing custom ratings, prices, preferred positions, RTM assignments, and portrait metadata were migrated into that file. After updating the source list or overrides, regenerate the runtime database:
 
-## Auction and tournament rules
-
-- Franchises are unique within a room; the app supports up to 10 user-controlled teams and does not create bot teams.
-- The default purse is ₹120 Cr. The first bid is the base price; later increments scale with the current price.
-- If no one bids before the timer ends, the player is marked unsold. The host can end the auction early or resume the remaining/unsold pool from the results screen.
-- A team needs at least 11 players to proceed to XI selection. A room needs at least four teams to start the league, because the requested playoff bracket uses the top four.
-- Each league pairing is played twice, home and away. The playoff sequence is Qualifier 1 (1st vs 2nd), Eliminator (3rd vs 4th), Qualifier 2, then the final.
-- The live match animation advances at roughly one delivery every 95 ms, with a short pause for wickets and an innings break. The host can skip the visual animation if the group wants to move on faster.
-- A tied league/playoff match triggers a one-over super over.
-
-## Player data and ratings
-
-`data/auction_players_list.txt` is the supplied source list and `data/players.json` is the app's compact runtime database. To regenerate it after editing the list:
-
-```bash
+```powershell
 python scripts/build_player_db.py
 ```
 
-The player ratings, base prices, and certain role/nationality classifications are **game-balancing estimates** based on the supplied names and commonly associated T20 roles; they are not official IPL metrics, current-form predictions, or verified player valuations. The OVR formula weights the key skill more heavily according to role, so a specialist batter's bowling rating does not drag down their OVR in the same way as a simple three-stat average.
+The generator reports classifications that rely on heuristics and players without RTM assignments. Review newly added players, especially their role and overseas status. Restart the server after changing player data. The portrait fetcher stores attribution and updates the overrides file so downloaded portrait metadata survives regeneration.
 
 ## Project layout
 
 ```text
-server/index.js       Express + Socket.IO room/event server
-server/game.js        Lobby, auction, standings, tournament lifecycle
-server/cricket.js     Ball-by-ball T20 engine and fixture generator
-src/main.jsx          React interface
-src/styles.css        Responsive UI
- data/players.json     Runtime player database
- data/auction_players_list.txt  Supplied auction-set list
-scripts/build_player_db.py      Player database generator
+server/index.js             HTTP, socket connection, and room sessions
+server/handlers/            Auction, trade, lineup, and tournament actions
+server/game.js              Room state, auction lifecycle, standings, and playback
+server/cricket.js           Seedable ball-by-ball simulation and fixtures
+server/checkpoints.js       Optional local room recovery
+server/playerDatabase.js    Runtime data validation
+src/screens/                Lobby, auction, squads, lineup, and simulation screens
+src/components/             Shared interface components
+shared/rules.json           Shared franchises, limits, and bid ladder
+data/                       Player source, overrides, and runtime database
+scripts/                    Database and portrait tools
+tests/                      Engine, socket, recovery, browser, and season checks
 ```
-
-## Notes
-
-- There is no external database or account system. Players can reconnect to their existing in-memory seat after a refresh as long as the server stays running and their browser retains local storage.
-- The app uses the server's process as the authority for bids, timers, match events, and results. Don't run multiple server instances for the same room.
-- The active player pool is the uploaded list (including the seven additional marquee players) plus the 46 optional legends. No bot franchises are added automatically.
