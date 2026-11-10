@@ -2,13 +2,20 @@
   "name": "ipl-auction-arena",
   "version": "1.0.0",
   "private": true,
+  "engines": {
+    "node": ">=22.13.0"
+  },
   "description": "Self-hosted multiplayer IPL auction and T20 league simulation game",
   "main": "server/index.js",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "vite build",
     "start": "node server/index.js",
-    "check": "node --check server/index.js && node --check server/game.js && node --check server/cricket.js",
+    "check": "node --check server/index.js && node --check server/game.js && node --check server/cricket.js && node --check server/checkpoints.js && node --check server/playerDatabase.js && node --check server/roomLifecycle.js && node --check server/safeEvents.js && node --check server/handlers/auction.js && node --check server/handlers/trades.js && node --check server/handlers/lineups.js && node --check server/handlers/tournament.js",
+    "test": "node --test",
+    "lint": "eslint . --max-warnings=0",
+    "format:check": "prettier --check \"src/**/*.{js,jsx,css}\" \"server/**/*.js\" \"tests/**/*.js\" \"scripts/*.{js,mjs}\" \"*.mjs\"",
+    "analyze:simulation": "node scripts/analyze_simulation.js",
     "dev:server": "node server/index.js"
   },
   "dependencies": {
@@ -19,7 +26,19 @@
     "socket.io-client": "4.8.1"
   },
   "devDependencies": {
+    "@playwright/test": "1.65.0",
     "@vitejs/plugin-react": "6.1.2",
-    "vite": "8.3.0"
+    "eslint": "10.14.0",
+    "globals": "17.14.0",
+    "prettier": "3.9.10",
+    "vite": "8.3.7"
+  },
+  "overrides": {
+    "eslint": {
+      "minimatch": "11.0.1"
+    },
+    "@eslint/config-array": {
+      "minimatch": "11.0.1"
+    }
   }
 }

@@ -1,0 +1,28 @@
+{
+  "franchises": [
+    { "id": "CSK", "name": "Chennai Super Kings", "short": "CSK", "color": "#f8cd45" },
+    { "id": "MI", "name": "Mumbai Indians", "short": "MI", "color": "#4b91ff" },
+    { "id": "RCB", "name": "Royal Challengers Bengaluru", "short": "RCB", "color": "#ff646e" },
+    { "id": "KKR", "name": "Kolkata Knight Riders", "short": "KKR", "color": "#b8a2ff" },
+    { "id": "SRH", "name": "Sunrisers Hyderabad", "short": "SRH", "color": "#ffa44b" },
+    { "id": "RR", "name": "Rajasthan Royals", "short": "RR", "color": "#ff8fc7" },
+    { "id": "DC", "name": "Delhi Capitals", "short": "DC", "color": "#70b4ff" },
+    { "id": "PBKS", "name": "Punjab Kings", "short": "PBKS", "color": "#ff7a8a" },
+    { "id": "GT", "name": "Gujarat Titans", "short": "GT", "color": "#8cb6c5" },
+    { "id": "LSG", "name": "Lucknow Super Giants", "short": "LSG", "color": "#85d8ce" }
+  ],
+  "maxSquad": 25,
+  "maxSquadOverseas": 8,
+  "defaultLegendAuctionLimit": 6,
+  "maxPlayingXILegends": 4,
+  "maxPlayingXIOverseas": 4,
+  "availableBidMultipliers": [2, 3, 5, 8, 10],
+  "bidLadder": [
+    { "below": 1, "increment": 0.05 },
+    { "below": 2, "increment": 0.1 },
+    { "below": 5, "increment": 0.2 },
+    { "below": 10, "increment": 0.25 },
+    { "below": null, "increment": 0.5 }
+  ],
+  "defaultTactics": { "fielding": "balanced", "bowling": "balanced", "batting": "buildup" }
+}

@@ -1,4 +1,4 @@
-import json, re, hashlib
+import json, re, hashlib, os, tempfile
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 text = (ROOT / 'data/auction_players_list.txt').read_text(encoding='utf-8')
@@ -8,7 +8,20 @@ for line in text.splitlines():
     s=line.strip()
     if not s: continue
     if s in headers: group=s
+    elif re.match(r'^(?:(?:Marquee )?Set\s+\d+|[A-Z]{2,5}\d+)$', s):
+        raise ValueError(f'Unknown auction-set heading: {s}')
+    elif not group:
+        raise ValueError(f'Player listed before an auction-set heading: {s}')
     else: players.append({'name':s,'set':group,'legend':False})
+
+def atomic_write_text(destination, content):
+    with tempfile.NamedTemporaryFile('w', encoding='utf-8', dir=destination.parent, delete=False) as temporary:
+        temporary.write(content)
+        temp_name = temporary.name
+    try:
+        os.replace(temp_name, destination)
+    finally:
+        if os.path.exists(temp_name): os.unlink(temp_name)
 
 # Roles are inferred from the player's usual T20/auction role. This is game metadata, not an official classification.
 BAT='Batter'; BOWL='Bowler'; AR='All-rounder'; WK='Wicketkeeper'
@@ -312,16 +325,25 @@ rtm_team_overrides = {
 }
 VALID_RTM_TEAM_IDS = {'CSK', 'MI', 'RCB', 'KKR', 'SRH', 'RR', 'DC', 'PBKS', 'GT', 'LSG'}
 
-# Preserve locally imported portrait metadata when regenerating ratings/database records.
-try:
-    _existing = json.loads((ROOT / 'data/players.json').read_text(encoding='utf-8')).get('players', [])
-except (OSError, ValueError, AttributeError):
-    _existing = []
-_existing_by_id = {p.get('id'): p for p in _existing if p.get('id')}
-_existing_by_name = {p.get('name', '').casefold(): p for p in _existing if p.get('name')}
+# Explicit overrides are the source of truth for manually edited values.
+# A project without that file retains the old database-preservation behavior.
+override_path = ROOT / 'data/player-overrides.json'
+if override_path.exists():
+    _existing_by_id = json.loads(override_path.read_text(encoding='utf-8'))
+    if not isinstance(_existing_by_id, dict): raise ValueError('player-overrides.json must be an object keyed by player ID')
+    if any(not isinstance(key, str) or not isinstance(value, dict) for key, value in _existing_by_id.items()):
+        raise ValueError('Every player override must be an object keyed by a player ID')
+    _existing_by_name = {}
+else:
+    try:
+        _existing = json.loads((ROOT / 'data/players.json').read_text(encoding='utf-8')).get('players', [])
+    except (OSError, ValueError, AttributeError):
+        _existing = []
+    _existing_by_id = {p.get('id'): p for p in _existing if p.get('id')}
+    _existing_by_name = {p.get('name', '').casefold(): p for p in _existing if p.get('name')}
 
 # First occurrence wins if the source ever contains a duplicate.
-seen=set(); output=[]
+seen=set(); output=[]; role_fallbacks=[]
 set_order=[]
 for line in text.splitlines():
     s=line.strip()
@@ -349,6 +371,7 @@ for p in players:
             elif st.startswith('UWK'): role=WK
             else:
                 # Conservative heuristic fallback for the mixed first four groups.
+                role_fallbacks.append(name)
                 low=name.lower()
                 if any(x in low for x in ['singh','sharma','patel','kumar','yadav','chahar','rathi','markande','bishnoi','deshpande','arora','malinga','burger','ellis','thushara','hazlewood','boult','rabada','archer','cummins','starc','chahal','kuldeep','farooqi','coetzee','madhwal','tang','mavi','natarajan','krishna']): role=BOWL
                 else: role=BAT
@@ -395,9 +418,18 @@ for p in players:
     output.append({'id':pid,'name':name,'set':st,'role':role,'nationality':nationality,'overseas':nationality=='Overseas','legend':legend,'ovr':int(ovr),'batting':int(batting),'bowling':int(bowling),'fielding':int(fielding),'basePrice':base,'preferredBattingPositions':preferred_positions,'rtmTeamId':rtm_team_overrides.get(name)})
     old = _existing_by_id.get(pid) or _existing_by_name.get(name.casefold()) or {}
     # Preserve user-managed values when rebuilding: manual ratings, preferred slots and portraits.
+    if 'role' in old:
+        if old['role'] not in (BAT, BOWL, AR, WK): raise ValueError(f'Invalid role override for {name}')
+        role = old['role']
+        output[-1]['role'] = role
+        output[-1]['preferredBattingPositions'] = default_preferred_positions(name, role, st)
+    if 'nationality' in old:
+        if old['nationality'] not in ('Indian', 'Overseas'): raise ValueError(f'Invalid nationality override for {name}')
+        output[-1]['nationality'] = old['nationality']
+        output[-1]['overseas'] = old['nationality'] == 'Overseas'
     for key in ('ovr', 'batting', 'bowling', 'fielding', 'basePrice'):
         value = old.get(key)
-        if isinstance(value, (int, float)):
+        if isinstance(value, (int, float)) and not isinstance(value, bool):
             valid_value = value > 0 if key == 'basePrice' else 1 <= value <= 99
             if valid_value:
                 output[-1][key] = value
@@ -421,10 +453,13 @@ for p in players:
             output[-1]['rtmTeamId'] = None
 # Preserve set ordering based on the user's file and append legend set names as already present.
 output.sort(key=lambda p:(set_order.index(p['set']) if p['set'] in set_order else 999, p['legend'], p['name'].lower()))
-(ROOT/'data/players.json').write_text(json.dumps({'schemaVersion':1,'source':'auction_players_list.txt','ratingNote':'Game-balance estimates, not official or predictive statistics.','setOrder':set_order,'players':output},ensure_ascii=False,indent=2),encoding='utf-8')
+atomic_write_text(ROOT/'data/players.json', json.dumps({'schemaVersion':1,'source':'auction_players_list.txt','ratingNote':'Game-balance estimates, not official or predictive statistics.','setOrder':set_order,'players':output},ensure_ascii=False,indent=2))
 print(f'Wrote {len(output)} players across {len(set_order)} source sets; legends={sum(p["legend"] for p in output)}')
 unmapped_rtm = sorted(p['name'] for p in output if not p.get('rtmTeamId'))
-(ROOT/'data/rtm_unmapped_players.txt').write_text('\n'.join(unmapped_rtm) + ('\n' if unmapped_rtm else ''), encoding='utf-8')
+atomic_write_text(ROOT/'data/rtm_unmapped_players.txt', '\n'.join(unmapped_rtm) + ('\n' if unmapped_rtm else ''))
 print(f'RTM franchise defaults assigned: {len(output) - len(unmapped_rtm)}/{len(output)}; unmapped list: data/rtm_unmapped_players.txt')
 from collections import Counter
 print(Counter(p['set'] for p in output))
+if role_fallbacks:
+    print('Review heuristic role classifications: ' + ', '.join(role_fallbacks))
+print(f'{sum(not p["legend"] and p["name"] not in overseas for p in output)} active players are classified Indian by the default nationality list; review new additions.')
