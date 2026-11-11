@@ -77,7 +77,26 @@ function indexSeason(database, id, season) {
     }
   }
   const appearances = new Map();
+  const appearanceFor = (playerId) => {
+    if (!appearances.has(playerId))
+      appearances.set(playerId, {
+        matchIds: new Set(),
+        innings: 0,
+        outs: 0,
+        bowlingInnings: 0,
+        bestScore: 0,
+      });
+    return appearances.get(playerId);
+  };
   for (const match of season.matches || []) {
+    for (const team of season.teams || []) {
+      if (![match.homeId, match.awayId].includes(team.id)) continue;
+      for (const playerId of team.lineup || []) {
+        if (!stats.has(playerId)) continue;
+        const data = appearanceFor(playerId);
+        data.matchIds.add(match.id);
+      }
+    }
     for (const innings of match.innings || []) {
       for (const batter of innings.batters || []) {
         const playerId = batter.player?.id;
@@ -87,32 +106,18 @@ function indexSeason(database, id, season) {
           !(batter.balls || batter.runs || batter.out)
         )
           continue;
-        const data = appearances.get(playerId) || {
-          matchIds: new Set(),
-          innings: 0,
-          outs: 0,
-          bowlingInnings: 0,
-          bestScore: 0,
-        };
+        const data = appearanceFor(playerId);
         data.matchIds.add(match.id);
         data.innings++;
         if (batter.out) data.outs++;
         data.bestScore = Math.max(data.bestScore, Number(batter.runs) || 0);
-        appearances.set(playerId, data);
       }
       for (const bowler of innings.bowlers || []) {
         const playerId = bowler.player?.id;
         if (!playerId || !stats.has(playerId) || !bowler.legalBalls) continue;
-        const data = appearances.get(playerId) || {
-          matchIds: new Set(),
-          innings: 0,
-          outs: 0,
-          bowlingInnings: 0,
-          bestScore: 0,
-        };
+        const data = appearanceFor(playerId);
         data.matchIds.add(match.id);
         data.bowlingInnings++;
-        appearances.set(playerId, data);
       }
     }
   }
@@ -185,7 +190,7 @@ function createSeasonStore(file) {
         "PRAGMA journal_mode=WAL; PRAGMA synchronous=FULL; PRAGMA busy_timeout=5000;",
       );
       const version = opened.prepare("PRAGMA user_version").get().user_version;
-      if (version > 3)
+      if (version > 4)
         throw new Error("Unsupported season archive database version.");
       opened.exec(`CREATE TABLE IF NOT EXISTS seasons (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -196,7 +201,7 @@ function createSeasonStore(file) {
       match_count INTEGER NOT NULL,
       data TEXT NOT NULL
       )`);
-      if (version < 3) {
+      if (version < 4) {
         opened.exec("BEGIN IMMEDIATE");
         try {
           if (version < 2)
@@ -220,7 +225,7 @@ function createSeasonStore(file) {
             .prepare("SELECT id, data FROM seasons")
             .all())
             indexSeason(opened, row.id, JSON.parse(row.data));
-          opened.exec("PRAGMA user_version=3; COMMIT");
+          opened.exec("PRAGMA user_version=4; COMMIT");
         } catch (error) {
           opened.exec("ROLLBACK");
           throw error;

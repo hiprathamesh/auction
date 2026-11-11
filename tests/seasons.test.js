@@ -106,6 +106,7 @@ test("season snapshots persist scorecards and indexed profiles without private r
   );
   const playerId = snapshot.teams[0].squad[0].id;
   assert.equal(store.playerSeasons(playerId).length, 1);
+  assert.equal(store.playerSeasons(playerId)[0].matches, 1);
   assert.equal(store.ownerOf(1), "host44");
   assert.equal(store.remove(1), true);
   assert.equal(store.listForUser("host44").length, 0);
