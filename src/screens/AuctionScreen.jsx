@@ -235,36 +235,6 @@ export function AuctionScreen(props) {
                     : currentLot.player.nationality.toUpperCase()}
                 </i>
               </div>
-              {currentLot.player.photo &&
-                currentLot.player.photoAttribution && (
-                  <div className="portrait-credit">
-                    Photo:{" "}
-                    <a
-                      href={currentLot.player.photoAttribution.sourceUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      {currentLot.player.photoAttribution.author ||
-                        "Wikimedia Commons"}
-                    </a>
-                    {currentLot.player.photoAttribution.license && (
-                      <>
-                        {" "}
-                        ·{" "}
-                        <a
-                          href={
-                            currentLot.player.photoAttribution.licenseUrl ||
-                            currentLot.player.photoAttribution.sourceUrl
-                          }
-                          target="_blank"
-                          rel="noreferrer"
-                        >
-                          {currentLot.player.photoAttribution.license}
-                        </a>
-                      </>
-                    )}
-                  </div>
-                )}
               <h2 className="auction-player-name">{currentLot.player.name}</h2>
               <div className="player-tags">
                 <span>{currentLot.player.role}</span>

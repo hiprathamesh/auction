@@ -193,26 +193,10 @@ export function PlayersIndex() {
 }
 
 function Portrait({ player }) {
-  const credit = player.photoAttribution;
   if (!player.photo) return null;
   return (
     <figure className="hub-portrait">
       <img src={player.photo} alt="" />
-      {credit && (
-        <figcaption>
-          <a href={credit.sourceUrl} target="_blank" rel="noreferrer">
-            {credit.author || credit.source}
-          </a>
-          {" · "}
-          <a
-            href={credit.licenseUrl || credit.sourceUrl}
-            target="_blank"
-            rel="noreferrer"
-          >
-            {credit.license}
-          </a>
-        </figcaption>
-      )}
     </figure>
   );
 }

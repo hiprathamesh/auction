@@ -520,6 +520,18 @@ app.use(
     },
   }),
 );
+// Saved seasons and room checkpoints can still contain the old image URLs.
+app.get(
+  /^\/player-portraits\/([a-z0-9-]+)\.(?:jpe?g|png|avif)$/,
+  (req, res) => {
+    const photo = DB.players.find(
+      (player) => player.id === req.params[0],
+    )?.photo;
+    if (photo?.endsWith(".webp")) return res.redirect(photo);
+    return res.sendStatus(404);
+  },
+);
+app.use("/player-portraits", (_req, res) => res.sendStatus(404));
 app.get("*", (req, res, next) => {
   if (req.path.startsWith("/api/")) return next();
   res.sendFile(path.join(DIST, "index.html"), {

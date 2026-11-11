@@ -1,24 +1,20 @@
 {
   "aiden-markram": {
     "ovr": 91,
-    "photo": "/player-portraits/aiden-markram.png",
+    "photo": "/player-portraits/aiden-markram.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Aiden_Markram_interview_after_WTC_final_2025_(cropped).png",
-      "author": "Michael Sherman",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9582/aiden-markram",
+      "author": "Cricbuzz"
     }
   },
   "arshdeep-singh": {
     "bowling": 98,
-    "photo": "/player-portraits/arshdeep-singh.jpg",
+    "photo": "/player-portraits/arshdeep-singh.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arshdeep_Singh_2022.jpg",
-      "author": "Storm machine",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13217/arshdeep-singh",
+      "author": "Cricbuzz"
     }
   },
   "axar-patel": {
@@ -31,13 +27,11 @@
       7,
       8
     ],
-    "photo": "/player-portraits/axar-patel.jpg",
+    "photo": "/player-portraits/axar-patel.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Axar_Patel.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8808/axar-patel",
+      "author": "Cricbuzz"
     }
   },
   "ben-duckett": {
@@ -46,49 +40,41 @@
     "bowling": 20,
     "fielding": 69,
     "basePrice": 0.5,
-    "photo": "/player-portraits/ben-duckett.jpg",
+    "photo": "/player-portraits/ben-duckett.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:3_31_Another_four_(Ben_Duckett_cropped).jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:3_31_Another_four_(Ben_Duckett_cropped).jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8502/ben-duckett",
+      "author": "Cricbuzz"
     }
   },
   "bhuvneshwar-kumar": {
     "bowling": 98,
-    "photo": "/player-portraits/bhuvneshwar-kumar.jpg",
+    "photo": "/player-portraits/bhuvneshwar-kumar.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bhuvneshwar_kumar_With_Rashid_Zirak_(Bhuvneshwar_Kumar_cropped).jpg",
-      "author": "Akshayparmar.gu",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1726/bhuvneshwar-kumar",
+      "author": "Cricbuzz"
     }
   },
   "cameron-green": {
     "ovr": 93,
     "batting": 96,
     "bowling": 94,
-    "photo": "/player-portraits/cameron-green.jpg",
+    "photo": "/player-portraits/cameron-green.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Cameron_Green_fielding_Boxing_Day_2022_(cropped).jpg",
-      "author": "WikiWanderer261",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/12225/cameron-green",
+      "author": "Cricbuzz"
     }
   },
   "david-miller": {
     "ovr": 93,
     "fielding": 90,
-    "photo": "/player-portraits/david-miller.jpg",
+    "photo": "/player-portraits/david-miller.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:DAVID_MILLER_(15519469338).jpg",
-      "author": "NAPARAZZI",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6349/david-miller",
+      "author": "Cricbuzz"
     }
   },
   "deepak-hooda": {
@@ -96,54 +82,72 @@
     "batting": 70,
     "bowling": 69,
     "fielding": 65,
-    "basePrice": 0.5
+    "basePrice": 0.5,
+    "photo": "/player-portraits/deepak-hooda.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9427/deepak-hooda",
+      "author": "Cricbuzz"
+    }
   },
   "devon-conway": {
-    "batting": 95
+    "batting": 95,
+    "photo": "/player-portraits/devon-conway.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9838/devon-conway",
+      "author": "Cricbuzz"
+    }
   },
   "finn-allen": {
     "ovr": 93,
     "batting": 98,
-    "rtmTeamId": "KKR"
+    "rtmTeamId": "KKR",
+    "photo": "/player-portraits/finn-allen.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11172/finn-allen",
+      "author": "Cricbuzz"
+    }
   },
   "gus-atkinson": {
     "ovr": 73,
     "batting": 74,
     "bowling": 73,
     "fielding": 69,
-    "basePrice": 0.75
+    "basePrice": 0.75,
+    "photo": "/player-portraits/gus-atkinson.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13681/gus-atkinson",
+      "author": "Cricbuzz"
+    }
   },
   "hardik-pandya": {
     "batting": 97,
     "bowling": 96,
-    "photo": "/player-portraits/hardik-pandya.jpg",
+    "photo": "/player-portraits/hardik-pandya.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hardik_Pandya_(cropped).jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9647/hardik-pandya",
+      "author": "Cricbuzz"
     }
   },
   "ishan-kishan": {
     "batting": 97,
-    "photo": "/player-portraits/ishan-kishan.jpg",
+    "photo": "/player-portraits/ishan-kishan.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ishan_Kishan.jpg",
-      "author": "Tata Ipl 2022",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10276/ishan-kishan",
+      "author": "Cricbuzz"
     }
   },
   "jake-fraser-mcgurk": {
-    "photo": "/player-portraits/jake-fraser-mcgurk.jpg",
+    "photo": "/player-portraits/jake-fraser-mcgurk.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:260328_D3_Jake_Fraser-McGurk_01.jpg",
-      "author": "DustyNail",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14501/jake-fraser-mcgurk",
+      "author": "Cricbuzz"
     }
   },
   "jamie-smith": {
@@ -151,59 +155,55 @@
     "batting": 68,
     "bowling": 20,
     "fielding": 66,
-    "basePrice": 0.5
+    "basePrice": 0.5,
+    "photo": "/player-portraits/jamie-smith.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13810/jamie-smith",
+      "author": "Cricbuzz"
+    }
   },
   "jasprit-bumrah": {
     "ovr": 97,
-    "photo": "/player-portraits/jasprit-bumrah.jpg",
+    "photo": "/player-portraits/jasprit-bumrah.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jasprit_Bumrah_(4).jpg",
-      "author": "CRICKETNEXT",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9311/jasprit-bumrah",
+      "author": "Cricbuzz"
     }
   },
   "jofra-archer": {
-    "photo": "/player-portraits/jofra-archer.jpg",
+    "photo": "/player-portraits/jofra-archer.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jofra_Archer_(3).jpg",
-      "author": "BBC News اردو",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11540/jofra-archer",
+      "author": "Cricbuzz"
     }
   },
   "jonny-bairstow": {
     "ovr": 91,
     "batting": 95,
-    "photo": "/player-portraits/jonny-bairstow.jpg",
+    "photo": "/player-portraits/jonny-bairstow.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2_05_Bairstow_out.jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:2_05_Bairstow_out.jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6507/jonny-bairstow",
+      "author": "Cricbuzz"
     }
   },
   "jos-buttler": {
-    "photo": "/player-portraits/jos-buttler.jpg",
+    "photo": "/player-portraits/jos-buttler.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jos_Buttler_in_2023.jpg",
-      "author": "Number 10",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/2258/jos-buttler",
+      "author": "Cricbuzz"
     }
   },
   "josh-hazlewood": {
-    "photo": "/player-portraits/josh-hazlewood.jpg",
+    "photo": "/player-portraits/josh-hazlewood.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2018_Josh_Hazlewood_(cropped).jpg",
-      "author": "www.davidmolloyphotography.com from Sydney, Australia",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6258/josh-hazlewood",
+      "author": "Cricbuzz"
     }
   },
   "k-s-bharat": {
@@ -211,83 +211,81 @@
     "batting": 74,
     "bowling": 20,
     "fielding": 72,
-    "basePrice": 0.5
+    "basePrice": 0.5,
+    "photo": "/player-portraits/k-s-bharat.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9025/srikar-bharat",
+      "author": "Cricbuzz"
+    }
   },
   "kagiso-rabada": {
-    "photo": "/player-portraits/kagiso-rabada.jpg",
+    "photo": "/player-portraits/kagiso-rabada.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kingdom_Kome_co-founders_Kagiso_Rabada_and_Cameron_Scott_at_the_first_private_screening_of_The_Ring_of_Beasts_(cropped).jpg",
-      "author": "KingdomKome",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9585/kagiso-rabada",
+      "author": "Cricbuzz"
     }
   },
   "kl-rahul": {
     "batting": 98,
-    "photo": "/player-portraits/kl-rahul.jpg",
+    "photo": "/player-portraits/kl-rahul.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:KL_Rahul_at_Femina_Miss_India_2018_Grand_Finale_(cropped).jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8733/kl-rahul",
+      "author": "Cricbuzz"
     }
   },
   "liam-livingstone": {
-    "batting": 96
+    "batting": 96,
+    "photo": "/player-portraits/liam-livingstone.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10045/liam-livingstone",
+      "author": "Cricbuzz"
+    }
   },
   "lockie-ferguson": {
-    "photo": "/player-portraits/lockie-ferguson.jpg",
+    "photo": "/player-portraits/lockie-ferguson.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lockie_Ferguson.jpg",
-      "author": "CRICKETNEXT",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10692/lockie-ferguson",
+      "author": "Cricbuzz"
     }
   },
   "marco-jansen": {
     "ovr": 94,
     "bowling": 95,
-    "photo": "/player-portraits/marco-jansen.jpg",
+    "photo": "/player-portraits/marco-jansen.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Marco_Jansen_2022.jpg",
-      "author": "Storm machine",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14565/marco-jansen",
+      "author": "Cricbuzz"
     }
   },
   "marcus-stoinis": {
-    "photo": "/player-portraits/marcus-stoinis.jpg",
+    "photo": "/player-portraits/marcus-stoinis.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2018.01.21.15.22.25-Stoinis_(39081521620).jpg",
-      "author": "www.davidmolloyphotography.com from Sydney, Australia",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8989/marcus-stoinis",
+      "author": "Cricbuzz"
     }
   },
   "mitchell-starc": {
-    "photo": "/player-portraits/mitchell-starc.jpg",
+    "photo": "/player-portraits/mitchell-starc.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mitchell_Starc_2023.jpg",
-      "author": "Prime Video AU & NZ",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/7710/mitchell-starc",
+      "author": "Cricbuzz"
     }
   },
   "mohammad-shami": {
     "bowling": 98,
-    "photo": "/player-portraits/mohammad-shami.jpg",
+    "photo": "/player-portraits/mohammad-shami.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mohammed_Shami.jpg",
-      "author": "CRICKETNEXT",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/7909/mohammed-shami",
+      "author": "Cricbuzz"
     }
   },
   "ms-dhoni": {
@@ -302,13 +300,11 @@
       6,
       7
     ],
-    "photo": "/player-portraits/ms-dhoni.jpg",
+    "photo": "/player-portraits/ms-dhoni.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:MS_Dhoni_(Prabhav_%2723_-_RiGI_2023).jpg",
-      "author": "RIGI",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/265/ms-dhoni",
+      "author": "Cricbuzz"
     }
   },
   "prithvi-shaw": {
@@ -317,24 +313,20 @@
     "bowling": 25,
     "fielding": 57,
     "basePrice": 0.3,
-    "photo": "/player-portraits/prithvi-shaw.png",
+    "photo": "/player-portraits/prithvi-shaw.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Prithvi_shaw.png",
-      "author": "CRICKETNEXT",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/12094/prithvi-shaw",
+      "author": "Cricbuzz"
     }
   },
   "quinton-de-kock": {
     "batting": 97,
-    "photo": "/player-portraits/quinton-de-kock.jpg",
+    "photo": "/player-portraits/quinton-de-kock.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:QUINTON_DE_KOCK_(15681398316).jpg",
-      "author": "NAPARAZZI",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8520/quinton-de-kock",
+      "author": "Cricbuzz"
     }
   },
   "rahmanullah-gurbaz": {
@@ -342,32 +334,40 @@
     "batting": 72,
     "bowling": 20,
     "fielding": 70,
-    "basePrice": 0.5
+    "basePrice": 0.5,
+    "photo": "/player-portraits/rahmanullah-gurbaz.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13213/rahmanullah-gurbaz",
+      "author": "Cricbuzz"
+    }
   },
   "ravindra-jadeja": {
     "ovr": 96,
     "fielding": 99,
-    "photo": "/player-portraits/ravindra-jadeja.jpg",
+    "photo": "/player-portraits/ravindra-jadeja.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ravindra_Jadeja_in_2018.jpg",
-      "author": "SR Vlogs",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/587/ravindra-jadeja",
+      "author": "Cricbuzz"
     }
   },
   "rinku-singh": {
-    "ovr": 93
+    "ovr": 93,
+    "photo": "/player-portraits/rinku-singh.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10896/rinku-singh",
+      "author": "Cricbuzz"
+    }
   },
   "rohit-sharma": {
     "ovr": 97,
-    "photo": "/player-portraits/rohit-sharma.jpg",
+    "photo": "/player-portraits/rohit-sharma.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rohit_Sharma_Batting.jpg",
-      "author": "Bahnfrend",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/576/rohit-sharma",
+      "author": "Cricbuzz"
     }
   },
   "sarfaraz-khan": {
@@ -375,46 +375,52 @@
     "batting": 94,
     "bowling": 29,
     "fielding": 63,
-    "basePrice": 0.5
+    "basePrice": 0.5,
+    "photo": "/player-portraits/sarfaraz-khan.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9429/sarfaraz-khan",
+      "author": "Cricbuzz"
+    }
   },
   "tim-david": {
     "ovr": 88,
     "batting": 95,
-    "fielding": 85
+    "fielding": 85,
+    "photo": "/player-portraits/tim-david.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13169/tim-david",
+      "author": "Cricbuzz"
+    }
   },
   "trent-boult": {
     "ovr": 95,
     "bowling": 99,
-    "photo": "/player-portraits/trent-boult.png",
+    "photo": "/player-portraits/trent-boult.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trent_Boult_cropped.png",
-      "author": "www.davidmolloyphotography.com from Sydney, Australia",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8117/trent-boult",
+      "author": "Cricbuzz"
     }
   },
   "venkatesh-iyer": {
     "ovr": 91,
     "batting": 94,
-    "photo": "/player-portraits/venkatesh-iyer.png",
+    "photo": "/player-portraits/venkatesh-iyer.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Venkatesh_Iyer.png",
-      "author": "Kolkata Knight Riders",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10917/venkatesh-iyer",
+      "author": "Cricbuzz"
     }
   },
   "virat-kohli": {
     "fielding": 99,
-    "photo": "/player-portraits/virat-kohli.jpg",
+    "photo": "/player-portraits/virat-kohli.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Virat_Kohli_fielding_in_a_ODI_cricket_match_against_New_Zealand_in_December_2010.jpg",
-      "author": "Chubby Chandru",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1413/virat-kohli",
+      "author": "Cricbuzz"
     }
   },
   "wiaan-mulder": {
@@ -423,167 +429,135 @@
     "bowling": 73,
     "fielding": 69,
     "basePrice": 0.75,
-    "photo": "/player-portraits/wiaan-mulder.jpg",
+    "photo": "/player-portraits/wiaan-mulder.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:RSA_vs_AUS_Day_1-41.jpg",
-      "author": "EGilham",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11200/wiaan-mulder",
+      "author": "Cricbuzz"
     }
   },
   "ab-de-villiers": {
-    "photo": "/player-portraits/ab-de-villiers.jpg",
+    "photo": "/player-portraits/ab-de-villiers.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:AB_de_Villiers_2.jpg",
-      "author": "paddynapper",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/370/ab-de-villiers",
+      "author": "Cricbuzz"
     }
   },
   "adam-gilchrist": {
-    "photo": "/player-portraits/adam-gilchrist.jpg",
+    "photo": "/player-portraits/adam-gilchrist.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Adam_Gilchrist_of_Australia_(cropped).jpg",
-      "author": "Luton Anderson",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/36/adam-gilchrist",
+      "author": "Cricbuzz"
     }
   },
   "ambati-rayudu": {
-    "photo": "/player-portraits/ambati-rayudu.jpg",
+    "photo": "/player-portraits/ambati-rayudu.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ambati_Rayudu.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6311/ambati-rayudu",
+      "author": "Cricbuzz"
     }
   },
   "andrew-symonds": {
-    "photo": "/player-portraits/andrew-symonds.jpg",
+    "photo": "/player-portraits/andrew-symonds.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Andrew_symonds_(cropped).jpg",
-      "author": "Privatemusings",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/39/andrew-symonds",
+      "author": "Cricbuzz"
     }
   },
   "anil-kumble": {
     "ovr": 98,
     "bowling": 99,
-    "photo": "/player-portraits/anil-kumble.jpg",
+    "photo": "/player-portraits/anil-kumble.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Anil_Kumble_(1).jpg",
-      "author": "CRICKETNEXT",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/98/anil-kumble",
+      "author": "Cricbuzz"
     }
   },
   "brendon-mccullum": {
-    "photo": "/player-portraits/brendon-mccullum.jpg",
+    "photo": "/player-portraits/brendon-mccullum.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brendon_McCullum_ONZM_(cropped).jpg",
-      "author": "New Zealand Government, Office of the Governor-General",
-      "license": "CC BY 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/201/brendon-mccullum",
+      "author": "Cricbuzz"
     }
   },
   "brett-lee": {
     "bowling": 98,
-    "photo": "/player-portraits/brett-lee.jpg",
+    "photo": "/player-portraits/brett-lee.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brett_lee_closeup2.jpg",
-      "author": "Privatemusings",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/42/brett-lee",
+      "author": "Cricbuzz"
     }
   },
   "chris-gayle": {
-    "photo": "/player-portraits/chris-gayle.jpg",
+    "photo": "/player-portraits/chris-gayle.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Two_views_of_Chris_Gayle_(48020785077).jpg",
-      "author": "Dun.can from Leicestershire, UK",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/247/chris-gayle",
+      "author": "Cricbuzz"
     }
   },
   "dale-steyn": {
-    "photo": "/player-portraits/dale-steyn.jpg",
+    "photo": "/player-portraits/dale-steyn.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dale_Steyn_YM.jpg",
-      "author": "YellowMonkey/Blnguyen",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/508/dale-steyn",
+      "author": "Cricbuzz"
     }
   },
   "daniel-vettori": {
-    "photo": "/player-portraits/daniel-vettori.jpg",
+    "photo": "/player-portraits/daniel-vettori.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Daniel_Vettori_ONZM_(cropped).jpg",
-      "author": "New Zealand Government, Office of the Governor-General",
-      "license": "CC BY 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/205/daniel-vettori",
+      "author": "Cricbuzz"
     }
   },
   "dwayne-bravo": {
-    "photo": "/player-portraits/dwayne-bravo.jpg",
+    "photo": "/player-portraits/dwayne-bravo.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Bravo_at_IIFA_2017_Green_Carpet.jpg",
-      "author": "Laura Lee Dooley",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/242/dwayne-bravo",
+      "author": "Cricbuzz"
     }
   },
   "faf-du-plessis": {
     "fielding": 97,
-    "photo": "/player-portraits/faf-du-plessis.jpg",
+    "photo": "/player-portraits/faf-du-plessis.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Faf_du_Plessis_2019_Boxing_Day.jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:Faf_du_Plessis_2019_Boxing_Day.jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/7825/faf-du-plessis",
+      "author": "Cricbuzz"
     }
   },
   "gautam-gambhir": {
-    "photo": "/player-portraits/gautam-gambhir.jpg",
+    "photo": "/player-portraits/gautam-gambhir.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Gautam_Gambhir_(IPL_2014).jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/308/gautam-gambhir",
+      "author": "Cricbuzz"
     }
   },
   "herschelle-gibbs": {
-    "photo": "/player-portraits/herschelle-gibbs.png",
+    "photo": "/player-portraits/herschelle-gibbs.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Herschelle_Gibbs_2025_interview_(cropped).png",
-      "author": "Michael Sherman",
-      "license": "CC BY 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/212/herschelle-gibbs",
+      "author": "Cricbuzz"
     }
   },
   "imran-tahir": {
-    "photo": "/player-portraits/imran-tahir.jpg",
+    "photo": "/player-portraits/imran-tahir.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Imran_Tahir.jpg",
-      "author": "Harrias",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6667/imran-tahir",
+      "author": "Cricbuzz"
     }
   },
   "jacques-kallis": {
@@ -593,125 +567,101 @@
       3,
       4
     ],
-    "photo": "/player-portraits/jacques-kallis.jpg",
+    "photo": "/player-portraits/jacques-kallis.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jacques_Kallis_6.jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/213/jacques-kallis",
+      "author": "Cricbuzz"
     }
   },
   "jp-duminy": {
-    "photo": "/player-portraits/jp-duminy.jpg",
+    "photo": "/player-portraits/jp-duminy.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:JP_DUMINY_(15681049126).jpg",
-      "author": "NAPARAZZI",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/211/jean-paul-duminy",
+      "author": "Cricbuzz"
     }
   },
   "kevin-pietersen": {
-    "photo": "/player-portraits/kevin-pietersen.jpg",
+    "photo": "/player-portraits/kevin-pietersen.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kevin_Pietersen_2014.jpg",
-      "author": "NAPARAZZI",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/395/kevin-pietersen",
+      "author": "Cricbuzz"
     }
   },
   "kieron-pollard": {
-    "photo": "/player-portraits/kieron-pollard.jpg",
+    "photo": "/player-portraits/kieron-pollard.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kieron_Pollard.jpg",
-      "author": "Adelaide Strikers",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/657/kieron-pollard",
+      "author": "Cricbuzz"
     }
   },
   "kumar-sangakkara": {
-    "photo": "/player-portraits/kumar-sangakkara.jpg",
+    "photo": "/player-portraits/kumar-sangakkara.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kumar_Sangakkara_bat_in_hand.JPG",
-      "author": "Amal316",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/104/kumar-sangakkara",
+      "author": "Cricbuzz"
     }
   },
   "lasith-malinga": {
-    "photo": "/player-portraits/lasith-malinga.jpg",
+    "photo": "/player-portraits/lasith-malinga.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Lasith_Malinga_tossing_a_cricket_ball_at_practice.jpg",
-      "author": "paddynapper",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/111/lasith-malinga",
+      "author": "Cricbuzz"
     }
   },
   "mahela-jayawardene": {
-    "photo": "/player-portraits/mahela-jayawardene.jpg",
+    "photo": "/player-portraits/mahela-jayawardene.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mahela_Jayawardene_3.JPG",
-      "author": "Amal316",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/101/mahela-jayawardene",
+      "author": "Cricbuzz"
     }
   },
   "matthew-hayden": {
-    "photo": "/player-portraits/matthew-hayden.jpg",
+    "photo": "/player-portraits/matthew-hayden.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Matthew_Hayden_Image.jpg",
-      "author": "Indian yogi and author Sadhguru , on Youtube",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/157/matthew-hayden",
+      "author": "Cricbuzz"
     }
   },
   "michael-hussey": {
     "ovr": 99,
     "batting": 99,
-    "photo": "/player-portraits/michael-hussey.jpg",
+    "photo": "/player-portraits/michael-hussey.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Michael_Hussey_2022.jpg",
-      "author": "Calistemon",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/4772/michael-hussey",
+      "author": "Cricbuzz"
     }
   },
   "munaf-patel": {
-    "photo": "/player-portraits/munaf-patel.jpg",
+    "photo": "/player-portraits/munaf-patel.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Munaf_Patel_2.jpg",
-      "author": "Blnguyen",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/522/munaf-patel",
+      "author": "Cricbuzz"
     }
   },
   "shane-warne": {
-    "photo": "/player-portraits/shane-warne.jpg",
+    "photo": "/player-portraits/shane-warne.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shane_Warne_February_2015.jpg",
-      "author": "Tourism Victoria from Australia",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/135/shane-warne",
+      "author": "Cricbuzz"
     }
   },
   "shane-watson": {
-    "photo": "/player-portraits/shane-watson.jpg",
+    "photo": "/player-portraits/shane-watson.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:SHANE_WATSON_(11705862116).jpg",
-      "author": "NAPARAZZI",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/158/shane-watson",
+      "author": "Cricbuzz"
     }
   },
   "abhishek-sharma": {
@@ -719,116 +669,100 @@
       1,
       2,
       3
-    ]
+    ],
+    "photo": "/player-portraits/abhishek-sharma.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/12086/abhishek-sharma",
+      "author": "Cricbuzz"
+    }
   },
   "deepak-chahar": {
-    "photo": "/player-portraits/deepak-chahar.jpg",
+    "photo": "/player-portraits/deepak-chahar.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Deepak_Chahar.jpg",
-      "author": "G. D. GOENKA SCHOOL, AGRA",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/7836/deepak-chahar",
+      "author": "Cricbuzz"
     }
   },
   "khaleel-ahmed": {
-    "photo": "/player-portraits/khaleel-ahmed.jpg",
+    "photo": "/player-portraits/khaleel-ahmed.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2_29_Khaleel_mugshot.jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:2_29_Khaleel_mugshot.jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10952/khaleel-ahmed",
+      "author": "Cricbuzz"
     }
   },
   "krunal-pandya": {
-    "photo": "/player-portraits/krunal-pandya.jpg",
+    "photo": "/player-portraits/krunal-pandya.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Krunal_Pandya_and_Hardik_Pandya_(cropped)_(cropped).jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11311/krunal-pandya",
+      "author": "Cricbuzz"
     }
   },
   "brydon-carse": {
-    "photo": "/player-portraits/brydon-carse.jpg",
+    "photo": "/player-portraits/brydon-carse.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:1_24_Brydon_Carse.jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:1_24_Brydon_Carse.jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11436/brydon-carse",
+      "author": "Cricbuzz"
     }
   },
   "jamie-overton": {
-    "photo": "/player-portraits/jamie-overton.jpg",
+    "photo": "/player-portraits/jamie-overton.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jamie_Overton.jpg",
-      "author": "Harrias",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8512/jamie-overton",
+      "author": "Cricbuzz"
     }
   },
   "jaydev-unadkat": {
-    "photo": "/player-portraits/jaydev-unadkat.jpg",
+    "photo": "/player-portraits/jaydev-unadkat.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2_09_Jaydev_Unadkat_1.jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:2_09_Jaydev_Unadkat_1.jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6327/jaydev-unadkat",
+      "author": "Cricbuzz"
     }
   },
   "ajinkya-rahane": {
-    "photo": "/player-portraits/ajinkya-rahane.jpg",
+    "photo": "/player-portraits/ajinkya-rahane.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ajinkya_Rahane_2016_(cropped).jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1447/ajinkya-rahane",
+      "author": "Cricbuzz"
     }
   },
   "ishant-sharma": {
-    "photo": "/player-portraits/ishant-sharma.jpg",
+    "photo": "/player-portraits/ishant-sharma.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ishant_Sharma_4.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/702/ishant-sharma",
+      "author": "Cricbuzz"
     }
   },
   "karun-nair": {
-    "photo": "/player-portraits/karun-nair.jpg",
+    "photo": "/player-portraits/karun-nair.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karun_nair_With_Rashid_Zirak.jpg",
-      "author": "User:Vishu@2008",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8257/karun-nair",
+      "author": "Cricbuzz"
     }
   },
   "manish-pandey": {
-    "photo": "/player-portraits/manish-pandey.jpg",
+    "photo": "/player-portraits/manish-pandey.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Manish_Pandey_(3).jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1836/manish-pandey",
+      "author": "Cricbuzz"
     }
   },
   "nitish-kumar-reddy": {
-    "photo": "/player-portraits/nitish-kumar-reddy.jpg",
+    "photo": "/player-portraits/nitish-kumar-reddy.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Nitish_Kumar_Reddy_BGT_2024_(cropped)_2.jpg",
-      "author": "WikiWanderer261",
-      "license": "CC0",
-      "licenseUrl": "http://creativecommons.org/publicdomain/zero/1.0/deed.en"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14701/nitish-kumar-reddy",
+      "author": "Cricbuzz"
     }
   },
   "arjun-tendulkar": {
@@ -992,443 +926,755 @@
     }
   },
   "amit-mishra": {
-    "photo": "/player-portraits/amit-mishra.jpg",
+    "photo": "/player-portraits/amit-mishra.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amit_Mishra.jpg",
-      "author": "Harrias",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1454/amit-mishra",
+      "author": "Cricbuzz"
     }
   },
   "ashish-nehra": {
-    "photo": "/player-portraits/ashish-nehra.jpg",
+    "photo": "/player-portraits/ashish-nehra.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ashish_Nehra_(6160488612)_(cropped).jpg",
-      "author": "Chubby Chandru",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/269/ashish-nehra",
+      "author": "Cricbuzz"
     }
   },
   "david-warner": {
-    "photo": "/player-portraits/david-warner.jpg",
+    "photo": "/player-portraits/david-warner.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:David_Warner_batting.jpg",
-      "author": "paddynapper",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1739/david-warner",
+      "author": "Cricbuzz"
     }
   },
   "dinesh-karthik": {
-    "photo": "/player-portraits/dinesh-karthik.jpg",
+    "photo": "/player-portraits/dinesh-karthik.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dinesh.Karthik.jpg",
-      "author": "Anand Anil",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/145/dinesh-karthik",
+      "author": "Cricbuzz"
     }
   },
   "harbhajan-singh": {
-    "photo": "/player-portraits/harbhajan-singh.jpg",
+    "photo": "/player-portraits/harbhajan-singh.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Harbhajan_Singh_bowling_4.jpg",
-      "author": "Blnguyen",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/75/harbhajan-singh",
+      "author": "Cricbuzz"
     }
   },
   "irfan-pathan": {
-    "photo": "/player-portraits/irfan-pathan.jpg",
+    "photo": "/player-portraits/irfan-pathan.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Irfan_Pathan72.jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/73/irfan-pathan",
+      "author": "Cricbuzz"
     }
   },
   "kane-williamson": {
-    "photo": "/player-portraits/kane-williamson.jpg",
+    "photo": "/player-portraits/kane-williamson.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kane_Williamson_in_2019.jpg",
-      "author": "Mark Lockett",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6326/kane-williamson",
+      "author": "Cricbuzz"
     }
   },
   "kuldeep-yadav": {
-    "photo": "/player-portraits/kuldeep-yadav.jpg",
+    "photo": "/player-portraits/kuldeep-yadav.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kuldeep_Yadav.jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8292/kuldeep-yadav",
+      "author": "Cricbuzz"
     }
   },
   "mitchell-marsh": {
-    "photo": "/player-portraits/mitchell-marsh.jpg",
+    "photo": "/player-portraits/mitchell-marsh.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mitchell_Marsh.jpg",
-      "author": "www.davidmolloyphotography.com",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/6250/mitchell-marsh",
+      "author": "Cricbuzz"
     }
   },
   "mohammad-siraj": {
-    "photo": "/player-portraits/mohammad-siraj.jpg",
+    "photo": "/player-portraits/mohammad-siraj.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mohammed_Siraj.jpg",
-      "author": "Anand Anil",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10808/mohammed-siraj",
+      "author": "Cricbuzz"
     }
   },
   "morne-morkel": {
-    "photo": "/player-portraits/morne-morkel.jpg",
+    "photo": "/player-portraits/morne-morkel.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Morne_Morkel_6.jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/608/morne-morkel",
+      "author": "Cricbuzz"
     }
   },
   "murali-vijay": {
-    "photo": "/player-portraits/murali-vijay.jpg",
+    "photo": "/player-portraits/murali-vijay.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Murali_Vijay_2019.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1597/murali-vijay",
+      "author": "Cricbuzz"
     }
   },
   "muttiah-muralitharan": {
-    "photo": "/player-portraits/muttiah-muralitharan.jpg",
+    "photo": "/player-portraits/muttiah-muralitharan.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Photograph_of_Muttiah_Muralitharan.jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/110/muthiah-muralidaran",
+      "author": "Cricbuzz"
     }
   },
   "pat-cummins": {
-    "photo": "/player-portraits/pat-cummins.jpg",
+    "photo": "/player-portraits/pat-cummins.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:RSA_vs_AUS_Day_1-47_(cropped).jpg",
-      "author": "EGilham",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8095/pat-cummins",
+      "author": "Cricbuzz"
     }
   },
   "phil-salt": {
-    "photo": "/player-portraits/phil-salt.jpg",
+    "photo": "/player-portraits/phil-salt.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2_02_Phil_Salt.jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:2_02_Phil_Salt.jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10479/phil-salt",
+      "author": "Cricbuzz"
     }
   },
   "pragyan-ojha": {
-    "photo": "/player-portraits/pragyan-ojha.jpg",
+    "photo": "/player-portraits/pragyan-ojha.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pragyan_Ojha.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1356/pragyan-ojha",
+      "author": "Cricbuzz"
     }
   },
   "praveen-kumar": {
-    "photo": "/player-portraits/praveen-kumar.jpg",
+    "photo": "/player-portraits/praveen-kumar.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Praveen_Kumar.jpg",
-      "author": "Blnguyen",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/592/praveen-kumar",
+      "author": "Cricbuzz"
     }
   },
   "rachin-ravindra": {
-    "photo": "/player-portraits/rachin-ravindra.jpg",
+    "photo": "/player-portraits/rachin-ravindra.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rachin_Ravindra.jpg",
-      "author": "JaumeBG",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11177/rachin-ravindra",
+      "author": "Cricbuzz"
     }
   },
   "rahul-dravid": {
-    "photo": "/player-portraits/rahul-dravid.jpg",
+    "photo": "/player-portraits/rahul-dravid.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rahul_Dravid_-_moving_the_field_(cropped).jpg",
-      "author": "Hashir Milhan from Colombo, Sri Lanka",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/27/rahul-dravid",
+      "author": "Cricbuzz"
     }
   },
   "rashid-khan": {
-    "photo": "/player-portraits/rashid-khan.jpg",
+    "photo": "/player-portraits/rashid-khan.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rashid_Khan.jpg",
-      "author": "Afghanistan Cricket Board",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10738/rashid-khan",
+      "author": "Cricbuzz"
     }
   },
   "rishabh-pant": {
-    "photo": "/player-portraits/rishabh-pant.jpg",
+    "photo": "/player-portraits/rishabh-pant.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rishabh_Pant_(29693622367)_(cropped).jpg",
-      "author": "Ben Sutherland from Crystal Palace, London, UK",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10744/rishabh-pant",
+      "author": "Cricbuzz"
     }
   },
   "robin-uthappa": {
-    "photo": "/player-portraits/robin-uthappa.jpg",
+    "photo": "/player-portraits/robin-uthappa.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Robin_Uthappa_1.jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/527/robin-uthappa",
+      "author": "Cricbuzz"
     }
   },
   "ross-taylor": {
-    "photo": "/player-portraits/ross-taylor.jpg",
+    "photo": "/player-portraits/ross-taylor.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ross_Taylor_CNZM_(cropped).jpg",
-      "author": "New Zealand Government, Office of the Governor-General",
-      "license": "CC BY 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/521/ross-taylor",
+      "author": "Cricbuzz"
     }
   },
   "sachin-tendulkar": {
-    "photo": "/player-portraits/sachin-tendulkar.jpg",
+    "photo": "/player-portraits/sachin-tendulkar.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_cricket_legend_Sachin_Tendulkar_at_the_Oval_Maidan_in_Mumbai_During_the_Duke_and_Duchess_of_Cambridge_Visit(26271019082).jpg",
-      "author": "British High Commission, New Delhi",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/25/sachin-tendulkar",
+      "author": "Cricbuzz"
     }
   },
   "sam-curran": {
-    "photo": "/player-portraits/sam-curran.jpg",
+    "photo": "/player-portraits/sam-curran.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Prime_Minister_welcomes_the_World_Cup_winning_cricketers_(52764650104)_-_Sam_Curran_(cropped).jpg",
-      "author": "Number 10",
-      "license": "CC BY 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10420/sam-curran",
+      "author": "Cricbuzz"
     }
   },
   "sanju-samson": {
-    "photo": "/player-portraits/sanju-samson.jpg",
+    "photo": "/player-portraits/sanju-samson.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sanju_Samson_batting_on_nets_3.jpg",
-      "author": "Rajasthan Royals",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8271/sanju-samson",
+      "author": "Cricbuzz"
     }
   },
   "shaun-marsh": {
-    "photo": "/player-portraits/shaun-marsh.jpg",
+    "photo": "/player-portraits/shaun-marsh.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shaun_Marsh.jpg",
-      "author": "YellowMonkey/Blnguyen",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/563/shaun-marsh",
+      "author": "Cricbuzz"
     }
   },
   "shikhar-dhawan": {
-    "photo": "/player-portraits/shikhar-dhawan.jpg",
+    "photo": "/player-portraits/shikhar-dhawan.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:SHIKHAR_DHAWAN_(16005494418).jpg",
-      "author": "NAPARAZZI",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1446/shikhar-dhawan",
+      "author": "Cricbuzz"
     }
   },
   "shimron-hetmyer": {
-    "photo": "/player-portraits/shimron-hetmyer.jpg",
+    "photo": "/player-portraits/shimron-hetmyer.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shimron_Hetmyer.jpg",
-      "author": "CRICKETNEXT",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9789/shimron-hetmyer",
+      "author": "Cricbuzz"
     }
   },
   "shivam-dube": {
-    "photo": "/player-portraits/shivam-dube.jpg",
+    "photo": "/player-portraits/shivam-dube.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shivam_Dube.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11195/shivam-dube",
+      "author": "Cricbuzz"
     }
   },
   "shreyas-iyer": {
-    "photo": "/player-portraits/shreyas-iyer.jpg",
+    "photo": "/player-portraits/shreyas-iyer.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shreyas_Iyer_2021.jpg",
-      "author": "247 Entertainment",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9428/shreyas-iyer",
+      "author": "Cricbuzz"
     }
   },
   "shubman-gill": {
-    "photo": "/player-portraits/shubman-gill.jpg",
+    "photo": "/player-portraits/shubman-gill.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shubman_Gill.jpg",
-      "author": "CRICKETNEXT",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11808/shubman-gill",
+      "author": "Cricbuzz"
     }
   },
   "sunil-narine": {
-    "photo": "/player-portraits/sunil-narine.jpg",
+    "photo": "/player-portraits/sunil-narine.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunil_Narine_cropped.jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/2276/sunil-narine",
+      "author": "Cricbuzz"
     }
   },
   "suresh-raina": {
-    "photo": "/player-portraits/suresh-raina.jpg",
+    "photo": "/player-portraits/suresh-raina.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Suresh_Raina_grace_the_%27Salaam_Sachin%27_conclave.jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/413/suresh-raina",
+      "author": "Cricbuzz"
     }
   },
   "suryakumar-yadav": {
-    "photo": "/player-portraits/suryakumar-yadav.jpg",
+    "photo": "/player-portraits/suryakumar-yadav.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Suryakumar_Yadav_(3).jpg",
-      "author": "Kolkata Knight Riders - Official",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/7915/suryakumar-yadav",
+      "author": "Cricbuzz"
     }
   },
   "travis-head": {
-    "photo": "/player-portraits/travis-head.jpg",
+    "photo": "/player-portraits/travis-head.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Travis_Head_cropped.jpg",
-      "author": "Calistemon",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8497/travis-head",
+      "author": "Cricbuzz"
     }
   },
   "virender-sehwag": {
-    "photo": "/player-portraits/virender-sehwag.jpg",
+    "photo": "/player-portraits/virender-sehwag.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Virender_Sehwag_at_the_NDTV_Marks_for_Sports_event_13.jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/26/virender-sehwag",
+      "author": "Cricbuzz"
     }
   },
   "wanindu-hasaranga": {
-    "photo": "/player-portraits/wanindu-hasaranga.jpg",
+    "photo": "/player-portraits/wanindu-hasaranga.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Waniya.jpg",
-      "author": "04 ATM 04",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10926/wanindu-hasaranga",
+      "author": "Cricbuzz"
     }
   },
   "will-jacks": {
-    "photo": "/player-portraits/will-jacks.jpg",
+    "photo": "/player-portraits/will-jacks.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:4_20_Will_Jacks.jpg",
-      "author": "Dave Morton",
-      "license": "Public domain",
-      "licenseUrl": "https://commons.wikimedia.org/wiki/File:4_20_Will_Jacks.jpg"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/12258/will-jacks",
+      "author": "Cricbuzz"
     }
   },
   "yashasvi-jaiswal": {
-    "photo": "/player-portraits/yashasvi-jaiswal.jpg",
+    "photo": "/player-portraits/yashasvi-jaiswal.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yashasvi_Jaiswal.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 4.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13940/yashasvi-jaiswal",
+      "author": "Cricbuzz"
     }
   },
   "yusuf-pathan": {
-    "photo": "/player-portraits/yusuf-pathan.jpg",
+    "photo": "/player-portraits/yusuf-pathan.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yusuf_Pathan.jpg",
-      "author": "Dee03",
-      "license": "CC BY-SA 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/790/yusuf-pathan",
+      "author": "Cricbuzz"
     }
   },
   "yuvraj-singh": {
-    "photo": "/player-portraits/yuvraj-singh.jpg",
+    "photo": "/player-portraits/yuvraj-singh.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuvraj_Singh_appointed_as_Ulysse_Nardin_watch_brand_ambassador.jpeg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/69/yuvraj-singh",
+      "author": "Cricbuzz"
     }
   },
   "yuzvendra-chahal": {
-    "photo": "/player-portraits/yuzvendra-chahal.jpg",
+    "photo": "/player-portraits/yuzvendra-chahal.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuzvendra_Chahal.jpg",
-      "author": "BBC News اردو",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/7910/yuzvendra-chahal",
+      "author": "Cricbuzz"
     }
   },
   "zaheer-khan": {
-    "photo": "/player-portraits/zaheer-khan.jpg",
+    "photo": "/player-portraits/zaheer-khan.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zaheer_Khan_at_the_CPAA_show_2018_(cropped).jpg",
-      "author": "Bollywood Hungama",
-      "license": "CC BY 3.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/71/zaheer-khan",
+      "author": "Cricbuzz"
+    }
+  },
+  "heinrich-klaasen": {
+    "photo": "/player-portraits/heinrich-klaasen.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10209/heinrich-klaasen",
+      "author": "Cricbuzz"
+    }
+  },
+  "nicholas-pooran": {
+    "photo": "/player-portraits/nicholas-pooran.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9406/nicholas-pooran",
+      "author": "Cricbuzz"
+    }
+  },
+  "noor-ahmad": {
+    "photo": "/player-portraits/noor-ahmad.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/15452/noor-ahmad",
+      "author": "Cricbuzz"
+    }
+  },
+  "ruturaj-gaikwad": {
+    "photo": "/player-portraits/ruturaj-gaikwad.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11813/ruturaj-gaikwad",
+      "author": "Cricbuzz"
+    }
+  },
+  "varun-chakravarthy": {
+    "photo": "/player-portraits/varun-chakravarthy.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/12926/varun-chakaravarthy",
+      "author": "Cricbuzz"
+    }
+  },
+  "rp-singh": {
+    "photo": "/player-portraits/rp-singh.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/434/rp-singh",
+      "author": "Cricbuzz"
+    }
+  },
+  "avesh-khan": {
+    "photo": "/player-portraits/avesh-khan.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9781/avesh-khan",
+      "author": "Cricbuzz"
+    }
+  },
+  "azmatullah-omarzai": {
+    "photo": "/player-portraits/azmatullah-omarzai.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13214/azmatullah-omarzai",
+      "author": "Cricbuzz"
+    }
+  },
+  "dhruv-jurel": {
+    "photo": "/player-portraits/dhruv-jurel.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14691/dhruv-jurel",
+      "author": "Cricbuzz"
+    }
+  },
+  "glenn-phillips": {
+    "photo": "/player-portraits/glenn-phillips.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10693/glenn-phillips",
+      "author": "Cricbuzz"
+    }
+  },
+  "harshal-patel": {
+    "photo": "/player-portraits/harshal-patel.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8175/harshal-patel",
+      "author": "Cricbuzz"
+    }
+  },
+  "mitchell-santner": {
+    "photo": "/player-portraits/mitchell-santner.webp",
+    "photoAttribution": {
+      "source": "ESPNcricinfo",
+      "sourceUrl": "https://www.espncricinfo.com/cricketers/player-502714",
+      "author": "ESPN"
+    }
+  },
+  "prasidh-krishna": {
+    "photo": "/player-portraits/prasidh-krishna.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10551/prasidh-krishna",
+      "author": "Cricbuzz"
+    }
+  },
+  "rajat-patidar": {
+    "photo": "/player-portraits/rajat-patidar.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10636/rajat-patidar",
+      "author": "Cricbuzz"
+    }
+  },
+  "riyan-parag": {
+    "photo": "/player-portraits/riyan-parag.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/12305/riyan-parag",
+      "author": "Cricbuzz"
+    }
+  },
+  "romario-shepherd": {
+    "photo": "/player-portraits/romario-shepherd.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13646/romario-shepherd",
+      "author": "Cricbuzz"
+    }
+  },
+  "rovman-powell": {
+    "photo": "/player-portraits/rovman-powell.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11445/rovman-powell",
+      "author": "Cricbuzz"
+    }
+  },
+  "sai-sudharsan": {
+    "photo": "/player-portraits/sai-sudharsan.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13866/sai-sudharsan",
+      "author": "Cricbuzz"
+    }
+  },
+  "shardul-thakur": {
+    "photo": "/player-portraits/shardul-thakur.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8683/shardul-thakur",
+      "author": "Cricbuzz"
+    }
+  },
+  "sherfane-rutherford": {
+    "photo": "/player-portraits/sherfane-rutherford.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13748/sherfane-rutherford",
+      "author": "Cricbuzz"
+    }
+  },
+  "t-natarajan": {
+    "photo": "/player-portraits/t-natarajan.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10225/t-natarajan",
+      "author": "Cricbuzz"
+    }
+  },
+  "tilak-varma": {
+    "photo": "/player-portraits/tilak-varma.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14504/tilak-varma",
+      "author": "Cricbuzz"
+    }
+  },
+  "tristan-stubbs": {
+    "photo": "/player-portraits/tristan-stubbs.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/19243/tristan-stubbs",
+      "author": "Cricbuzz"
+    }
+  },
+  "washington-sundar": {
+    "photo": "/player-portraits/washington-sundar.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10945/washington-sundar",
+      "author": "Cricbuzz"
+    }
+  },
+  "allah-ghazanfar": {
+    "photo": "/player-portraits/allah-ghazanfar.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/36501/allah-ghazanfar",
+      "author": "Cricbuzz"
+    }
+  },
+  "corbin-bosch": {
+    "photo": "/player-portraits/corbin-bosch.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9576/corbin-bosch",
+      "author": "Cricbuzz"
+    }
+  },
+  "dewald-brevis": {
+    "photo": "/player-portraits/dewald-brevis.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/20538/dewald-brevis",
+      "author": "Cricbuzz"
+    }
+  },
+  "dushmantha-chameera": {
+    "photo": "/player-portraits/dushmantha-chameera.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8393/dushmantha-chameera",
+      "author": "Cricbuzz"
+    }
+  },
+  "jacob-bethell": {
+    "photo": "/player-portraits/jacob-bethell.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/19636/jacob-bethell",
+      "author": "Cricbuzz"
+    }
+  },
+  "kamindu-mendis": {
+    "photo": "/player-portraits/kamindu-mendis.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10940/kamindu-mendis",
+      "author": "Cricbuzz"
+    }
+  },
+  "matthew-breetzke": {
+    "photo": "/player-portraits/matthew-breetzke.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13089/matthew-breetzke",
+      "author": "Cricbuzz"
+    }
+  },
+  "mitchell-owen": {
+    "photo": "/player-portraits/mitchell-owen.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/18568/mitchell-owen",
+      "author": "Cricbuzz"
+    }
+  },
+  "mukesh-kumar": {
+    "photo": "/player-portraits/mukesh-kumar.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10754/mukesh-kumar",
+      "author": "Cricbuzz"
+    }
+  },
+  "nandre-burger": {
+    "photo": "/player-portraits/nandre-burger.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13630/nandre-burger",
+      "author": "Cricbuzz"
+    }
+  },
+  "nathan-ellis": {
+    "photo": "/player-portraits/nathan-ellis.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/15480/nathan-ellis",
+      "author": "Cricbuzz"
+    }
+  },
+  "nitish-rana": {
+    "photo": "/player-portraits/nitish-rana.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9204/nitish-rana",
+      "author": "Cricbuzz"
+    }
+  },
+  "nuwan-thushara": {
+    "photo": "/player-portraits/nuwan-thushara.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/18509/nuwan-thushara",
+      "author": "Cricbuzz"
+    }
+  },
+  "rahul-tewatia": {
+    "photo": "/player-portraits/rahul-tewatia.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/9693/rahul-tewatia",
+      "author": "Cricbuzz"
+    }
+  },
+  "ryan-rickelton": {
+    "photo": "/player-portraits/ryan-rickelton.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13070/ryan-rickelton",
+      "author": "Cricbuzz"
+    }
+  },
+  "xavier-bartlett": {
+    "photo": "/player-portraits/xavier-bartlett.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11689/xavier-bartlett",
+      "author": "Cricbuzz"
+    }
+  },
+  "devdutt-padikkal": {
+    "photo": "/player-portraits/devdutt-padikkal.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/13088/devdutt-padikkal",
+      "author": "Cricbuzz"
+    }
+  },
+  "harshit-rana": {
+    "photo": "/player-portraits/harshit-rana.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/24729/harshit-rana",
+      "author": "Cricbuzz"
+    }
+  },
+  "jayant-yadav": {
+    "photo": "/player-portraits/jayant-yadav.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8182/jayant-yadav",
+      "author": "Cricbuzz"
+    }
+  },
+  "jitesh-sharma": {
+    "photo": "/player-portraits/jitesh-sharma.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10214/jitesh-sharma",
+      "author": "Cricbuzz"
+    }
+  },
+  "r-sai-kishore": {
+    "photo": "/player-portraits/r-sai-kishore.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11595/ravisrinivasan-sai-kishore",
+      "author": "Cricbuzz"
+    }
+  },
+  "sandeep-sharma": {
+    "photo": "/player-portraits/sandeep-sharma.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/8356/sandeep-sharma",
+      "author": "Cricbuzz"
+    }
+  },
+  "shahbaz-ahmed": {
+    "photo": "/player-portraits/shahbaz-ahmed.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14606/shahbaz-ahmed",
+      "author": "Cricbuzz"
+    }
+  },
+  "shahrukh-khan": {
+    "photo": "/player-portraits/shahrukh-khan.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/10226/shahrukh-khan",
+      "author": "Cricbuzz"
+    }
+  },
+  "tushar-deshpande": {
+    "photo": "/player-portraits/tushar-deshpande.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/11307/tushar-deshpande",
+      "author": "Cricbuzz"
+    }
+  },
+  "umran-malik": {
+    "photo": "/player-portraits/umran-malik.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/19027/umran-malik",
+      "author": "Cricbuzz"
     }
   }
 }

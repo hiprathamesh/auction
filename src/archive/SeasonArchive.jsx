@@ -275,29 +275,6 @@ function Squads({ season }) {
           {player.overseas ? " · Overseas" : " · Indian"}
           {player.legend ? " · Legend" : ""}
         </small>
-        {player.photo && player.photoAttribution && (
-          <small className="archive-photo-credit">
-            Photo:{" "}
-            <a
-              href={player.photoAttribution.sourceUrl}
-              target="_blank"
-              rel="noreferrer"
-            >
-              {player.photoAttribution.author || player.photoAttribution.source}
-            </a>{" "}
-            ·{" "}
-            <a
-              href={
-                player.photoAttribution.licenseUrl ||
-                player.photoAttribution.sourceUrl
-              }
-              target="_blank"
-              rel="noreferrer"
-            >
-              {player.photoAttribution.license}
-            </a>
-          </small>
-        )}
       </div>
       <span className="archive-player-badge">
         {team.bowlerIds.includes(player.id)
