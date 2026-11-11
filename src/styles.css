@@ -418,11 +418,13 @@ p {
 }
 .mode-tabs {
   display: flex;
+  overflow-x: auto;
   gap: 4px;
   border-bottom: 1px solid var(--line);
   margin: 19px 0 22px;
 }
 .mode-tabs button {
+  white-space: nowrap;
   color: #8190aa;
   border: 0;
   background: transparent;
@@ -5051,4 +5053,61 @@ p {
   color: #b9c4d1;
   font-size: 12px;
   margin-top: 10px;
+}
+.identity-panel {
+  display: grid;
+  gap: 10px;
+  color: #aeb9cc;
+  line-height: 1.5;
+}
+.identity-panel p {
+  margin: 0 0 6px;
+}
+.identity-panel small {
+  color: #8f9cb2;
+  font-size: 11px;
+}
+.identity-panel .field-label {
+  margin-top: 8px;
+}
+.identity-status {
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 173, 119, 0.25);
+  background: rgba(255, 173, 119, 0.08);
+  border-radius: 9px;
+  color: #e4cbb5;
+}
+.identity-status a {
+  color: #ffbb8c;
+  font-weight: 800;
+  text-decoration: none;
+}
+.identity-status a:hover {
+  text-decoration: underline;
+}
+.hub-header-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: #ffb880;
+  border: 1px solid rgba(255, 184, 128, 0.28);
+  border-radius: 9px;
+  padding: 6px 9px;
+  text-decoration: none;
+  font:
+    700 10px "DM Mono",
+    monospace;
+  text-transform: uppercase;
+}
+.hub-header-link:hover {
+  background: rgba(255, 184, 128, 0.12);
+}
+@media (max-width: 600px) {
+  .hub-header-link span {
+    display: none;
+  }
+  .mode-tabs button {
+    padding-inline: 10px;
+    font-size: 11px;
+  }
 }

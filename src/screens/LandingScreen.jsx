@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { TeamLogo } from "../components/Brand";
+import { socket } from "../socket";
 
 export function LandingScreen(props) {
   const {
@@ -19,13 +21,54 @@ export function LandingScreen(props) {
     error,
     appOnline,
     recoverHost,
+    identity,
+    setIdentity,
   } = props;
+  const [identityInput, setIdentityInput] = useState("");
+  const [pin, setPin] = useState("");
+  const [identityError, setIdentityError] = useState("");
+  const [identityBusy, setIdentityBusy] = useState(false);
+  const identify = async () => {
+    setIdentityBusy(true);
+    setIdentityError("");
+    try {
+      const response = await fetch("/api/identity", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ id: identityInput, pin }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error || "Could not identify you.");
+      setIdentity(result.id);
+      setPin("");
+      socket.disconnect().connect();
+    } catch (failure) {
+      setIdentityError(failure.message);
+    } finally {
+      setIdentityBusy(false);
+    }
+  };
+  const signOut = async () => {
+    setIdentityBusy(true);
+    try {
+      const response = await fetch("/api/identity", {
+        method: "DELETE",
+        credentials: "same-origin",
+      });
+      if (!response.ok) throw new Error("Could not sign out.");
+      setIdentity(null);
+      socket.disconnect().connect();
+    } catch (failure) {
+      setIdentityError(failure.message);
+    } finally {
+      setIdentityBusy(false);
+    }
+  };
   return (
     <main className="landing wrap">
       <section className="hero-copy">
-        <a className="archive-landing-link" href="/seasons">
-          ↗ Explore past seasons
-        </a>
         <div className="eyebrow">
           <span className="eyebrow-line" /> YOUR FRIEND GROUP. YOUR AUCTION.
         </div>
@@ -60,7 +103,7 @@ export function LandingScreen(props) {
       <section className="join-card glass-card">
         <div className="card-topline">
           <span>GET IN THE GAME</span>
-          <span className="card-step">01 / 03</span>
+          <span className="card-step">01 / 04</span>
         </div>
         <div className="mode-tabs">
           <button
@@ -81,117 +124,213 @@ export function LandingScreen(props) {
           >
             Recover host
           </button>
+          <button
+            className={view === "identity" ? "active" : ""}
+            onClick={() => setView("identity")}
+          >
+            Identity
+          </button>
         </div>
-        {view !== "recover" && (
-          <>
-            <label className="field-label" htmlFor="display-name">
-              YOUR DISPLAY NAME
-            </label>
-            <input
-              id="display-name"
-              className="text-input"
-              value={displayName}
-              onChange={(e) => setDisplayName(e.target.value)}
-              maxLength={22}
-              placeholder="What should friends call you?"
-              onKeyDown={(e) =>
-                e.key === "Enter" &&
-                (view === "create" ? createRoom() : joinRoom())
-              }
-            />
-          </>
-        )}
-        {view !== "create" && (
-          <>
-            <label className="field-label" htmlFor="room-code-input">
-              ROOM CODE
-            </label>
-            <input
-              id="room-code-input"
-              className="text-input code-input"
-              value={roomCode}
-              onChange={(e) =>
-                setRoomCode(e.target.value.toUpperCase().slice(0, 5))
-              }
-              maxLength={5}
-              placeholder="ABCDE"
-            />
-          </>
-        )}
-        {view === "recover" ? (
-          <>
-            <label className="field-label" htmlFor="recovery-code-input">
-              HOST RECOVERY CODE
-            </label>
-            <input
-              id="recovery-code-input"
-              className="text-input"
-              type="password"
-              autoComplete="off"
-              value={recoveryInput}
-              onChange={(event) => setRecoveryInput(event.target.value)}
-              placeholder="Paste your saved recovery code"
-            />
-          </>
+        {view === "identity" ? (
+          <div className="identity-panel">
+            {identity ? (
+              <>
+                <p className="identity-status">
+                  You are playing as <a href={`/u/${identity}`}>@{identity}</a>.
+                </p>
+                <p>
+                  Your ID follows you across seasons. Your PIN stays on this
+                  server; this browser keeps a private session cookie.
+                </p>
+                <button
+                  className="button secondary full-button"
+                  disabled={identityBusy}
+                  onClick={signOut}
+                >
+                  Sign out
+                </button>
+              </>
+            ) : (
+              <>
+                <p>
+                  Choose a unique ID and a four-digit PIN. Use the same pair
+                  next time to return to your profile.
+                </p>
+                <label className="field-label" htmlFor="identity-id">
+                  YOUR ID
+                </label>
+                <input
+                  id="identity-id"
+                  className="text-input"
+                  autoComplete="username"
+                  value={identityInput}
+                  onChange={(e) =>
+                    setIdentityInput(
+                      e.target.value
+                        .toLowerCase()
+                        .replace(/[^a-z0-9]/g, "")
+                        .slice(0, 32),
+                    )
+                  }
+                  placeholder="e.g. cricketfan7"
+                />
+                <small>
+                  4–32 lowercase letters and digits; start with a letter.
+                </small>
+                <label className="field-label" htmlFor="identity-pin">
+                  FOUR-DIGIT PIN
+                </label>
+                <input
+                  id="identity-pin"
+                  className="text-input"
+                  type="password"
+                  inputMode="numeric"
+                  autoComplete="current-password"
+                  value={pin}
+                  onChange={(e) =>
+                    setPin(e.target.value.replace(/\D/g, "").slice(0, 4))
+                  }
+                  onKeyDown={(e) => e.key === "Enter" && identify()}
+                  placeholder="••••"
+                />
+                <button
+                  className="button primary full-button"
+                  disabled={
+                    identityBusy ||
+                    !/^[a-z][a-z0-9]{3,31}$/.test(identityInput) ||
+                    pin.length !== 4
+                  }
+                  onClick={identify}
+                >
+                  {identityBusy ? "Please wait…" : "Identify me ↗"}
+                </button>
+              </>
+            )}
+            {identityError && (
+              <p className="error-banner" role="alert">
+                {identityError}
+              </p>
+            )}
+          </div>
         ) : (
           <>
-            <label className="field-label">CHOOSE YOUR FRANCHISE</label>
-            <div className="team-picker">
-              {initialTeams.map((t) => (
-                <button
-                  key={t.id}
-                  className={`team-tile ${teamId === t.id ? "selected" : ""}`}
-                  onClick={() => setTeamId(t.id)}
-                  style={{ "--team-color": t.color }}
-                  title={t.name}
-                >
-                  <TeamLogo
-                    teamKey={t.id}
-                    short={t.short}
-                    className="team-crest"
-                    title={t.name}
-                  />
-                  <span>{t.name}</span>
-                  <i />
-                </button>
-              ))}
+            {view !== "recover" && (
+              <>
+                {identity && (
+                  <p className="identity-status">
+                    {view === "create" ? "Creating" : "Joining"} as{" "}
+                    <a href={`/u/${identity}`}>@{identity}</a>
+                  </p>
+                )}
+                <label className="field-label" htmlFor="display-name">
+                  YOUR DISPLAY NAME
+                </label>
+                <input
+                  id="display-name"
+                  className="text-input"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  maxLength={22}
+                  placeholder="What should friends call you?"
+                  onKeyDown={(e) =>
+                    e.key === "Enter" &&
+                    (view === "create" ? createRoom() : joinRoom())
+                  }
+                />
+              </>
+            )}
+            {view !== "create" && (
+              <>
+                <label className="field-label" htmlFor="room-code-input">
+                  ROOM CODE
+                </label>
+                <input
+                  id="room-code-input"
+                  className="text-input code-input"
+                  value={roomCode}
+                  onChange={(e) =>
+                    setRoomCode(e.target.value.toUpperCase().slice(0, 5))
+                  }
+                  maxLength={5}
+                  placeholder="ABCDE"
+                />
+              </>
+            )}
+            {view === "recover" ? (
+              <>
+                <label className="field-label" htmlFor="recovery-code-input">
+                  HOST RECOVERY CODE
+                </label>
+                <input
+                  id="recovery-code-input"
+                  className="text-input"
+                  type="password"
+                  autoComplete="off"
+                  value={recoveryInput}
+                  onChange={(event) => setRecoveryInput(event.target.value)}
+                  placeholder="Paste your saved recovery code"
+                />
+              </>
+            ) : (
+              <>
+                <label className="field-label">CHOOSE YOUR FRANCHISE</label>
+                <div className="team-picker">
+                  {initialTeams.map((t) => (
+                    <button
+                      key={t.id}
+                      className={`team-tile ${teamId === t.id ? "selected" : ""}`}
+                      onClick={() => setTeamId(t.id)}
+                      style={{ "--team-color": t.color }}
+                      title={t.name}
+                    >
+                      <TeamLogo
+                        teamKey={t.id}
+                        short={t.short}
+                        className="team-crest"
+                        title={t.name}
+                      />
+                      <span>{t.name}</span>
+                      <i />
+                    </button>
+                  ))}
+                </div>
+              </>
+            )}
+            {error && (
+              <div className="error-banner">
+                <span>!</span>
+                {error}
+              </div>
+            )}
+            <button
+              className="button primary full-button"
+              disabled={
+                !appOnline ||
+                (view === "recover"
+                  ? !recoveryInput.trim() || roomCode.trim().length < 5
+                  : !displayName.trim() ||
+                    (view === "join" && roomCode.trim().length < 5))
+              }
+              onClick={
+                view === "create"
+                  ? createRoom
+                  : view === "recover"
+                    ? recoverHost
+                    : joinRoom
+              }
+            >
+              {view === "create"
+                ? "Create private room"
+                : view === "recover"
+                  ? "Recover host seat"
+                  : "Join auction room"}{" "}
+              <span>↗</span>
+            </button>
+            <div className="secure-note">
+              <span>◇</span> Private room · Share the room link with friends.
             </div>
           </>
         )}
-        {error && (
-          <div className="error-banner">
-            <span>!</span>
-            {error}
-          </div>
-        )}
-        <button
-          className="button primary full-button"
-          disabled={
-            !appOnline ||
-            (view === "recover"
-              ? !recoveryInput.trim() || roomCode.trim().length < 5
-              : !displayName.trim() ||
-                (view === "join" && roomCode.trim().length < 5))
-          }
-          onClick={
-            view === "create"
-              ? createRoom
-              : view === "recover"
-                ? recoverHost
-                : joinRoom
-          }
-        >
-          {view === "create"
-            ? "Create private room"
-            : view === "recover"
-              ? "Recover host seat"
-              : "Join auction room"}{" "}
-          <span>↗</span>
-        </button>
-        <div className="secure-note">
-          <span>◇</span> Hosted on your machine. Share your tunnel link with
-          friends.
-        </div>
       </section>
     </main>
   );

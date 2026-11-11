@@ -78,10 +78,11 @@ async function startServer(t, extraEnv = {}) {
     child,
     url,
     stderr: () => stderr,
-    async connect() {
+    async connect(cookie) {
       const socket = io(url, {
         transports: ["websocket"],
         reconnection: false,
+        extraHeaders: cookie ? { Cookie: cookie } : undefined,
       });
       socket.testRoomEvents = new EventEmitter();
       socket.testRoom = null;

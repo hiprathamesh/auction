@@ -2,6 +2,7 @@ const path = require("path");
 const fs = require("fs");
 const http = require("http");
 const crypto = require("crypto");
+const net = require("node:net");
 const express = require("express");
 const { Server } = require("socket.io");
 const game = require("./game");
@@ -14,6 +15,7 @@ const { validatePlayerDatabase } = require("./playerDatabase");
 const { expireInactiveRooms } = require("./roomLifecycle");
 const { safeOn } = require("./safeEvents");
 const { createSeasonStore, makeSeasonSnapshot } = require("./seasons");
+const { createIdentityStore, COOKIE, SESSION_MS } = require("./identity");
 const zlib = require("node:zlib");
 
 const PORT = Number(process.env.PORT || 4173);
@@ -56,6 +58,47 @@ const seasonDatabasePath = process.env.SEASONS_DB_PATH
   ? path.resolve(process.env.SEASONS_DB_PATH)
   : path.join(ROOT, ".local", "seasons.sqlite");
 const seasonStore = createSeasonStore(seasonDatabasePath);
+const identities = createIdentityStore(
+  path.join(path.dirname(seasonDatabasePath), "identities.sqlite"),
+);
+const identityAttempts = new Map();
+const signedIn = (req) => identities.session(req.headers.cookie);
+const socketIdentity = (socket) =>
+  identities.session(socket.request.headers.cookie);
+const secureCookie = (req) =>
+  req.secure || req.get("x-forwarded-proto") === "https";
+const sessionCookie = (req, token, maxAge) =>
+  `${COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${maxAge}; ${secureCookie(req) ? "Secure; " : ""}Priority=High`;
+function sameOrigin(req, res, next) {
+  const origin = req.get("Origin");
+  const host = req.get("Host");
+  if (
+    origin &&
+    !allowedOrigins.includes(origin) &&
+    origin !== `http://${host}` &&
+    origin !== `https://${host}`
+  )
+    return res.status(403).json({ error: "Invalid request origin." });
+  next();
+}
+function requireIdentity(req, res, next) {
+  req.identityId = signedIn(req);
+  if (!req.identityId)
+    return res.status(401).json({ error: "Identify yourself to continue." });
+  next();
+}
+function recordCompletedSeason(room) {
+  try {
+    const saved = seasonStore.save(room.seasonKey, makeSeasonSnapshot(room));
+    room.archivedSeasonId = saved.id;
+  } catch (error) {
+    console.error("Could not automatically record season:", error);
+    io.to(room.code).emit("app:error", {
+      message:
+        "The season could not be recorded. The host can retry from host options.",
+    });
+  }
+}
 const ownerKeyPath = path.join(
   path.dirname(seasonDatabasePath),
   "archive-owner-key",
@@ -107,6 +150,7 @@ const checkpoints = createCheckpointStore({
 });
 for (const restored of checkpoints.load(idleHours * 60 * 60 * 1000)) {
   restored.saveCheckpoint = checkpoints.save;
+  restored.recordCompletedSeason = () => recordCompletedSeason(restored);
   rooms.set(restored.code, restored);
 }
 const cleanupInterval = setInterval(() => {
@@ -136,51 +180,262 @@ app.get("/api/players/count", (_req, res) =>
     sets: DB.setOrder.length,
   }),
 );
+app.get("/api/identity", (req, res) => {
+  res.set("Cache-Control", "no-store").json({ id: signedIn(req) });
+});
+app.post(
+  "/api/identity",
+  sameOrigin,
+  express.json({ limit: "1kb" }),
+  (req, res) => {
+    const forwarded = req.get("CF-Connecting-IP");
+    const loopback = ["127.0.0.1", "::1", "::ffff:127.0.0.1"].includes(
+      req.socket.remoteAddress,
+    );
+    const key = loopback && net.isIP(forwarded || "") ? forwarded : req.ip;
+    const now = Date.now();
+    if (identityAttempts.size > 10000)
+      for (const [address, attempts] of identityAttempts)
+        if (now - attempts.at(-1) > 15 * 60 * 1000)
+          identityAttempts.delete(address);
+    const recent = (identityAttempts.get(key) || []).filter(
+      (time) => now - time < 15 * 60 * 1000,
+    );
+    recent.push(now);
+    identityAttempts.set(key, recent);
+    if (recent.length > 60)
+      return res
+        .status(429)
+        .json({ error: "Too many sign-in attempts. Try later." });
+    try {
+      const result = identities.identify(req.body?.id, req.body?.pin);
+      if (result.error)
+        return res.status(result.status).json({ error: result.error });
+      res.set(
+        "Set-Cookie",
+        sessionCookie(req, result.token, SESSION_MS / 1000),
+      );
+      res.set("Cache-Control", "no-store").json({ id: result.id });
+    } catch (error) {
+      console.error("Could not identify user:", error);
+      res.status(500).json({ error: "Identity service is unavailable." });
+    }
+  },
+);
+app.delete("/api/identity", sameOrigin, (req, res) => {
+  identities.logout(req.headers.cookie);
+  res.set("Set-Cookie", sessionCookie(req, "", 0));
+  res.set("Cache-Control", "no-store").json({ ok: true });
+});
 app.get("/api/seasons", (req, res) => {
+  const identityId = signedIn(req);
+  if (!identityId)
+    return res
+      .status(401)
+      .json({ error: "Identify yourself to view your seasons." });
   const before = Number(req.query.before || Number.MAX_SAFE_INTEGER);
   if (!Number.isSafeInteger(before) || before < 1)
     return res.status(400).json({ error: "Invalid page." });
   try {
     res
       .set("Cache-Control", "no-store")
-      .json({ seasons: seasonStore.list(before) });
+      .json({ seasons: seasonStore.listForUser(identityId, before) });
   } catch (error) {
     console.error("Could not list seasons:", error);
     res.status(500).json({ error: "Season archive is unavailable." });
   }
 });
-app.get("/api/seasons/:id/matches/:matchId/balls", (req, res) => {
-  const id = Number(req.params.id);
-  if (!Number.isSafeInteger(id) || id < 1)
-    return res.status(404).json({ error: "Season not found." });
+app.get("/api/hub", requireIdentity, (req, res) => {
   try {
-    const season = seasonStore.get(id);
-    const match = season?.matches.find(
-      (entry) => entry.id === req.params.matchId,
-    );
-    if (!match) return res.status(404).json({ error: "Match not found." });
-    const expand = (entries) =>
-      (entries || []).map((data) =>
-        data
-          ? JSON.parse(
-              zlib.inflateSync(Buffer.from(data, "base64")).toString("utf8"),
-            )
-          : [],
-      );
-    res.set("Cache-Control", "no-store").json(
-      match.ballByBall
-        ? {
-            innings: expand(match.ballByBall.innings),
-            superOver: expand(match.ballByBall.superOver),
-          }
-        : { innings: [], superOver: [] },
-    );
+    res.set("Cache-Control", "no-store").json({
+      id: req.identityId,
+      seasons: seasonStore.listForUser(
+        req.identityId,
+        Number.MAX_SAFE_INTEGER,
+        6,
+      ),
+      people: seasonStore.coPlayers(req.identityId),
+      leaders: seasonStore.playerLeaders(6),
+    });
   } catch (error) {
-    console.error("Could not read match deliveries:", error);
-    res.status(500).json({ error: "Match deliveries are unavailable." });
+    console.error("Could not load hub:", error);
+    res.status(500).json({ error: "Hub is unavailable." });
   }
 });
-app.get("/api/seasons/:id", (req, res) => {
+app.get("/api/users/:id", requireIdentity, (req, res) => {
+  const id = req.params.id;
+  if (!/^[a-z][a-z0-9]{3,31}$/.test(id) || !identities.exists(id))
+    return res.status(404).json({ error: "User not found." });
+  try {
+    const seasons = seasonStore.userSeasons(id);
+    res.set("Cache-Control", "no-store").json({
+      id,
+      seasons,
+      totals: {
+        seasons: seasons.length,
+        trophies: seasons.filter((item) => item.champion).length,
+        wins: seasons.reduce((sum, item) => sum + item.wins, 0),
+        losses: seasons.reduce((sum, item) => sum + item.losses, 0),
+        teams: [...new Set(seasons.map((item) => item.teamName))].length,
+      },
+    });
+  } catch (error) {
+    console.error("Could not load user profile:", error);
+    res.status(500).json({ error: "User profile is unavailable." });
+  }
+});
+app.get("/api/players", requireIdentity, (_req, res) => {
+  try {
+    const leaders = new Map(
+      seasonStore.playerLeaders(10000).map((item) => [item.id, item]),
+    );
+    const players = DB.players.map((player) => ({
+      id: player.id,
+      name: player.name,
+      role: player.role,
+      nationality: player.nationality,
+      photo: player.photo,
+      legend: player.legend,
+      seasons: leaders.get(player.id)?.seasons || 0,
+      runs: leaders.get(player.id)?.runs || 0,
+      wickets: leaders.get(player.id)?.wickets || 0,
+      mvpScore: leaders.get(player.id)?.mvpScore || 0,
+    }));
+    for (const [id, leader] of leaders)
+      if (!players.some((player) => player.id === id)) {
+        const latest = seasonStore.playerSeasons(id)[0];
+        players.push({
+          id,
+          name: leader.name,
+          role: latest?.role,
+          nationality: latest?.nationality,
+          photo: latest?.photo,
+          legend: latest?.legend,
+          seasons: leader.seasons,
+          runs: leader.runs,
+          wickets: leader.wickets,
+          mvpScore: leader.mvpScore,
+        });
+      }
+    res.set("Cache-Control", "no-store").json({
+      players,
+    });
+  } catch (error) {
+    console.error("Could not list players:", error);
+    res.status(500).json({ error: "Players are unavailable." });
+  }
+});
+app.get("/api/players/:id", requireIdentity, (req, res) => {
+  try {
+    const seasons = seasonStore.playerSeasons(req.params.id);
+    const player =
+      DB.players.find((entry) => entry.id === req.params.id) ||
+      (seasons[0] ? { id: req.params.id, ...seasons[0] } : null);
+    if (!player) return res.status(404).json({ error: "Player not found." });
+    const sum = (key) =>
+      seasons.reduce((total, row) => total + (Number(row[key]) || 0), 0);
+    const leaders = seasonStore.playerLeaders(10000);
+    const rank = (key) =>
+      [...leaders]
+        .sort((a, b) => b[key] - a[key])
+        .findIndex((row) => row.id === player.id) + 1;
+    const priced = seasons.filter((row) => row.price != null);
+    const bestBowling =
+      seasons
+        .map((row) => row.bestBowling)
+        .filter((figure) => /^\d+\/\d+$/.test(figure || ""))
+        .sort((a, b) => {
+          const [aw, ar] = a.split("/").map(Number);
+          const [bw, br] = b.split("/").map(Number);
+          return bw - aw || ar - br;
+        })[0] || null;
+    res.set("Cache-Control", "no-store").json({
+      player: {
+        id: player.id,
+        name: player.name,
+        role: player.role,
+        nationality: player.nationality,
+        photo: player.photo,
+        photoAttribution: player.photoAttribution,
+        legend: player.legend,
+      },
+      seasons,
+      totals: {
+        seasons: seasons.length,
+        matches: sum("matches"),
+        innings: sum("innings"),
+        runs: sum("runs"),
+        bestScore: Math.max(
+          0,
+          ...seasons.map((row) => Number(row.bestScore) || 0),
+        ),
+        balls: sum("balls"),
+        outs: sum("outs"),
+        fours: sum("fours"),
+        sixes: sum("sixes"),
+        fifties: sum("fifties"),
+        hundreds: sum("hundreds"),
+        wickets: sum("wickets"),
+        bestBowling,
+        bowlerBalls: sum("bowlerBalls"),
+        bowlerRuns: sum("bowlerRuns"),
+        mvpScore: sum("mvpScore"),
+        trophies: sum("champion"),
+        orangeCaps: sum("orangeCap"),
+        purpleCaps: sum("purpleCap"),
+        mvpAwards: sum("mvpAward"),
+        averagePrice: priced.length
+          ? priced.reduce((total, row) => total + row.price, 0) / priced.length
+          : null,
+      },
+      ranks: {
+        runs: rank("runs") || null,
+        wickets: rank("wickets") || null,
+        mvp: rank("mvpScore") || null,
+        of: leaders.length,
+      },
+    });
+  } catch (error) {
+    console.error("Could not load player profile:", error);
+    res.status(500).json({ error: "Player profile is unavailable." });
+  }
+});
+app.get(
+  "/api/seasons/:id/matches/:matchId/balls",
+  requireIdentity,
+  (req, res) => {
+    const id = Number(req.params.id);
+    if (!Number.isSafeInteger(id) || id < 1)
+      return res.status(404).json({ error: "Season not found." });
+    try {
+      const season = seasonStore.get(id);
+      const match = season?.matches.find(
+        (entry) => entry.id === req.params.matchId,
+      );
+      if (!match) return res.status(404).json({ error: "Match not found." });
+      const expand = (entries) =>
+        (entries || []).map((data) =>
+          data
+            ? JSON.parse(
+                zlib.inflateSync(Buffer.from(data, "base64")).toString("utf8"),
+              )
+            : [],
+        );
+      res.set("Cache-Control", "no-store").json(
+        match.ballByBall
+          ? {
+              innings: expand(match.ballByBall.innings),
+              superOver: expand(match.ballByBall.superOver),
+            }
+          : { innings: [], superOver: [] },
+      );
+    } catch (error) {
+      console.error("Could not read match deliveries:", error);
+      res.status(500).json({ error: "Match deliveries are unavailable." });
+    }
+  },
+);
+app.get("/api/seasons/:id", requireIdentity, (req, res) => {
   const id = Number(req.params.id);
   if (!Number.isSafeInteger(id) || id < 1)
     return res.status(404).json({ error: "Season not found." });
@@ -197,13 +452,19 @@ app.get("/api/seasons/:id", (req, res) => {
     res.status(500).json({ error: "Season archive is unavailable." });
   }
 });
-app.delete("/api/seasons/:id", (req, res) => {
+app.delete("/api/seasons/:id", sameOrigin, (req, res) => {
   res.set("Cache-Control", "no-store");
-  if (!ownerKeyHash)
+  const id = Number(req.params.id);
+  if (!Number.isSafeInteger(id) || id < 1)
+    return res.status(404).json({ error: "Season not found." });
+  const byIdentity = Boolean(
+    signedIn(req) && signedIn(req) === seasonStore.ownerOf(id),
+  );
+  if (!ownerKeyHash && !byIdentity)
     return res
       .status(503)
       .json({ error: "Season deletion is not configured on this server." });
-  if (Date.now() < ownerLockUntil)
+  if (!byIdentity && Date.now() < ownerLockUntil)
     return res
       .status(429)
       .json({ error: "Too many attempts. Try again later." });
@@ -212,7 +473,7 @@ app.delete("/api/seasons/:id", (req, res) => {
     .createHash("sha256")
     .update(supplied.startsWith("Bearer ") ? supplied.slice(7) : "")
     .digest();
-  if (!crypto.timingSafeEqual(candidate, ownerKeyHash)) {
+  if (!byIdentity && !crypto.timingSafeEqual(candidate, ownerKeyHash)) {
     if (++failedOwnerAttempts >= 8) {
       ownerLockUntil = Date.now() + 15 * 60 * 1000;
       failedOwnerAttempts = 0;
@@ -220,15 +481,13 @@ app.delete("/api/seasons/:id", (req, res) => {
     return res.status(401).json({ error: "Incorrect owner key." });
   }
   failedOwnerAttempts = 0;
-  const id = Number(req.params.id);
-  if (!Number.isSafeInteger(id) || id < 1)
-    return res.status(404).json({ error: "Season not found." });
   try {
     if (!seasonStore.remove(id))
       return res.status(404).json({ error: "Season not found." });
     for (const room of rooms.values()) {
       if (room.archivedSeasonId === id) {
         room.archivedSeasonId = null;
+        room.settings.recordSeason = false;
         room.lastNotice = {
           kind: "seasonDeleted",
           text: `Season ${id} was deleted from the archive.`,
@@ -526,6 +785,7 @@ io.on("connection", (socket) => {
       );
     const user = buildUser(name, teamId);
     if (!user) return emitError(socket, "Choose an IPL franchise first.");
+    user.identityId = socketIdentity(socket);
     const reconnectToken = newCredential();
     user.credentialHash = credentialHash(reconnectToken);
     const hostRecoveryToken = newCredential();
@@ -534,6 +794,7 @@ io.on("connection", (socket) => {
     room.hostRecoveryHash = credentialHash(hostRecoveryToken);
     room.emptySince = null;
     room.saveCheckpoint = checkpoints.save;
+    room.recordCompletedSeason = () => recordCompletedSeason(room);
     rooms.set(code, room);
     joinSocket(socket, room, user, reconnectToken, hostRecoveryToken);
   });
@@ -566,6 +827,15 @@ io.on("connection", (socket) => {
         );
       const user = buildUser(name, teamId);
       if (!user) return emitError(socket, "Choose an IPL franchise first.");
+      user.identityId = socketIdentity(socket);
+      if (
+        user.identityId &&
+        room.users.some((entry) => entry.identityId === user.identityId)
+      )
+        return emitError(
+          socket,
+          "This identity already has a seat in the room. Rejoin your saved seat instead.",
+        );
       const reconnectToken = newCredential();
       user.credentialHash = credentialHash(reconnectToken);
       const result = game.addUser(room, user);
@@ -614,6 +884,8 @@ io.on("connection", (socket) => {
     };
     if (!room || !user || !game.hostCheck(room, user.id))
       return fail("Only the host can record this season.");
+    if (!user.identityId || socketIdentity(socket) !== user.identityId)
+      return fail("Identify yourself as the host to record this season.");
     if (room.phase !== "complete")
       return fail("Only a completed season can be recorded.");
     try {
@@ -632,7 +904,7 @@ io.on("connection", (socket) => {
         acknowledgement({
           ok: true,
           id: saved.id,
-          path: `/s${saved.id}`,
+          path: `/s/${saved.id}`,
           created: saved.created,
         });
     } catch (error) {
@@ -844,6 +1116,15 @@ io.on("connection", (socket) => {
   onAction("host:settings", (patch = {}) => {
     const { room, user } = getRoomAndUser(socket);
     if (!verifyHost(socket, room, user) || room.phase !== "lobby") return;
+    if (Object.prototype.hasOwnProperty.call(patch, "recordSeason")) {
+      if (patch.recordSeason === false) room.settings.recordSeason = false;
+      else if (
+        patch.recordSeason === true &&
+        user.identityId &&
+        socketIdentity(socket) === user.identityId
+      )
+        room.settings.recordSeason = true;
+    }
     const allowed = {
       bidSeconds: [5, 10, 15, 20, 30],
       startingPurse: [60, 80, 100, 120, 150, 200],

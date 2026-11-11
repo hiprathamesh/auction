@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { socket } from "../socket";
+import React from "react";
 import { getTeam } from "../lib/format";
 import { TeamLogo } from "./Brand";
 
@@ -152,25 +151,7 @@ export function FinalistsScreen({ room, isHost, onStart }) {
   );
 }
 
-export function ChampionScreen({ room, openStats, isHost }) {
-  const [recording, setRecording] = useState(false);
-  const [recordError, setRecordError] = useState("");
-  const recordSeason = () => {
-    if (!socket.connected) {
-      setRecordError("Reconnect to the server before recording.");
-      return;
-    }
-    setRecording(true);
-    setRecordError("");
-    socket.timeout(10000).emit("host:recordSeason", (error, result) => {
-      setRecording(false);
-      if (error || !result?.ok)
-        setRecordError(
-          result?.message ||
-            "The season could not be recorded. Please try again.",
-        );
-    });
-  };
+export function ChampionScreen({ room, openStats }) {
   const champion = getTeam(room, room.championId);
   const leaders = room.playerLeaders || {};
   return (
@@ -196,25 +177,17 @@ export function ChampionScreen({ room, openStats, isHost }) {
           {room.archivedSeasonId ? (
             <a
               className="button primary"
-              href={`/s${room.archivedSeasonId}`}
+              href={`/s/${room.archivedSeasonId}`}
               target="_blank"
               rel="noreferrer"
             >
               View season {room.archivedSeasonId} ↗
             </a>
-          ) : isHost ? (
-            <button
-              className="button primary"
-              onClick={recordSeason}
-              disabled={recording}
-            >
-              {recording ? "Recording…" : "Record this season ↗"}
-            </button>
-          ) : (
+          ) : room.settings.recordSeason ? (
             <span className="archive-awaiting">
-              The host can record this season for everyone.
+              Recording is pending. The host can retry from host options.
             </span>
-          )}
+          ) : null}
           <button
             className="button primary"
             onClick={() =>
@@ -232,11 +205,6 @@ export function ChampionScreen({ room, openStats, isHost }) {
             Awards & records ↗
           </button>
         </div>
-        {recordError && (
-          <p className="archive-record-error" role="alert">
-            {recordError}
-          </p>
-        )}
       </section>
       <section className="champion-awards" id="final-stats">
         <div className="award-tile orange">

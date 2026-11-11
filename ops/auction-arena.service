@@ -1,0 +1,24 @@
+[Unit]
+Description=IPL Auction Arena
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=ubuntu
+WorkingDirectory=/home/ubuntu/auction-current
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=4173
+Environment=ALLOWED_ORIGINS=https://auction-vm.nik.am.in
+Environment=SEASONS_DB_PATH=/home/ubuntu/auction-data/seasons.sqlite
+Environment=ROOM_CHECKPOINTS=1
+Environment=ROOM_DATA_DIR=/home/ubuntu/auction-data/rooms
+ExecStart=/home/ubuntu/auction-runtime/bin/node /home/ubuntu/auction-current/server/index.js
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

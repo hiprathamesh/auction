@@ -14,6 +14,7 @@ export function LobbyScreen(props) {
     appOnline,
     allReady,
     hostAction,
+    identity,
   } = props;
   return (
     <main className="wrap page-content">
@@ -127,6 +128,27 @@ export function LobbyScreen(props) {
           </div>
           {isHost ? (
             <>
+              {identity && (
+                <div className="setting-row">
+                  <div>
+                    <strong>Record this season</strong>
+                    <p>
+                      Save the completed season to every identified
+                      participant’s Hub.
+                    </p>
+                  </div>
+                  <button
+                    className={`toggle ${room.settings.recordSeason ? "on" : ""}`}
+                    onClick={() =>
+                      setSetting("recordSeason", !room.settings.recordSeason)
+                    }
+                    aria-label="Toggle season recording"
+                    aria-pressed={Boolean(room.settings.recordSeason)}
+                  >
+                    <i />
+                  </button>
+                </div>
+              )}
               <div className="setting-row">
                 <div>
                   <strong>Starting purse</strong>

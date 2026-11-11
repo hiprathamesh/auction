@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { socket } from "../socket";
 
-export function HostControls({ room, recoveryToken, online }) {
+export function HostControls({ room, recoveryToken, online, identity }) {
   const [target, setTarget] = useState("");
   const [copied, setCopied] = useState(false);
   const copyRecovery = async () => {
@@ -17,6 +17,18 @@ export function HostControls({ room, recoveryToken, online }) {
     <div className="wrap host-controls">
       <details>
         <summary>Host recovery and transfer</summary>
+        {room.phase === "complete" &&
+          room.settings.recordSeason &&
+          !room.archivedSeasonId &&
+          identity && (
+            <button
+              className="button small secondary"
+              disabled={!online}
+              onClick={() => socket.emit("host:recordSeason")}
+            >
+              Retry season recording
+            </button>
+          )}
         <p>
           Save this private recovery code somewhere safe. Anyone with it and the
           room code can reclaim this host seat.

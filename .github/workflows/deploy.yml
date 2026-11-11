@@ -1,0 +1,57 @@
+name: Deploy to Oracle VM
+
+on:
+  workflow_run:
+    workflows: [Quality checks]
+    types: [completed]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: auction-vm-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - name: Skip superseded release
+        id: release
+        env:
+          RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
+        run: |
+          latest="$(git ls-remote origin refs/heads/main | cut -f1)"
+          if [ "$RELEASE_SHA" = "$latest" ]; then echo 'current=true' >> "$GITHUB_OUTPUT"; fi
+      - if: steps.release.outputs.current == 'true'
+        uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Build release
+        if: steps.release.outputs.current == 'true'
+        run: |
+          npm ci
+          npm run build
+          npm prune --omit=dev
+          tar -czf "$RUNNER_TEMP/auction-release.tar.gz" dist server shared data public scripts package.json package-lock.json node_modules
+      - name: Deliver verified release
+        if: steps.release.outputs.current == 'true'
+        env:
+          RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
+          DEPLOY_KEY: ${{ secrets.VM_DEPLOY_PRIVATE_KEY }}
+          KNOWN_HOSTS: ${{ secrets.VM_KNOWN_HOSTS }}
+        run: |
+          test -n "$DEPLOY_KEY"
+          test -n "$KNOWN_HOSTS"
+          printf '%s\n' "$DEPLOY_KEY" > "$RUNNER_TEMP/deploy-key"
+          chmod 600 "$RUNNER_TEMP/deploy-key"
+          printf '%s\n' "$KNOWN_HOSTS" > "$RUNNER_TEMP/known-hosts"
+          ssh -T -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$RUNNER_TEMP/known-hosts" \
+            -i "$RUNNER_TEMP/deploy-key" ubuntu@92.4.92.177 "$RELEASE_SHA" \
+            < "$RUNNER_TEMP/auction-release.tar.gz"

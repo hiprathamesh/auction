@@ -17,6 +17,7 @@ const DEFAULT_SETTINGS = {
   bidMultipliers: [2, 5, 10],
   tradesEnabled: false,
   tradeLimit: 2,
+  recordSeason: false,
 };
 const MAX_SQUAD = rules.maxSquad;
 const MAX_OVERSEAS = rules.maxSquadOverseas;
@@ -1581,6 +1582,12 @@ function sendSnapshot(socket, room, user) {
 }
 
 function broadcast(io, room, announce = true, syncPrivateState = announce) {
+  if (
+    room.phase === "complete" &&
+    room.settings.recordSeason &&
+    !room.archivedSeasonId
+  )
+    room.recordCompletedSeason?.();
   const snapshot = publicRoom(room, null);
   const previousVersion = room.publicVersion || 0;
   const nextVersion = previousVersion + 1;

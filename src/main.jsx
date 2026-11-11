@@ -184,6 +184,7 @@ function App() {
       "",
   );
   const [displayName, setDisplayName] = useState("");
+  const [identity, setIdentity] = useState(null);
   const [teamId, setTeamId] = useState("MI");
   const [playerCount, setPlayerCount] = useState(null);
   const [hostRecoveryToken, setHostRecoveryToken] = useState(
@@ -191,8 +192,18 @@ function App() {
   );
   const [recoveryInput, setRecoveryInput] = useState("");
   const [view, setView] = useState(
-    new URLSearchParams(window.location.search).get("room") ? "join" : "create",
+    new URLSearchParams(window.location.search).get("identity")
+      ? "identity"
+      : new URLSearchParams(window.location.search).get("room")
+        ? "join"
+        : "create",
   );
+  useEffect(() => {
+    fetch("/api/identity", { credentials: "same-origin" })
+      .then((response) => response.json())
+      .then((data) => setIdentity(data.id || null))
+      .catch(() => {});
+  }, []);
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [auctionToast, setAuctionToast] = useState("");
@@ -925,6 +936,16 @@ function App() {
               </span>
             </>
           )}
+          {identity && (
+            <a
+              className="hub-header-link"
+              href="/s"
+              title="Your Hub"
+              aria-label="Your Hub"
+            >
+              ⌂ <span>Hub</span>
+            </a>
+          )}
           <span className={`connection ${appOnline ? "online" : ""}`}>
             <i />
             {appOnline ? "Online" : "Offline"}
@@ -937,6 +958,7 @@ function App() {
           room={room}
           recoveryToken={hostRecoveryToken}
           online={appOnline}
+          identity={identity}
         />
       )}
 
@@ -960,6 +982,8 @@ function App() {
             error,
             appOnline,
             recoverHost,
+            identity,
+            setIdentity,
           }}
         />
       )}
@@ -979,6 +1003,7 @@ function App() {
             appOnline,
             allReady,
             hostAction,
+            identity,
           }}
         />
       )}

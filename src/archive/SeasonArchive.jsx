@@ -17,6 +17,18 @@ const score = (innings) =>
 const rate = (runs, balls) => (balls ? ((runs * 100) / balls).toFixed(1) : "—");
 const economy = (runs, balls) =>
   balls ? ((runs * 6) / balls).toFixed(2) : "—";
+const PlayerLink = ({ player }) =>
+  player?.id ? (
+    <a href={`/p/${player.id}`}>{player.name}</a>
+  ) : (
+    player?.name || "—"
+  );
+const UserLink = ({ team }) =>
+  team?.identityId ? (
+    <a href={`/u/${team.identityId}`}>{team.name}</a>
+  ) : (
+    team?.name || "—"
+  );
 
 function Crest({ team, large = false }) {
   if (!team) return <span className="season-crest">—</span>;
@@ -45,7 +57,7 @@ function Header() {
         <span>✦</span> AUCTION <b>ARENA</b>
       </a>
       <nav>
-        <a href="/seasons">Season archive</a>
+        <a href="/s">My Hub</a>
         <a href="/">Play the game ↗</a>
       </nav>
     </header>
@@ -123,7 +135,7 @@ function ArchiveIndex() {
           {items.map((season) => (
             <a
               className="season-list-card"
-              href={`/s${season.id}`}
+              href={`/s/${season.id}`}
               key={season.id}
             >
               <span className="season-list-number">
@@ -197,7 +209,9 @@ function Standings({ season }) {
                       <Crest team={team} />
                       <div>
                         <strong>{row.teamName}</strong>
-                        <small>{row.userName}</small>
+                        <small>
+                          <UserLink team={team} />
+                        </small>
                       </div>
                     </div>
                   </td>
@@ -253,7 +267,9 @@ function Squads({ season }) {
         </span>
       )}
       <div>
-        <strong>{player.name}</strong>
+        <strong>
+          <PlayerLink player={player} />
+        </strong>
         <small>
           {player.role}
           {player.overseas ? " · Overseas" : " · Indian"}
@@ -320,7 +336,9 @@ function Squads({ season }) {
       <div className="archive-team-banner" style={{ "--team": team.teamColor }}>
         <Crest team={team} large />
         <div>
-          <small>MANAGED BY {team.name.toUpperCase()}</small>
+          <small>
+            MANAGED BY <UserLink team={team} />
+          </small>
           <h3>{team.teamName}</h3>
           <p>
             {team.squad.length} players · {money(team.purse)} remaining
@@ -386,7 +404,7 @@ function InningsCard({ innings, full }) {
           {(full ? batters : batters.slice(0, 4)).map((b) => (
             <div className="scorecard-row" key={b.player.id}>
               <span>
-                {b.player.name}
+                <PlayerLink player={b.player} />
                 {!b.out && (b.balls || b.runs) ? " *" : ""}
                 {full && (
                   <small>
@@ -407,7 +425,7 @@ function InningsCard({ innings, full }) {
           {(full ? bowlers : bowlers.slice(0, 4)).map((b) => (
             <div className="scorecard-row" key={b.player.id}>
               <span>
-                {b.player.name}
+                <PlayerLink player={b.player} />
                 <small>
                   {b.overs} overs
                   {full ? ` · economy ${economy(b.runs, b.legalBalls)}` : ""}
@@ -675,7 +693,9 @@ function Statistics({ season }) {
                 <td>{i + 1}</td>
                 <td>
                   <div>
-                    <strong>{p.name}</strong>
+                    <strong>
+                      <a href={`/p/${p.playerId}`}>{p.name}</a>
+                    </strong>
                     <small>{p.teamName}</small>
                   </div>
                 </td>
@@ -744,7 +764,9 @@ function Auction({ season }) {
             {sales.map((sale, i) => (
               <tr key={`${sale.player.id}-${i}`}>
                 <td>
-                  <strong>{sale.player.name}</strong>
+                  <strong>
+                    <PlayerLink player={sale.player} />
+                  </strong>
                   <small>
                     {sale.player.role}
                     {sale.rtm ? " · RTM" : ""}
@@ -780,7 +802,8 @@ function Auction({ season }) {
           <summary>Unsold players ({season.auction.unsold.length})</summary>
           {season.auction.unsold.map((entry, i) => (
             <p key={`${entry.player.id}-${i}`}>
-              {entry.player.name} · base price {money(entry.basePrice)}
+              <PlayerLink player={entry.player} /> · base price{" "}
+              {money(entry.basePrice)}
             </p>
           ))}
         </details>
@@ -791,24 +814,23 @@ function Auction({ season }) {
 
 function DeleteSeason({ season }) {
   const [open, setOpen] = useState(false);
-  const [key, setKey] = useState("");
   const [confirmed, setConfirmed] = useState(false);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState("");
   const remove = async (event) => {
     event.preventDefault();
-    if (!confirmed || !key || busy) return;
+    if (!confirmed || busy) return;
     setBusy(true);
     setError("");
     try {
       const response = await fetch(`/api/seasons/${season.id}`, {
         method: "DELETE",
-        headers: { Authorization: `Bearer ${key}` },
+        credentials: "same-origin",
       });
       const result = await response.json();
       if (!response.ok)
         throw new Error(result.error || "Could not delete this season.");
-      window.location.assign("/seasons");
+      window.location.assign("/s");
     } catch (failure) {
       setError(failure.message);
       setBusy(false);
@@ -818,7 +840,7 @@ function DeleteSeason({ season }) {
     <section className="archive-owner">
       {!open ? (
         <button className="archive-owner-toggle" onClick={() => setOpen(true)}>
-          Owner: delete this season
+          Delete this season
         </button>
       ) : (
         <form className="archive-owner-form" onSubmit={remove}>
@@ -827,20 +849,6 @@ function DeleteSeason({ season }) {
             This permanently removes this season and its scorecards from the
             archive. Other seasons are unaffected.
           </p>
-          <label htmlFor="archive-owner-key">Server owner key</label>
-          <p>
-            Find the key in the <code>archive-owner-key</code> file beside the
-            server’s season database, or use the configured owner key.
-          </p>
-          <input
-            id="archive-owner-key"
-            type="password"
-            value={key}
-            onChange={(event) => setKey(event.target.value)}
-            autoComplete="off"
-            maxLength={256}
-            required
-          />
           <label className="archive-owner-confirm">
             <input
               type="checkbox"
@@ -855,7 +863,7 @@ function DeleteSeason({ season }) {
             </p>
           )}
           <div>
-            <button type="submit" disabled={!confirmed || !key || busy}>
+            <button type="submit" disabled={!confirmed || busy}>
               {busy ? "Deleting…" : "Permanently delete season"}
             </button>
             <button
@@ -863,7 +871,6 @@ function DeleteSeason({ season }) {
               disabled={busy}
               onClick={() => {
                 setOpen(false);
-                setKey("");
                 setConfirmed(false);
                 setError("");
               }}
@@ -879,6 +886,13 @@ function DeleteSeason({ season }) {
 
 function SeasonDetail({ season }) {
   const [tab, setTab] = useState("overview");
+  const [identity, setIdentity] = useState(null);
+  useEffect(() => {
+    fetch("/api/identity")
+      .then((response) => response.json())
+      .then((data) => setIdentity(data.id))
+      .catch(() => {});
+  }, []);
   const champion = season.champion;
   const leaders = [...season.playerStats];
   const top = (key) =>
@@ -903,7 +917,7 @@ function SeasonDetail({ season }) {
       <Header />
       <main className="archive-wrap season-detail">
         <div className="archive-breadcrumb">
-          <a href="/seasons">SEASON ARCHIVE</a>
+          <a href="/s">MY HUB</a>
           <span>/</span>
           <b>SEASON {String(season.id).padStart(2, "0")}</b>
         </div>
@@ -917,8 +931,11 @@ function SeasonDetail({ season }) {
               <em> take the crown.</em>
             </h1>
             <p>
-              Managed by <strong>{champion?.name}</strong> <i>✦</i> Season{" "}
-              {String(season.id).padStart(2, "0")}
+              Managed by{" "}
+              <strong>
+                <UserLink team={champion} />
+              </strong>{" "}
+              <i>✦</i> Season {String(season.id).padStart(2, "0")}
             </p>
             <div className="hero-metrics">
               <div>
@@ -993,7 +1010,13 @@ function SeasonDetail({ season }) {
                 {awards.map(([title, person, metric]) => (
                   <div className="archive-award" key={title}>
                     <small>{title}</small>
-                    <strong>{person?.name || "—"}</strong>
+                    <strong>
+                      {person ? (
+                        <a href={`/p/${person.playerId}`}>{person.name}</a>
+                      ) : (
+                        "—"
+                      )}
+                    </strong>
                     <span>{person?.teamName || "No record"}</span>
                     <b>
                       {Math.round(
@@ -1049,9 +1072,11 @@ function SeasonDetail({ season }) {
           {tab === "stats" && <Statistics season={season} />}
           {tab === "auction" && <Auction season={season} />}
         </div>
-        <DeleteSeason season={season} />
+        {identity && identity === season.ownerIdentityId && (
+          <DeleteSeason season={season} />
+        )}
         <footer className="archive-footer">
-          <a href="/seasons">← ALL SEASONS</a>
+          <a href="/s">← MY HUB</a>
           <span>AUCTION ARENA · BUILT FOR THE GROUP CHAT</span>
         </footer>
       </main>
@@ -1070,9 +1095,11 @@ export function SeasonArchive({ id }) {
       .then(async (response) => {
         if (!response.ok)
           throw new Error(
-            response.status === 404
-              ? "This season hasn't been recorded yet."
-              : "The season could not be loaded.",
+            response.status === 401
+              ? "Identify yourself to open this season."
+              : response.status === 404
+                ? "This season hasn't been recorded yet."
+                : "The season could not be loaded.",
           );
         return response.json();
       })
@@ -1096,7 +1123,11 @@ export function SeasonArchive({ id }) {
             <span>✳</span>
             <h3>{loading ? "Opening the archives…" : "Season not found."}</h3>
             <p>{error}</p>
-            <a href="/seasons">Browse all seasons ↗</a>
+            <a href={error.includes("Identify") ? "/?identity=1" : "/s"}>
+              {error.includes("Identify")
+                ? "Identify yourself ↗"
+                : "Back to Hub ↗"}
+            </a>
           </div>
         </main>
       </>
