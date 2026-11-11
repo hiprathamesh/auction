@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { socket } from "./socket";
 import { money, getTeam } from "./lib/format";
-import { IplBrandLogo } from "./components/Brand";
+import { ArenaBrand } from "./components/Brand";
 import { HostControls } from "./components/HostControls";
 import { StatsModal } from "./components/StatsModal";
 import { Confetti } from "./components/Confetti";
@@ -902,26 +902,7 @@ function App() {
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
       <header className="topbar">
-        <div
-          className="brand"
-          onClick={() => !room && setView("create")}
-          onKeyDown={(event) => {
-            if (!room && (event.key === "Enter" || event.key === " ")) {
-              event.preventDefault();
-              setView("create");
-            }
-          }}
-          role="button"
-          tabIndex={0}
-        >
-          <IplBrandLogo />
-          <div>
-            <div className="brand-name">
-              AUCTION<span>ARENA</span>
-            </div>
-            <div className="brand-sub">IPL · DRAFT YOUR DYNASTY</div>
-          </div>
-        </div>
+        <ArenaBrand onClick={() => !room && setView("create")} />
         <div className="topbar-right">
           {room && (
             <>
@@ -943,7 +924,13 @@ function App() {
               title="Your Hub"
               aria-label="Your Hub"
             >
-              ⌂ <span>Hub</span>
+              <span className="hub-header-icon" aria-hidden="true">
+                <i />
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className="hub-header-label">Hub</span>
             </a>
           )}
           <span className={`connection ${appOnline ? "online" : ""}`}>

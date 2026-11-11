@@ -135,8 +135,8 @@ export function LandingScreen(props) {
           <div className="identity-panel">
             {identity ? (
               <>
-                <p className="identity-status">
-                  You are playing as <a href={`/u/${identity}`}>@{identity}</a>.
+                <p className="room-identity">
+                  You are playing as <a href={`/u/${identity}`}>{identity}</a>.
                 </p>
                 <p>
                   Your ID follows you across seasons. Your PIN stays on this
@@ -217,9 +217,9 @@ export function LandingScreen(props) {
             {view !== "recover" && (
               <>
                 {identity && (
-                  <p className="identity-status">
+                  <p className="room-identity">
                     {view === "create" ? "Creating" : "Joining"} as{" "}
-                    <a href={`/u/${identity}`}>@{identity}</a>
+                    <a href={`/u/${identity}`}>{identity}</a>
                   </p>
                 )}
                 <label className="field-label" htmlFor="display-name">

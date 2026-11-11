@@ -1,4 +1,23 @@
 import { useState } from "react";
+import "./brand.css";
+
+export function ArenaBrand({ onClick }) {
+  const Element = onClick ? "button" : "a";
+  return (
+    <Element
+      className="brand"
+      {...(onClick ? { type: "button", onClick } : { href: "/" })}
+    >
+      <IplBrandLogo />
+      <span>
+        <span className="brand-name">
+          AUCTION<span>ARENA</span>
+        </span>
+        <span className="brand-sub">IPL · DRAFT YOUR DYNASTY</span>
+      </span>
+    </Element>
+  );
+}
 
 const teamLogoFile = (teamKey) =>
   String(teamKey || "")
@@ -36,13 +55,13 @@ export function IplBrandLogo() {
   const [failed, setFailed] = useState(false);
   if (failed)
     return (
-      <div className="brand-mark brand-mark-fallback">
+      <span className="brand-mark brand-mark-fallback">
         <span>IP</span>
         <span>L</span>
-      </div>
+      </span>
     );
   return (
-    <div className="brand-mark brand-mark-image">
+    <span className="brand-mark brand-mark-image">
       <img
         src={`/logos/ipl.${format}`}
         alt="IPL"
@@ -51,6 +70,6 @@ export function IplBrandLogo() {
           else setFailed(true);
         }}
       />
-    </div>
+    </span>
   );
 }

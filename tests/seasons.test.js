@@ -307,14 +307,36 @@ test(
       await expect(
         page.getByRole("heading", { name: /welcome back/i }),
       ).toBeVisible();
-      await page.getByRole("link", { name: /view your story/i }).click();
+      await page.getByRole("link", { name: "Your manager profile ↗" }).click();
       await expect(
-        page.getByRole("heading", { name: /@host44/i }),
+        page.getByRole("heading", { name: room.users[0].name, exact: true }),
       ).toBeVisible();
-      await page.getByText(/view squad & playing xi/i).click();
-      await page.locator(".hub-squad-grid a").first().click();
-      await expect(page.getByText("CAREER SCOREBOARD")).toBeVisible();
-      await page.locator(".hub-timeline-row a[href^='/s/']").first().click();
+      await page.getByRole("tab", { name: "Squads" }).click();
+      await page
+        .getByRole("region", { name: "Squad and playing XI" })
+        .getByRole("link")
+        .first()
+        .click();
+      await expect(
+        page.getByRole("heading", { name: /career scoreboard/i }),
+      ).toBeVisible();
+      const batting = page.getByRole("tab", { name: "Batting" });
+      await batting.click();
+      await expect(
+        page.getByRole("region", { name: "Batting by season" }),
+      ).toBeVisible();
+      assert.equal(
+        await page.evaluate(
+          "document.documentElement.scrollWidth <= window.innerWidth",
+        ),
+        true,
+      );
+      await batting.press("ArrowRight");
+      await expect(page.getByRole("tab", { name: "Bowling" })).toBeFocused();
+      await page
+        .getByRole("region", { name: "Bowling by season" })
+        .getByRole("link", { name: "S01" })
+        .click();
       await expect(
         page.getByRole("heading", { name: /take the crown/i }),
       ).toBeVisible();
@@ -345,7 +367,21 @@ test(
       await fresh
         .getByRole("button", { name: "Create room", exact: true })
         .click();
-      await expect(fresh.getByText(/creating as/i)).toBeVisible();
+      await expect(fresh.getByText("Creating as newmanager")).toBeVisible();
+      await expect(
+        fresh.getByRole("link", { name: "newmanager" }),
+      ).toHaveAttribute("href", "/u/newmanager");
+      await fresh.setViewportSize({ width: 320, height: 740 });
+      assert.equal(
+        await fresh
+          .locator(".mode-tabs")
+          .evaluate(
+            (tabs) =>
+              tabs.scrollHeight <= tabs.clientHeight &&
+              tabs.scrollWidth <= tabs.clientWidth,
+          ),
+        true,
+      );
       await fresh.getByLabel("YOUR DISPLAY NAME").fill("New Manager");
       await fresh.getByRole("button", { name: /create private room/i }).click();
       await expect(

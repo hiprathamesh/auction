@@ -1,590 +1,547 @@
-.hub-wrap {
-  padding-bottom: 7rem;
+.archive-top.hub-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
 }
-.hub-top nav {
-  display: flex;
-  gap: 1.4rem;
+.archive-top.hub-top nav a:first-child {
+  display: inline;
 }
-.hub-hero,
-.hub-profile-hero {
+.hub-top nav a:hover,
+.hub-top nav a[aria-current] {
+  color: #ffab79;
+}
+.archive-wrap.hub-wrap {
+  padding-top: 26px;
+  padding-bottom: 65px;
+}
+.hub-wrap .archive-breadcrumb {
+  margin: 0 0 14px;
+  text-transform: uppercase;
+}
+.season-hero.hub-masthead {
+  min-height: 0;
+  justify-content: space-between;
+  gap: 20px;
+}
+.hub-masthead-copy {
   position: relative;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 28px;
-  background:
-    radial-gradient(
-      circle at 80% 15%,
-      rgba(228, 160, 48, 0.21),
-      transparent 34%
-    ),
-    linear-gradient(135deg, #121f21, #092a27 58%, #102123);
-  padding: clamp(2rem, 6vw, 5rem);
-  margin-top: 2rem;
+  min-width: 0;
+  padding: 25px 30px;
 }
-.hub-hero:after {
-  content: "✦";
-  position: absolute;
-  right: 5%;
-  top: -18%;
-  color: rgba(248, 194, 84, 0.1);
-  font-size: 25rem;
+.hub-masthead .archive-kicker {
+  text-transform: uppercase;
+}
+.season-hero.hub-masthead h1 {
+  font-size: clamp(32px, 4.6vw, 48px);
+  max-width: none;
   line-height: 1;
-  pointer-events: none;
+  margin: 9px 0 0;
+  overflow-wrap: anywhere;
 }
-.hub-hero h1,
-.hub-profile-hero h1,
-.hub-page-heading h1 {
-  font-size: clamp(3rem, 7vw, 6rem);
-  line-height: 1.02;
-  letter-spacing: -0.055em;
-  margin: 1.3rem 0;
-  color: #f8f4e9;
+.season-hero.hub-masthead h1 em {
+  display: inline;
 }
-.hub-hero h1 em,
-.hub-profile-hero h1 em,
-.hub-page-heading h1 em {
-  color: #f6bd55;
-  font-style: normal;
+.hub-masthead p {
+  margin: 8px 0 0;
+  color: #b2bec6;
+  font-size: 13px;
 }
-.hub-hero p,
-.hub-profile-hero p,
-.hub-page-heading p {
-  color: #bac8c2;
-  font-size: 1.1rem;
-  max-width: 46rem;
-  line-height: 1.6;
+.hub-masthead .hub-link {
+  display: inline-block;
+  margin-top: 12px;
 }
-.hub-hero-stats {
+.hub-masthead-meta {
   display: flex;
-  align-items: end;
-  gap: 2rem;
   flex-wrap: wrap;
-  margin-top: 3rem;
+  gap: 8px 20px;
+  margin-top: 12px;
+  color: #b2bec6;
+  font-size: 12px;
 }
-.hub-hero-stats div {
-  display: grid;
-  gap: 0.25rem;
-  min-width: 8rem;
-}
-.hub-hero-stats strong {
-  color: #f8f4e9;
-  font-size: 2.4rem;
-  line-height: 1;
-}
-.hub-hero-stats small,
-.hub-section-head small,
-.hub-page-heading small {
-  color: #b5c4bd;
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  font-weight: 800;
-}
-.hub-hero-stats a,
-.hub-section-head a,
-.hub-button {
-  color: #0e2926;
-  background: #f3c36d;
-  border: 0;
-  border-radius: 12px;
-  padding: 0.9rem 1.2rem;
-  text-decoration: none;
-  font-weight: 800;
-  cursor: pointer;
-}
-.hub-section-head {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 1rem;
-  margin: 3.8rem 0 1.35rem;
-}
-.hub-section-head h2 {
-  font-size: clamp(1.7rem, 3vw, 2.7rem);
-  margin: 0.25rem 0 0;
-  color: #f9f5ea;
-  letter-spacing: -0.04em;
-}
-.hub-section-head h2 span {
-  color: #f3c36d;
-}
-.hub-section-head a {
-  background: transparent;
-  color: #f3c36d;
-  border: 1px solid rgba(243, 195, 109, 0.4);
-  white-space: nowrap;
-}
-.hub-section-head > span {
-  color: #aebeb6;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-}
-.hub-season-list,
-.hub-timeline {
-  display: grid;
-  gap: 0.85rem;
-}
-.hub-season-card,
-.hub-timeline-row {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
-  padding: 1.3rem 1.5rem;
-  background: #172725;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  text-decoration: none;
-  color: #f5f0e5;
-  transition:
-    transform 0.18s,
-    border-color 0.18s,
-    background 0.18s;
-}
-.hub-season-card:hover,
-.hub-timeline-row:hover,
-.hub-player-card:hover,
-.hub-person:hover {
-  transform: translateY(-2px);
-  border-color: rgba(243, 195, 109, 0.55);
-  background: #1b302c;
-}
-.hub-season-number,
-.hub-timeline-row > span:first-child {
-  font-size: 1.5rem;
-  color: #f3c36d;
-  font-weight: 900;
-  font-variant-numeric: tabular-nums;
-  min-width: 4.5rem;
-}
-.hub-season-card div {
-  flex: 1;
-}
-.hub-season-card small,
-.hub-timeline-row small {
-  color: #aabeb5;
-  font-size: 0.68rem;
-  letter-spacing: 0.11em;
-  font-weight: 700;
-}
-.hub-season-card h3 {
-  font-size: 1.32rem;
-  margin: 0.35rem 0;
-}
-.hub-season-card p {
-  color: #aebeb6;
-  margin: 0.2rem 0 0;
-}
-.hub-season-card > b,
-.hub-timeline-row > span:last-child {
-  color: #f3c36d;
-  font-size: 1.4rem;
-}
-.hub-player-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-  gap: 0.85rem;
-}
-.hub-player-card {
-  position: relative;
-  min-height: 14rem;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: end;
-  overflow: hidden;
-  padding: 1.2rem;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: linear-gradient(135deg, #1d3530, #152422);
-  text-decoration: none;
-  color: #f9f5ea;
-  transition:
-    transform 0.18s,
-    border-color 0.18s,
-    background 0.18s;
-}
-.hub-player-card img {
-  position: absolute;
-  width: 55%;
-  height: 90%;
-  object-fit: contain;
-  object-position: center bottom;
-  right: -2%;
-  bottom: 0;
-  opacity: 0.68;
-  mask-image: linear-gradient(to bottom, black 65%, transparent);
-}
-.hub-player-card:after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(90deg, rgba(16, 31, 28, 0.93) 10%, transparent);
-  pointer-events: none;
-}
-.hub-player-card > *:not(img) {
-  position: relative;
-  z-index: 1;
-}
-.hub-player-rank {
-  position: absolute !important;
-  top: 1rem;
-  left: 1.2rem;
-  color: #f3c36d;
-  font-weight: 900;
-}
-.hub-player-card h3 {
-  max-width: 10rem;
-  line-height: 1.12;
-  font-size: 1.5rem;
-  margin: 0.4rem 0;
-}
-.hub-player-card small {
-  color: #f3c36d;
-  font-weight: 800;
-  font-size: 0.67rem;
-  letter-spacing: 0.11em;
-}
-.hub-player-card p {
-  font-size: 0.82rem;
-  color: #c0d0c7;
-  margin: 0.5rem 0 0;
-}
-.hub-player-card i {
-  color: #f3c36d;
-  margin: 0 0.25rem;
-}
-.hub-player-card > b {
-  position: absolute !important;
-  right: 1rem;
-  top: 1rem;
-}
-.hub-people-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 0.85rem;
-}
-.hub-person {
-  display: flex;
-  align-items: center;
-  gap: 0.8rem;
-  padding: 1.1rem;
-  background: #172725;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #f5f0e5;
-  border-radius: 14px;
-  text-decoration: none;
-  transition:
-    transform 0.18s,
-    border-color 0.18s,
-    background 0.18s;
-}
-.hub-person > span {
-  display: grid;
-  place-items: center;
-  width: 2.7rem;
-  height: 2.7rem;
-  border-radius: 50%;
-  color: #f3c36d;
-  background: #2c4036;
-}
-.hub-person div {
-  display: grid;
-  gap: 0.15rem;
-  flex: 1;
-}
-.hub-person small {
-  color: #9fb4a9;
-}
-.hub-person b {
-  color: #f3c36d;
-}
-.hub-soft-empty,
-.hub-empty {
-  background: #172725;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  padding: 2rem;
-  color: #b8c7be;
-}
-.hub-empty {
-  text-align: center;
-  margin: 4rem auto;
-  max-width: 42rem;
-  padding: 4rem 2rem;
-}
-.hub-empty > span {
-  font-size: 3rem;
-  color: #f3c36d;
-}
-.hub-empty h1 {
-  color: #f8f4e9;
-  font-size: 2.2rem;
-}
-.hub-empty p {
-  margin-bottom: 2rem;
-}
-.hub-page-heading {
-  margin: 3rem 0;
-}
-.hub-page-heading h1 {
-  margin: 0.8rem 0;
-}
-.hub-controls {
-  display: flex;
-  gap: 0.8rem;
-  margin: 1.5rem 0;
-}
-.hub-controls input,
-.hub-controls select {
-  background: #172725;
-  color: #f9f4e9;
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  padding: 0.85rem 1rem;
-  font: inherit;
-}
-.hub-controls input {
-  flex: 1;
-}
-.hub-breadcrumb {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  margin-top: 2rem;
-  color: #a9bcb2;
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  font-weight: 800;
-}
-.hub-breadcrumb a {
-  color: #f3c36d;
-  text-decoration: none;
-}
-.hub-profile-hero {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  min-height: 22rem;
-  gap: 2rem;
-}
-.hub-profile-hero > div:first-child {
-  position: relative;
-  z-index: 2;
-}
-.hub-profile-hero h1 {
-  max-width: 42rem;
+.hub-masthead-meta b {
+  color: #f1f5f6;
 }
 .hub-portrait {
-  align-self: stretch;
-  width: min(31%, 18rem);
   position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
+  align-self: stretch;
+  flex: 0 0 132px;
+  margin: 0 16px 0 0;
+  display: grid;
+  align-content: end;
+  justify-items: center;
 }
 .hub-portrait img {
-  max-height: 21rem;
+  height: 110px;
   width: 100%;
   object-fit: contain;
-  object-position: bottom;
+  object-position: center bottom;
 }
-.hub-portrait small {
-  position: absolute;
-  bottom: -3rem;
-  right: 0;
-  font-size: 0.6rem;
-  color: #a7b9ae;
-  text-align: right;
-}
-.hub-portrait a {
-  color: #e9c47f;
-}
-.hub-ranks {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin-top: 2rem;
-}
-.hub-ranks span {
-  padding: 0.65rem 0.8rem;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 8px;
-  font-size: 0.66rem;
-  color: #b9c9c0;
-  letter-spacing: 0.1em;
-}
-.hub-ranks b {
-  color: #f3c36d;
-  margin-left: 0.4rem;
-  font-size: 1rem;
-}
-.hub-stat-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(155px, 1fr));
-  gap: 0.8rem;
-}
-.hub-stat {
-  display: flex;
-  flex-direction: column;
-  min-height: 7.5rem;
-  padding: 1.1rem;
-  border-radius: 13px;
-  background: #172725;
-  border: 1px solid rgba(255, 255, 255, 0.09);
-}
-.hub-stat small {
-  color: #a6b8ad;
-  font-size: 0.67rem;
-  letter-spacing: 0.12em;
-  font-weight: 800;
-}
-.hub-stat strong {
-  color: #f7c875;
-  font-size: 2.25rem;
+.hub-portrait figcaption {
+  color: #b2bec6;
+  font-size: 8px;
+  text-align: center;
   line-height: 1.3;
-  font-variant-numeric: tabular-nums;
+  padding: 4px 0;
 }
-.hub-stat span {
-  color: #a6b8ad;
-  font-size: 0.76rem;
-  margin-top: auto;
-}
-.hub-timeline-row > div:nth-child(2) {
-  display: grid;
-  gap: 0.2rem;
-  flex: 1;
-}
-.hub-timeline-row strong {
-  font-size: 1.2rem;
-}
-.hub-timeline-numbers {
-  display: flex;
-  gap: 1rem;
-  flex-wrap: wrap;
-  font-size: 0.78rem;
-  color: #e8cf9d;
-}
-.hub-timeline-row a {
-  color: #f7d08c;
-  text-decoration: none;
-}
-.hub-timeline-row a:hover {
+.hub-portrait a:hover {
   text-decoration: underline;
 }
-.hub-user-season {
-  background: #172725;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 16px;
-  overflow: hidden;
+.hub-manager-crest {
+  position: relative;
+  flex: none;
+  width: 88px;
+  margin-right: 30px;
 }
-.hub-user-season .hub-timeline-row {
-  border: 0;
+.hub-team-logo {
+  display: inline-grid;
+  place-items: center;
+  width: 29px;
+  height: 29px;
+  color: #ffab79;
+  flex: none;
+  font-size: 10px;
+}
+.hub-team-logo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.hub-manager-crest .hub-team-logo {
+  width: 100%;
+  height: 80px;
+}
+.archive-tabs.hub-tabs {
+  flex-wrap: wrap;
+  gap: 0 26px;
+  overflow: visible;
+}
+.archive-tabs.hub-tabs button {
+  padding: 15px 2px 12px;
+}
+.archive-tabs.hub-tabs button:hover {
+  color: #fff;
+}
+.hub-content {
+  padding-top: 18px;
+}
+.archive-overview-grid.hub-overview {
+  grid-template-columns: minmax(0, 2fr) minmax(260px, 1fr);
+  gap: 14px;
+}
+.hub-stack {
+  display: grid;
+  gap: 14px;
+}
+.archive-panel.hub-panel {
+  padding: 18px 20px;
   border-radius: 0;
-  background: transparent;
 }
-.hub-user-season-foot {
+.hub-panel .panel-title {
+  margin-bottom: 13px;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+}
+.hub-panel .panel-title h2 {
+  font-size: 25px;
+  margin-top: 3px;
+}
+.hub-panel .panel-title > a {
+  color: #ffab79;
+}
+.hub-link,
+.hub-data-link {
+  color: #ffab79;
+  font-size: 12px;
+  font-weight: 800;
+  text-underline-offset: 3px;
+}
+button.hub-link {
+  background: transparent;
+  padding: 0;
+  border: 0;
+  text-align: left;
+}
+button.hub-link:disabled {
+  color: #8fa0ae;
+  opacity: 0.55;
+  cursor: default;
+}
+.hub-link:hover:not(:disabled),
+.hub-data-link:hover,
+.archive-table.hub-table td a:hover,
+.hub-player-name:hover strong {
+  text-decoration: underline;
+}
+.hub-empty-state {
+  margin: 0;
+  padding: 13px 0;
+  color: #a7b6c2;
+  line-height: 1.6;
+  font-size: 13px;
+}
+.hub-status {
+  margin-top: 12px;
+}
+.hub-status h1 {
+  margin: 0;
+  font:
+    800 28px "Barlow Condensed",
+    sans-serif;
+  text-transform: uppercase;
+}
+.hub-status p {
+  color: #a7b6c2;
+  font-size: 13px;
+}
+.hub-season-rows,
+.hub-leader-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.hub-season-rows a,
+.hub-leader-list a {
+  display: grid;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid #293642;
+  padding: 11px 4px;
+}
+.hub-season-rows a {
+  grid-template-columns: 42px minmax(0, 1fr) minmax(0, 0.7fr) auto;
+}
+.hub-leader-list a {
+  grid-template-columns: 19px minmax(0, 1fr) auto;
+}
+.hub-season-rows a:hover,
+.hub-leader-list a:hover,
+.archive-table.hub-table tbody tr:hover > * {
+  background: #192633;
+}
+.hub-season-code {
+  color: #ffab79;
+  font:
+    800 24px "Barlow Condensed",
+    sans-serif;
+}
+.hub-season-entry strong,
+.hub-season-result strong,
+.hub-leader-player strong {
+  display: block;
+  font-size: 13px;
+}
+.hub-season-result {
+  text-align: right;
+}
+.hub-season-entry small,
+.hub-season-result small {
+  display: block;
+  margin-top: 3px;
+  color: #a7b6c2;
+  font-size: 10px;
+}
+.hub-arrow {
+  color: #ffab79;
+}
+.hub-load-more {
+  margin-top: 12px;
+}
+.hub-position {
+  font-weight: 800;
+  color: #91a3b0;
+  font-variant-numeric: tabular-nums;
+}
+.hub-leader-value {
+  color: #ffab79;
+  font:
+    800 20px "Barlow Condensed",
+    sans-serif;
+  white-space: nowrap;
+}
+.hub-leader-value small {
+  color: #a7b6c2;
+  font:
+    600 10px "DM Sans",
+    sans-serif;
+}
+.hub-track {
+  display: block;
+  background: #263540;
+  height: 3px;
+  margin-top: 5px;
+}
+.hub-track span {
+  display: block;
+  background: #ff9b68;
+  height: 100%;
+}
+.hub-table-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #425362 #121c27;
+}
+.archive-table.hub-table {
+  font-variant-numeric: tabular-nums;
+}
+.archive-table.hub-table th,
+.archive-table.hub-table td {
+  padding: 10px 9px;
+}
+.archive-table.hub-table th[scope="row"] {
+  background: #121c27;
+  border-bottom-color: #25323d;
+  color: #e9eef3;
+  font-size: 12px;
+  letter-spacing: normal;
+}
+.archive-table.hub-table th[scope="row"] small {
+  display: block;
+  margin-top: 3px;
+  color: #a7b6c2;
+  font-weight: 500;
+}
+.archive-table.hub-table th[scope="row"] a:hover {
+  color: #ffab79;
+}
+.archive-table.hub-table :is(th, td):first-child {
+  padding-left: 4px;
+}
+.archive-table.hub-table :is(th, td):last-child {
+  padding-right: 4px;
+}
+.hub-directory-name,
+.hub-player-name,
+.hub-franchise {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+.hub-directory-name .hub-position {
+  min-width: 2ch;
+}
+.hub-directory-name {
+  min-height: 30px;
+}
+.hub-thumbnail {
+  width: 25px;
+  height: 30px;
+  object-fit: cover;
+  background: #1b2935;
+}
+.stats-controls.hub-filters {
+  align-items: end;
+  margin: 0 0 10px;
+}
+.stats-controls.hub-filters input,
+.stats-controls.hub-filters select {
+  min-width: 0;
+  max-width: 100%;
+  padding: 7px 9px;
+  font-size: 13px;
+}
+.stats-controls.hub-filters input {
+  width: 235px;
+}
+.hub-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 12px;
+  color: #a7b6c2;
+  font-size: 11px;
+}
+.hub-scoreboard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.hub-score-block {
+  background: #17232d;
+  border: 1px solid #2b3944;
+  padding: 12px;
+}
+.hub-score-block h3 {
+  margin: 0 0 3px;
+  color: #ffab79;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.hub-score {
+  margin: 0;
+  color: #b2bec6;
+  font-size: 12px;
+}
+.hub-score strong {
+  color: #f1f5f6;
+  font:
+    800 38px/1 "Barlow Condensed",
+    sans-serif;
+}
+.hub-score-line {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.5fr) minmax(0, 2fr);
+  gap: 16px;
+  align-items: center;
+}
+.hub-ledger {
+  margin: 0;
+}
+.hub-ledger > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  align-items: baseline;
+  border-bottom: 1px solid #2b3944;
+  padding: 8px 0;
+  color: #acbac5;
+  font-size: 12px;
+}
+.hub-ledger > div:last-child {
+  border-bottom: 0;
+}
+.hub-ledger dd {
+  margin: 0;
+  color: #eef2f6;
+  text-align: right;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+.hub-bar-value {
+  display: inline-block;
+  min-width: 54px;
+}
+.hub-stacked-bar {
+  display: flex;
+  height: 8px;
+  margin: 8px 0;
+  background: #263540;
+}
+.hub-stacked-bar > span {
+  flex-basis: 0;
+}
+.hub-swatch {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin-right: 7px;
+}
+.bar-orange {
+  background: #ff9b68;
+}
+.bar-purple {
+  background: #ba9bf3;
+}
+.bar-muted {
+  background: #607889;
+}
+.bar-wins {
+  background: #83c5ab;
+}
+.bar-losses {
+  background: #e18c86;
+}
+.hub-inline-links {
+  display: inline-flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 4px 10px;
+  max-width: 280px;
+  color: #ffab79;
+}
+.hub-win-record,
+.hub-squad-summary {
   display: flex;
   flex-wrap: wrap;
-  gap: 1.5rem;
-  padding: 0 1.5rem 1rem;
-  color: #adbdaf;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
+  gap: 8px 16px;
+  align-items: center;
+  color: #a7b6c2;
+  font-size: 12px;
 }
-.hub-user-season details {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.8rem 1.5rem;
+.hub-win-record b {
+  color: #eef2f6;
+  font:
+    800 28px "Barlow Condensed",
+    sans-serif;
 }
-.hub-user-season summary {
-  color: #f3c36d;
-  cursor: pointer;
-  font-size: 0.85rem;
-  font-weight: 800;
+.hub-squad-summary {
+  padding: 8px 0;
 }
-.hub-squad-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 0.5rem;
-  padding: 1rem 0;
+.hub-squad-summary :is(b, strong) {
+  color: #eef2f6;
 }
-.hub-squad-grid a {
-  display: grid;
-  gap: 0.2rem;
-  color: #f5f0e5;
-  background: #20332d;
-  padding: 0.7rem;
-  border-radius: 8px;
-  text-decoration: none;
+@media (max-width: 800px) {
+  .archive-overview-grid.hub-overview {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }
-.hub-squad-grid a:hover {
-  background: #2e463b;
-}
-.hub-squad-grid small {
-  color: #aebfb2;
-  font-size: 0.62rem;
-}
-.hub-user-monogram {
-  display: grid;
-  place-items: center;
-  width: 12rem;
-  aspect-ratio: 1;
-  background: rgba(243, 195, 109, 0.13);
-  border: 2px solid rgba(243, 195, 109, 0.4);
-  border-radius: 50%;
-  color: #f3c36d;
-  font-size: 4rem;
-  font-weight: 900;
-}
-@media (max-width: 700px) {
+@media (max-width: 520px) {
+  .archive-top.hub-top {
+    padding-inline: 12px;
+  }
   .hub-top nav {
-    gap: 0.6rem;
+    gap: 9px;
+    font-size: 11px;
   }
-  .hub-hero,
-  .hub-profile-hero {
-    padding: 2rem 1.3rem;
-    border-radius: 18px;
+  .archive-wrap.hub-wrap {
+    padding-top: 17px;
   }
-  .hub-hero:after {
-    font-size: 14rem;
-    top: 5%;
-    right: -5%;
+  .hub-masthead-copy {
+    padding: 16px;
   }
-  .hub-section-head {
-    align-items: start;
-    flex-direction: column;
-  }
-  .hub-season-card {
-    gap: 0.7rem;
-    padding: 1rem;
-  }
-  .hub-season-number {
-    font-size: 1rem;
-    min-width: 2.5rem;
-  }
-  .hub-season-card h3 {
-    font-size: 1rem;
-  }
-  .hub-profile-hero {
-    min-height: auto;
+  .season-hero.hub-masthead h1 {
+    font-size: 32px;
   }
   .hub-portrait {
-    width: 30%;
-    min-width: 6rem;
+    flex-basis: 76px;
+    margin-right: 8px;
   }
   .hub-portrait img {
-    max-height: 12rem;
+    height: 76px;
   }
-  .hub-user-monogram {
-    width: 5rem;
-    font-size: 1.5rem;
+  .hub-manager-crest {
+    width: 50px;
+    margin-right: 12px;
   }
-  .hub-timeline-row {
-    gap: 0.6rem;
-    padding: 0.9rem;
+  .hub-manager-crest .hub-team-logo {
+    height: 50px;
   }
-  .hub-timeline-numbers {
-    display: none;
+  .archive-tabs.hub-tabs {
+    gap: 0 15px;
   }
-  .hub-controls {
-    flex-direction: column;
+  .archive-tabs.hub-tabs button {
+    font-size: 12px;
+    padding: 12px 2px 9px;
+  }
+  .archive-panel.hub-panel {
+    padding: 13px;
+  }
+  .hub-panel .panel-title h2 {
+    font-size: 23px;
+  }
+  .hub-season-rows a {
+    grid-template-columns: 30px minmax(0, 1fr) minmax(0, 0.65fr) auto;
+    gap: 7px;
+  }
+  .hub-season-code {
+    font-size: 19px;
+  }
+  .hub-season-result strong {
+    font-size: 11px;
+  }
+  .hub-scoreboard {
+    gap: 7px;
+  }
+  .hub-score-block {
+    padding: 8px;
+  }
+  .hub-score-block .hub-ledger > div {
+    font-size: 11px;
+  }
+  .stats-controls.hub-filters input {
+    width: 100%;
+  }
+  .hub-filters label {
+    min-width: 0;
   }
 }
