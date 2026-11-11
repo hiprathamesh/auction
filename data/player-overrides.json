@@ -11,7 +11,15 @@
     }
   },
   "arshdeep-singh": {
-    "bowling": 98
+    "bowling": 98,
+    "photo": "/player-portraits/arshdeep-singh.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arshdeep_Singh_2022.jpg",
+      "author": "Storm machine",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
   },
   "axar-patel": {
     "ovr": 94,
@@ -22,7 +30,15 @@
       6,
       7,
       8
-    ]
+    ],
+    "photo": "/player-portraits/axar-patel.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Axar_Patel.jpg",
+      "author": "Dee03",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
   },
   "ben-duckett": {
     "ovr": 69,
@@ -65,7 +81,15 @@
   },
   "david-miller": {
     "ovr": 93,
-    "fielding": 90
+    "fielding": 90,
+    "photo": "/player-portraits/david-miller.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:DAVID_MILLER_(15519469338).jpg",
+      "author": "NAPARAZZI",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+    }
   },
   "deepak-hooda": {
     "ovr": 69,
@@ -91,10 +115,26 @@
   },
   "hardik-pandya": {
     "batting": 97,
-    "bowling": 96
+    "bowling": 96,
+    "photo": "/player-portraits/hardik-pandya.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hardik_Pandya_(cropped).jpg",
+      "author": "Bollywood Hungama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
   },
   "ishan-kishan": {
-    "batting": 97
+    "batting": 97,
+    "photo": "/player-portraits/ishan-kishan.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ishan_Kishan.jpg",
+      "author": "Tata Ipl 2022",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
   },
   "jake-fraser-mcgurk": {
     "photo": "/player-portraits/jake-fraser-mcgurk.jpg",
@@ -114,7 +154,15 @@
     "basePrice": 0.5
   },
   "jasprit-bumrah": {
-    "ovr": 97
+    "ovr": 97,
+    "photo": "/player-portraits/jasprit-bumrah.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jasprit_Bumrah_(4).jpg",
+      "author": "CRICKETNEXT",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
   },
   "jofra-archer": {
     "photo": "/player-portraits/jofra-archer.jpg",
@@ -232,7 +280,15 @@
     }
   },
   "mohammad-shami": {
-    "bowling": 98
+    "bowling": 98,
+    "photo": "/player-portraits/mohammad-shami.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mohammed_Shami.jpg",
+      "author": "CRICKETNEXT",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
   },
   "ms-dhoni": {
     "ovr": 99,
@@ -260,10 +316,26 @@
     "batting": 94,
     "bowling": 25,
     "fielding": 57,
-    "basePrice": 0.3
+    "basePrice": 0.3,
+    "photo": "/player-portraits/prithvi-shaw.png",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Prithvi_shaw.png",
+      "author": "CRICKETNEXT",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
   },
   "quinton-de-kock": {
-    "batting": 97
+    "batting": 97,
+    "photo": "/player-portraits/quinton-de-kock.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:QUINTON_DE_KOCK_(15681398316).jpg",
+      "author": "NAPARAZZI",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+    }
   },
   "rahmanullah-gurbaz": {
     "ovr": 70,
@@ -274,13 +346,29 @@
   },
   "ravindra-jadeja": {
     "ovr": 96,
-    "fielding": 99
+    "fielding": 99,
+    "photo": "/player-portraits/ravindra-jadeja.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ravindra_Jadeja_in_2018.jpg",
+      "author": "SR Vlogs",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
   },
   "rinku-singh": {
     "ovr": 93
   },
   "rohit-sharma": {
-    "ovr": 97
+    "ovr": 97,
+    "photo": "/player-portraits/rohit-sharma.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rohit_Sharma_Batting.jpg",
+      "author": "Bahnfrend",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
   },
   "sarfaraz-khan": {
     "ovr": 90,
@@ -296,21 +384,53 @@
   },
   "trent-boult": {
     "ovr": 95,
-    "bowling": 99
+    "bowling": 99,
+    "photo": "/player-portraits/trent-boult.png",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trent_Boult_cropped.png",
+      "author": "www.davidmolloyphotography.com from Sydney, Australia",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+    }
   },
   "venkatesh-iyer": {
     "ovr": 91,
-    "batting": 94
+    "batting": 94,
+    "photo": "/player-portraits/venkatesh-iyer.png",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Venkatesh_Iyer.png",
+      "author": "Kolkata Knight Riders",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
   },
   "virat-kohli": {
-    "fielding": 99
+    "fielding": 99,
+    "photo": "/player-portraits/virat-kohli.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Virat_Kohli_fielding_in_a_ODI_cricket_match_against_New_Zealand_in_December_2010.jpg",
+      "author": "Chubby Chandru",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+    }
   },
   "wiaan-mulder": {
     "ovr": 73,
     "batting": 74,
     "bowling": 73,
     "fielding": 69,
-    "basePrice": 0.75
+    "basePrice": 0.75,
+    "photo": "/player-portraits/wiaan-mulder.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:RSA_vs_AUS_Day_1-41.jpg",
+      "author": "EGilham",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
   },
   "ab-de-villiers": {
     "photo": "/player-portraits/ab-de-villiers.jpg",
@@ -375,7 +495,15 @@
     }
   },
   "brett-lee": {
-    "bowling": 98
+    "bowling": 98,
+    "photo": "/player-portraits/brett-lee.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brett_lee_closeup2.jpg",
+      "author": "Privatemusings",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
   },
   "chris-gayle": {
     "photo": "/player-portraits/chris-gayle.jpg",
@@ -418,7 +546,15 @@
     }
   },
   "faf-du-plessis": {
-    "fielding": 97
+    "fielding": 97,
+    "photo": "/player-portraits/faf-du-plessis.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Faf_du_Plessis_2019_Boxing_Day.jpg",
+      "author": "Dave Morton",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:Faf_du_Plessis_2019_Boxing_Day.jpg"
+    }
   },
   "gautam-gambhir": {
     "photo": "/player-portraits/gautam-gambhir.jpg",
@@ -538,7 +674,15 @@
   },
   "michael-hussey": {
     "ovr": 99,
-    "batting": 99
+    "batting": 99,
+    "photo": "/player-portraits/michael-hussey.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Michael_Hussey_2022.jpg",
+      "author": "Calistemon",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
   },
   "munaf-patel": {
     "photo": "/player-portraits/munaf-patel.jpg",
@@ -845,6 +989,446 @@
       "author": "Magic Book of Record",
       "license": "CC BY-SA 4.0",
       "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "amit-mishra": {
+    "photo": "/player-portraits/amit-mishra.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amit_Mishra.jpg",
+      "author": "Harrias",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+    }
+  },
+  "ashish-nehra": {
+    "photo": "/player-portraits/ashish-nehra.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ashish_Nehra_(6160488612)_(cropped).jpg",
+      "author": "Chubby Chandru",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+    }
+  },
+  "david-warner": {
+    "photo": "/player-portraits/david-warner.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:David_Warner_batting.jpg",
+      "author": "paddynapper",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+    }
+  },
+  "dinesh-karthik": {
+    "photo": "/player-portraits/dinesh-karthik.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dinesh.Karthik.jpg",
+      "author": "Anand Anil",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "harbhajan-singh": {
+    "photo": "/player-portraits/harbhajan-singh.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Harbhajan_Singh_bowling_4.jpg",
+      "author": "Blnguyen",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+    }
+  },
+  "irfan-pathan": {
+    "photo": "/player-portraits/irfan-pathan.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Irfan_Pathan72.jpg",
+      "author": "Bollywood Hungama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "kane-williamson": {
+    "photo": "/player-portraits/kane-williamson.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kane_Williamson_in_2019.jpg",
+      "author": "Mark Lockett",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+    }
+  },
+  "kuldeep-yadav": {
+    "photo": "/player-portraits/kuldeep-yadav.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kuldeep_Yadav.jpg",
+      "author": "Kolkata Knight Riders - Official",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "mitchell-marsh": {
+    "photo": "/player-portraits/mitchell-marsh.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mitchell_Marsh.jpg",
+      "author": "www.davidmolloyphotography.com",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+    }
+  },
+  "mohammad-siraj": {
+    "photo": "/player-portraits/mohammad-siraj.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mohammed_Siraj.jpg",
+      "author": "Anand Anil",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "morne-morkel": {
+    "photo": "/player-portraits/morne-morkel.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Morne_Morkel_6.jpg",
+      "author": "Kolkata Knight Riders - Official",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "murali-vijay": {
+    "photo": "/player-portraits/murali-vijay.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Murali_Vijay_2019.jpg",
+      "author": "Dee03",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "muttiah-muralitharan": {
+    "photo": "/player-portraits/muttiah-muralitharan.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Photograph_of_Muttiah_Muralitharan.jpg",
+      "author": "Bollywood Hungama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "pat-cummins": {
+    "photo": "/player-portraits/pat-cummins.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:RSA_vs_AUS_Day_1-47_(cropped).jpg",
+      "author": "EGilham",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "phil-salt": {
+    "photo": "/player-portraits/phil-salt.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:2_02_Phil_Salt.jpg",
+      "author": "Dave Morton",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:2_02_Phil_Salt.jpg"
+    }
+  },
+  "pragyan-ojha": {
+    "photo": "/player-portraits/pragyan-ojha.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pragyan_Ojha.jpg",
+      "author": "Dee03",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+    }
+  },
+  "praveen-kumar": {
+    "photo": "/player-portraits/praveen-kumar.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Praveen_Kumar.jpg",
+      "author": "Blnguyen",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+    }
+  },
+  "rachin-ravindra": {
+    "photo": "/player-portraits/rachin-ravindra.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rachin_Ravindra.jpg",
+      "author": "JaumeBG",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "rahul-dravid": {
+    "photo": "/player-portraits/rahul-dravid.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rahul_Dravid_-_moving_the_field_(cropped).jpg",
+      "author": "Hashir Milhan from Colombo, Sri Lanka",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+    }
+  },
+  "rashid-khan": {
+    "photo": "/player-portraits/rashid-khan.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rashid_Khan.jpg",
+      "author": "Afghanistan Cricket Board",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "rishabh-pant": {
+    "photo": "/player-portraits/rishabh-pant.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rishabh_Pant_(29693622367)_(cropped).jpg",
+      "author": "Ben Sutherland from Crystal Palace, London, UK",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+    }
+  },
+  "robin-uthappa": {
+    "photo": "/player-portraits/robin-uthappa.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Robin_Uthappa_1.jpg",
+      "author": "Kolkata Knight Riders - Official",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "ross-taylor": {
+    "photo": "/player-portraits/ross-taylor.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ross_Taylor_CNZM_(cropped).jpg",
+      "author": "New Zealand Government, Office of the Governor-General",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+    }
+  },
+  "sachin-tendulkar": {
+    "photo": "/player-portraits/sachin-tendulkar.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_cricket_legend_Sachin_Tendulkar_at_the_Oval_Maidan_in_Mumbai_During_the_Duke_and_Duchess_of_Cambridge_Visit(26271019082).jpg",
+      "author": "British High Commission, New Delhi",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+    }
+  },
+  "sam-curran": {
+    "photo": "/player-portraits/sam-curran.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Prime_Minister_welcomes_the_World_Cup_winning_cricketers_(52764650104)_-_Sam_Curran_(cropped).jpg",
+      "author": "Number 10",
+      "license": "CC BY 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+    }
+  },
+  "sanju-samson": {
+    "photo": "/player-portraits/sanju-samson.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sanju_Samson_batting_on_nets_3.jpg",
+      "author": "Rajasthan Royals",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "shaun-marsh": {
+    "photo": "/player-portraits/shaun-marsh.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shaun_Marsh.jpg",
+      "author": "YellowMonkey/Blnguyen",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "shikhar-dhawan": {
+    "photo": "/player-portraits/shikhar-dhawan.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:SHIKHAR_DHAWAN_(16005494418).jpg",
+      "author": "NAPARAZZI",
+      "license": "CC BY-SA 2.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+    }
+  },
+  "shimron-hetmyer": {
+    "photo": "/player-portraits/shimron-hetmyer.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shimron_Hetmyer.jpg",
+      "author": "CRICKETNEXT",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "shivam-dube": {
+    "photo": "/player-portraits/shivam-dube.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shivam_Dube.jpg",
+      "author": "Dee03",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "shreyas-iyer": {
+    "photo": "/player-portraits/shreyas-iyer.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shreyas_Iyer_2021.jpg",
+      "author": "247 Entertainment",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "shubman-gill": {
+    "photo": "/player-portraits/shubman-gill.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shubman_Gill.jpg",
+      "author": "CRICKETNEXT",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "sunil-narine": {
+    "photo": "/player-portraits/sunil-narine.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunil_Narine_cropped.jpg",
+      "author": "Kolkata Knight Riders - Official",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "suresh-raina": {
+    "photo": "/player-portraits/suresh-raina.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Suresh_Raina_grace_the_%27Salaam_Sachin%27_conclave.jpg",
+      "author": "Bollywood Hungama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "suryakumar-yadav": {
+    "photo": "/player-portraits/suryakumar-yadav.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Suryakumar_Yadav_(3).jpg",
+      "author": "Kolkata Knight Riders - Official",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "travis-head": {
+    "photo": "/player-portraits/travis-head.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Travis_Head_cropped.jpg",
+      "author": "Calistemon",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "virender-sehwag": {
+    "photo": "/player-portraits/virender-sehwag.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Virender_Sehwag_at_the_NDTV_Marks_for_Sports_event_13.jpg",
+      "author": "Bollywood Hungama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "wanindu-hasaranga": {
+    "photo": "/player-portraits/wanindu-hasaranga.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Waniya.jpg",
+      "author": "04 ATM 04",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "will-jacks": {
+    "photo": "/player-portraits/will-jacks.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:4_20_Will_Jacks.jpg",
+      "author": "Dave Morton",
+      "license": "Public domain",
+      "licenseUrl": "https://commons.wikimedia.org/wiki/File:4_20_Will_Jacks.jpg"
+    }
+  },
+  "yashasvi-jaiswal": {
+    "photo": "/player-portraits/yashasvi-jaiswal.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yashasvi_Jaiswal.jpg",
+      "author": "Dee03",
+      "license": "CC BY-SA 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+    }
+  },
+  "yusuf-pathan": {
+    "photo": "/player-portraits/yusuf-pathan.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yusuf_Pathan.jpg",
+      "author": "Dee03",
+      "license": "CC BY-SA 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+    }
+  },
+  "yuvraj-singh": {
+    "photo": "/player-portraits/yuvraj-singh.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuvraj_Singh_appointed_as_Ulysse_Nardin_watch_brand_ambassador.jpeg",
+      "author": "Bollywood Hungama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "yuzvendra-chahal": {
+    "photo": "/player-portraits/yuzvendra-chahal.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuzvendra_Chahal.jpg",
+      "author": "BBC News اردو",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+    }
+  },
+  "zaheer-khan": {
+    "photo": "/player-portraits/zaheer-khan.jpg",
+    "photoAttribution": {
+      "source": "Wikimedia Commons",
+      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zaheer_Khan_at_the_CPAA_show_2018_(cropped).jpg",
+      "author": "Bollywood Hungama",
+      "license": "CC BY 3.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
     }
   }
 }

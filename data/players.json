@@ -65,7 +65,15 @@
       "fielding": 84,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/arshdeep-singh.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Arshdeep_Singh_2022.jpg",
+        "author": "Storm machine",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "axar-patel",
@@ -86,7 +94,15 @@
         7,
         8
       ],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/axar-patel.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Axar_Patel.jpg",
+        "author": "Dee03",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "ben-duckett",
@@ -186,7 +202,15 @@
         6,
         7
       ],
-      "rtmTeamId": "GT"
+      "rtmTeamId": "GT",
+      "photo": "/player-portraits/david-miller.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:DAVID_MILLER_(15519469338).jpg",
+        "author": "NAPARAZZI",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      }
     },
     {
       "id": "deepak-hooda",
@@ -286,7 +310,15 @@
         5,
         6
       ],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/hardik-pandya.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Hardik_Pandya_(cropped).jpg",
+        "author": "Bollywood Hungama",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "heinrich-klaasen",
@@ -326,7 +358,15 @@
         2,
         3
       ],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/ishan-kishan.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ishan_Kishan.jpg",
+        "author": "Tata Ipl 2022",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "jake-fraser-mcgurk",
@@ -390,7 +430,15 @@
       "fielding": 95,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/jasprit-bumrah.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Jasprit_Bumrah_(4).jpg",
+        "author": "CRICKETNEXT",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "jofra-archer",
@@ -582,7 +630,15 @@
       "fielding": 86,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/kuldeep-yadav.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kuldeep_Yadav.jpg",
+        "author": "Kolkata Knight Riders - Official",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "liam-livingstone",
@@ -702,7 +758,15 @@
         2,
         3
       ],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/mitchell-marsh.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mitchell_Marsh.jpg",
+        "author": "www.davidmolloyphotography.com",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      }
     },
     {
       "id": "mitchell-starc",
@@ -742,7 +806,15 @@
       "fielding": 85,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "GT"
+      "rtmTeamId": "GT",
+      "photo": "/player-portraits/mohammad-shami.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mohammed_Shami.jpg",
+        "author": "CRICKETNEXT",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "mohammad-siraj",
@@ -758,7 +830,15 @@
       "fielding": 83,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "RCB"
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/mohammad-siraj.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Mohammed_Siraj.jpg",
+        "author": "Anand Anil",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "ms-dhoni",
@@ -839,7 +919,15 @@
       "fielding": 87,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/pat-cummins.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:RSA_vs_AUS_Day_1-47_(cropped).jpg",
+        "author": "EGilham",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "phil-salt",
@@ -859,7 +947,15 @@
         2,
         3
       ],
-      "rtmTeamId": "RCB"
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/phil-salt.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:2_02_Phil_Salt.jpg",
+        "author": "Dave Morton",
+        "license": "Public domain",
+        "licenseUrl": "https://commons.wikimedia.org/wiki/File:2_02_Phil_Salt.jpg"
+      }
     },
     {
       "id": "prithvi-shaw",
@@ -879,7 +975,15 @@
         2,
         3
       ],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/prithvi-shaw.png",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Prithvi_shaw.png",
+        "author": "CRICKETNEXT",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "quinton-de-kock",
@@ -899,7 +1003,15 @@
         2,
         3
       ],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/quinton-de-kock.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:QUINTON_DE_KOCK_(15681398316).jpg",
+        "author": "NAPARAZZI",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      }
     },
     {
       "id": "rachin-ravindra",
@@ -919,7 +1031,15 @@
         2,
         3
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/rachin-ravindra.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rachin_Ravindra.jpg",
+        "author": "JaumeBG",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "rahmanullah-gurbaz",
@@ -955,7 +1075,15 @@
       "fielding": 89,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "GT"
+      "rtmTeamId": "GT",
+      "photo": "/player-portraits/rashid-khan.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rashid_Khan.jpg",
+        "author": "Afghanistan Cricket Board",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "ravindra-jadeja",
@@ -975,7 +1103,15 @@
         6,
         7
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/ravindra-jadeja.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ravindra_Jadeja_in_2018.jpg",
+        "author": "SR Vlogs",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "rinku-singh",
@@ -1015,7 +1151,15 @@
         4,
         5
       ],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/rishabh-pant.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rishabh_Pant_(29693622367)_(cropped).jpg",
+        "author": "Ben Sutherland from Crystal Palace, London, UK",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      }
     },
     {
       "id": "rohit-sharma",
@@ -1035,7 +1179,15 @@
         2,
         3
       ],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/rohit-sharma.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rohit_Sharma_Batting.jpg",
+        "author": "Bahnfrend",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "ruturaj-gaikwad",
@@ -1075,7 +1227,15 @@
         6,
         7
       ],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/sam-curran.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_Prime_Minister_welcomes_the_World_Cup_winning_cricketers_(52764650104)_-_Sam_Curran_(cropped).jpg",
+        "author": "Number 10",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      }
     },
     {
       "id": "sanju-samson",
@@ -1095,7 +1255,15 @@
         2,
         3
       ],
-      "rtmTeamId": "RR"
+      "rtmTeamId": "RR",
+      "photo": "/player-portraits/sanju-samson.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sanju_Samson_batting_on_nets_3.jpg",
+        "author": "Rajasthan Royals",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "sarfaraz-khan",
@@ -1135,7 +1303,15 @@
         6,
         7
       ],
-      "rtmTeamId": "RR"
+      "rtmTeamId": "RR",
+      "photo": "/player-portraits/shimron-hetmyer.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shimron_Hetmyer.jpg",
+        "author": "CRICKETNEXT",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "shivam-dube",
@@ -1155,7 +1331,15 @@
         5,
         6
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/shivam-dube.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shivam_Dube.jpg",
+        "author": "Dee03",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "shreyas-iyer",
@@ -1175,7 +1359,15 @@
         4,
         5
       ],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/shreyas-iyer.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shreyas_Iyer_2021.jpg",
+        "author": "247 Entertainment",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "shubman-gill",
@@ -1195,7 +1387,15 @@
         2,
         3
       ],
-      "rtmTeamId": "GT"
+      "rtmTeamId": "GT",
+      "photo": "/player-portraits/shubman-gill.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shubman_Gill.jpg",
+        "author": "CRICKETNEXT",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "sunil-narine",
@@ -1216,7 +1416,15 @@
         3,
         4
       ],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/sunil-narine.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sunil_Narine_cropped.jpg",
+        "author": "Kolkata Knight Riders - Official",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "suryakumar-yadav",
@@ -1236,7 +1444,15 @@
         4,
         5
       ],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/suryakumar-yadav.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Suryakumar_Yadav_(3).jpg",
+        "author": "Kolkata Knight Riders - Official",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "tim-david",
@@ -1276,7 +1492,15 @@
         2,
         3
       ],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/travis-head.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Travis_Head_cropped.jpg",
+        "author": "Calistemon",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "trent-boult",
@@ -1292,7 +1516,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/trent-boult.png",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Trent_Boult_cropped.png",
+        "author": "www.davidmolloyphotography.com from Sydney, Australia",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      }
     },
     {
       "id": "varun-chakravarthy",
@@ -1328,7 +1560,15 @@
         4,
         5
       ],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/venkatesh-iyer.png",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Venkatesh_Iyer.png",
+        "author": "Kolkata Knight Riders",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "virat-kohli",
@@ -1348,7 +1588,15 @@
         2,
         3
       ],
-      "rtmTeamId": "RCB"
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/virat-kohli.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Virat_Kohli_fielding_in_a_ODI_cricket_match_against_New_Zealand_in_December_2010.jpg",
+        "author": "Chubby Chandru",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      }
     },
     {
       "id": "wanindu-hasaranga",
@@ -1368,7 +1616,15 @@
         7,
         8
       ],
-      "rtmTeamId": "RCB"
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/wanindu-hasaranga.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Waniya.jpg",
+        "author": "04 ATM 04",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "wiaan-mulder",
@@ -1388,7 +1644,15 @@
         7,
         8
       ],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/wiaan-mulder.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:RSA_vs_AUS_Day_1-41.jpg",
+        "author": "EGilham",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "will-jacks",
@@ -1408,7 +1672,15 @@
         2,
         3
       ],
-      "rtmTeamId": "RCB"
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/will-jacks.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:4_20_Will_Jacks.jpg",
+        "author": "Dave Morton",
+        "license": "Public domain",
+        "licenseUrl": "https://commons.wikimedia.org/wiki/File:4_20_Will_Jacks.jpg"
+      }
     },
     {
       "id": "yashasvi-jaiswal",
@@ -1428,7 +1700,15 @@
         2,
         3
       ],
-      "rtmTeamId": "RR"
+      "rtmTeamId": "RR",
+      "photo": "/player-portraits/yashasvi-jaiswal.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yashasvi_Jaiswal.jpg",
+        "author": "Dee03",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "yuzvendra-chahal",
@@ -1444,7 +1724,15 @@
       "fielding": 86,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "RCB"
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/yuzvendra-chahal.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuzvendra_Chahal.jpg",
+        "author": "BBC News اردو",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "ab-de-villiers",
@@ -1543,7 +1831,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/amit-mishra.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Amit_Mishra.jpg",
+        "author": "Harrias",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      }
     },
     {
       "id": "andrew-symonds",
@@ -1611,7 +1907,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/ashish-nehra.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ashish_Nehra_(6160488612)_(cropped).jpg",
+        "author": "Chubby Chandru",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      }
     },
     {
       "id": "brendon-mccullum",
@@ -1655,7 +1959,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/brett-lee.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Brett_lee_closeup2.jpg",
+        "author": "Privatemusings",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "chris-gayle",
@@ -1749,7 +2061,15 @@
         1,
         2
       ],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/david-warner.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:David_Warner_batting.jpg",
+        "author": "paddynapper",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      }
     },
     {
       "id": "dinesh-karthik",
@@ -1769,7 +2089,15 @@
         6,
         7
       ],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/dinesh-karthik.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Dinesh.Karthik.jpg",
+        "author": "Anand Anil",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "dwayne-bravo",
@@ -1816,7 +2144,15 @@
         1,
         2
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/faf-du-plessis.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Faf_du_Plessis_2019_Boxing_Day.jpg",
+        "author": "Dave Morton",
+        "license": "Public domain",
+        "licenseUrl": "https://commons.wikimedia.org/wiki/File:Faf_du_Plessis_2019_Boxing_Day.jpg"
+      }
     },
     {
       "id": "gautam-gambhir",
@@ -1859,7 +2195,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/harbhajan-singh.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Harbhajan_Singh_bowling_4.jpg",
+        "author": "Blnguyen",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+      }
     },
     {
       "id": "herschelle-gibbs",
@@ -1931,7 +2275,15 @@
         7,
         8
       ],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/irfan-pathan.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Irfan_Pathan72.jpg",
+        "author": "Bollywood Hungama",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "jacques-kallis",
@@ -2008,7 +2360,15 @@
         4,
         5
       ],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/kane-williamson.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Kane_Williamson_in_2019.jpg",
+        "author": "Mark Lockett",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      }
     },
     {
       "id": "kevin-pietersen",
@@ -2191,7 +2551,15 @@
         2,
         3
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/michael-hussey.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Michael_Hussey_2022.jpg",
+        "author": "Calistemon",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "morne-morkel",
@@ -2207,7 +2575,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/morne-morkel.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Morne_Morkel_6.jpg",
+        "author": "Kolkata Knight Riders - Official",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "munaf-patel",
@@ -2250,7 +2626,15 @@
         1,
         2
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/murali-vijay.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Murali_Vijay_2019.jpg",
+        "author": "Dee03",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "muttiah-muralitharan",
@@ -2266,7 +2650,15 @@
       "fielding": 93,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/muttiah-muralitharan.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Photograph_of_Muttiah_Muralitharan.jpg",
+        "author": "Bollywood Hungama",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "pragyan-ojha",
@@ -2282,7 +2674,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "SRH"
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/pragyan-ojha.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Pragyan_Ojha.jpg",
+        "author": "Dee03",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      }
     },
     {
       "id": "praveen-kumar",
@@ -2298,7 +2698,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/praveen-kumar.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Praveen_Kumar.jpg",
+        "author": "Blnguyen",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "http://creativecommons.org/licenses/by-sa/3.0/"
+      }
     },
     {
       "id": "rahul-dravid",
@@ -2318,7 +2726,15 @@
         4,
         5
       ],
-      "rtmTeamId": "RR"
+      "rtmTeamId": "RR",
+      "photo": "/player-portraits/rahul-dravid.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Rahul_Dravid_-_moving_the_field_(cropped).jpg",
+        "author": "Hashir Milhan from Colombo, Sri Lanka",
+        "license": "CC BY 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/2.0"
+      }
     },
     {
       "id": "robin-uthappa",
@@ -2338,7 +2754,15 @@
         2,
         3
       ],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/robin-uthappa.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Robin_Uthappa_1.jpg",
+        "author": "Kolkata Knight Riders - Official",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "ross-taylor",
@@ -2358,7 +2782,15 @@
         5,
         6
       ],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/ross-taylor.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Ross_Taylor_CNZM_(cropped).jpg",
+        "author": "New Zealand Government, Office of the Governor-General",
+        "license": "CC BY 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0"
+      }
     },
     {
       "id": "rp-singh",
@@ -2413,7 +2845,15 @@
         1,
         2
       ],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/sachin-tendulkar.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:The_cricket_legend_Sachin_Tendulkar_at_the_Oval_Maidan_in_Mumbai_During_the_Duke_and_Duchess_of_Cambridge_Visit(26271019082).jpg",
+        "author": "British High Commission, New Delhi",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      }
     },
     {
       "id": "shane-warne",
@@ -2485,7 +2925,15 @@
         2,
         3
       ],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/shaun-marsh.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Shaun_Marsh.jpg",
+        "author": "YellowMonkey/Blnguyen",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
     },
     {
       "id": "shikhar-dhawan",
@@ -2504,7 +2952,15 @@
         1,
         2
       ],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/shikhar-dhawan.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:SHIKHAR_DHAWAN_(16005494418).jpg",
+        "author": "NAPARAZZI",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      }
     },
     {
       "id": "suresh-raina",
@@ -2524,7 +2980,15 @@
         4,
         5
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/suresh-raina.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Suresh_Raina_grace_the_%27Salaam_Sachin%27_conclave.jpg",
+        "author": "Bollywood Hungama",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "virender-sehwag",
@@ -2543,7 +3007,15 @@
         1,
         2
       ],
-      "rtmTeamId": "DC"
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/virender-sehwag.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Virender_Sehwag_at_the_NDTV_Marks_for_Sports_event_13.jpg",
+        "author": "Bollywood Hungama",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "yusuf-pathan",
@@ -2563,7 +3035,15 @@
         6,
         7
       ],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/yusuf-pathan.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yusuf_Pathan.jpg",
+        "author": "Dee03",
+        "license": "CC BY-SA 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/3.0"
+      }
     },
     {
       "id": "yuvraj-singh",
@@ -2583,7 +3063,15 @@
         5,
         6
       ],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/yuvraj-singh.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Yuvraj_Singh_appointed_as_Ulysse_Nardin_watch_brand_ambassador.jpeg",
+        "author": "Bollywood Hungama",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "zaheer-khan",
@@ -2599,7 +3087,15 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/zaheer-khan.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Zaheer_Khan_at_the_CPAA_show_2018_(cropped).jpg",
+        "author": "Bollywood Hungama",
+        "license": "CC BY 3.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by/3.0"
+      }
     },
     {
       "id": "abhishek-sharma",

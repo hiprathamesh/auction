@@ -13,6 +13,13 @@ const USER_AGENT =
   "IPLAuctionArenaPortraitFetcher/1.0 (https://auction.nik.am.in; local hobby project) Node.js";
 const BATCH_SIZE = 35;
 const WAIT_MS = 180;
+const SET_FILTER = (() => {
+  const setIndex = process.argv.indexOf("--set");
+  if (setIndex === -1) return null;
+  const value = process.argv[setIndex + 1]?.trim();
+  if (!value) throw new Error('Expected a set name after "--set".');
+  return value;
+})();
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const normalize = (value) =>
@@ -157,16 +164,23 @@ async function main() {
   }
   await fs.mkdir(OUTPUT_DIR, { recursive: true });
 
+  const selectedPlayers = SET_FILTER
+    ? database.players.filter((player) => player.set === SET_FILTER)
+    : database.players;
+  if (!selectedPlayers.length) {
+    throw new Error(`No players found in auction set "${SET_FILTER}".`);
+  }
+
   const playersByName = new Map(
-    database.players.map((player) => [normalize(player.name), player]),
+    selectedPlayers.map((player) => [normalize(player.name), player]),
   );
   const pageCandidates = [];
   console.log(
-    `Looking for free-licensed Wikipedia thumbnails for ${database.players.length} players...`,
+    `Looking for free-licensed Wikipedia thumbnails for ${selectedPlayers.length} players${SET_FILTER ? ` in ${SET_FILTER}` : ""}...`,
   );
 
   for (const [batchIndex, batch] of chunks(
-    database.players,
+    selectedPlayers,
     BATCH_SIZE,
   ).entries()) {
     const response = await fetchJson(
@@ -249,7 +263,7 @@ async function main() {
       candidateByPlayer.set(candidate.player.id, candidate);
   }
 
-  for (const player of database.players) {
+  for (const player of selectedPlayers) {
     const existingRelativePath = player.photo;
     if (
       existingRelativePath &&
@@ -341,11 +355,13 @@ async function main() {
   );
 
   console.log("\nPortrait import complete.");
-  console.log(`Database players: ${database.players.length}`);
+  console.log(`Players scanned: ${selectedPlayers.length}`);
   console.log(`New local portraits: ${downloaded}`);
   console.log(`Existing portraits reused: ${reused}`);
   console.log(`Candidates skipped: ${skipped}`);
-  console.log(`Players without an approved image: ${missing.length}`);
+  console.log(
+    `Players without an approved image in the complete database: ${missing.length}`,
+  );
   console.log(`Image files: ${OUTPUT_DIR}`);
   console.log(`Review missing players: ${MISSING_PATH}`);
   console.log(
