@@ -496,7 +496,9 @@ function makeSeasonSnapshot(room) {
   return {
     schemaVersion: 2,
     ownerIdentityId:
-      room.users.find((u) => u.id === room.hostId)?.identityId || null,
+      room.recordingOwnerIdentityId ||
+      room.users.find((u) => u.id === room.hostId)?.identityId ||
+      null,
     startedAt: room.createdAt,
     completedAt: room.completedAt || Date.now(),
     champion: teams.find((u) => u.id === room.championId),

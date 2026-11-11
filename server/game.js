@@ -67,6 +67,7 @@ function createRoom(code, owner, playerDB) {
     seasonKey: crypto.randomUUID(),
     createdAt: Date.now(),
     hostId: owner.id,
+    recordingOwnerIdentityId: null,
     phase: "lobby",
     settings: { ...DEFAULT_SETTINGS },
     users: [owner],

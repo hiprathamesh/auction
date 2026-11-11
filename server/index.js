@@ -886,6 +886,8 @@ io.on("connection", (socket) => {
       return fail("Only the host can record this season.");
     if (!user.identityId || socketIdentity(socket) !== user.identityId)
       return fail("Identify yourself as the host to record this season.");
+    if (!room.settings.recordSeason)
+      return fail("Season recording was not enabled in host options.");
     if (room.phase !== "complete")
       return fail("Only a completed season can be recorded.");
     try {
@@ -1117,13 +1119,17 @@ io.on("connection", (socket) => {
     const { room, user } = getRoomAndUser(socket);
     if (!verifyHost(socket, room, user) || room.phase !== "lobby") return;
     if (Object.prototype.hasOwnProperty.call(patch, "recordSeason")) {
-      if (patch.recordSeason === false) room.settings.recordSeason = false;
-      else if (
+      if (patch.recordSeason === false) {
+        room.settings.recordSeason = false;
+        room.recordingOwnerIdentityId = null;
+      } else if (
         patch.recordSeason === true &&
         user.identityId &&
         socketIdentity(socket) === user.identityId
-      )
+      ) {
         room.settings.recordSeason = true;
+        room.recordingOwnerIdentityId = user.identityId;
+      }
     }
     const allowed = {
       bidSeconds: [5, 10, 15, 20, 30],

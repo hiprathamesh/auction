@@ -81,6 +81,9 @@ test("season snapshots persist scorecards and indexed profiles without private r
   const snapshot = makeSeasonSnapshot(room);
   assert.equal(snapshot.matches.length, 1);
   assert.equal(snapshot.teams[0].identityId, "host44");
+  room.recordingOwnerIdentityId = "host44";
+  room.hostId = "user1";
+  assert.equal(makeSeasonSnapshot(room).ownerIdentityId, "host44");
   assert.ok(snapshot.playerStats.length);
   assert.doesNotMatch(
     JSON.stringify(snapshot),
