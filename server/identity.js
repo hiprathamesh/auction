@@ -4,6 +4,7 @@ const path = require("node:path");
 const { DatabaseSync } = require("node:sqlite");
 
 const ID_PATTERN = /^[a-z][a-z0-9]{3,31}$/;
+const validPin = (pin) => typeof pin === "string" && /^\d{4}$/.test(pin);
 const SESSION_MS = 30 * 24 * 60 * 60 * 1000;
 const COOKIE = "arena_session";
 const hash = (value) => crypto.createHash("sha256").update(value).digest("hex");
@@ -30,29 +31,18 @@ function createIdentityStore(file) {
     lastCleanup = Date.now();
     db.prepare("DELETE FROM sessions WHERE expires_at <= ?").run(lastCleanup);
   }
-  function identify(id, pin) {
-    if (!ID_PATTERN.test(id || "") || !/^\d{4}$/.test(pin || ""))
-      return {
-        error:
-          "Use an ID starting with a letter (4–32 lowercase letters or digits) and a 4-digit PIN.",
-        status: 400,
-      };
-    cleanup();
-    const now = Date.now();
-    let row = db.prepare("SELECT * FROM users WHERE id = ?").get(id);
-    if (!row) {
-      const salt = crypto.randomBytes(32);
-      const pinHash = crypto.scryptSync(pin, salt, 64);
-      try {
-        db.prepare(
-          "INSERT INTO users (id,pin_hash,salt,created_at) VALUES (?,?,?,?)",
-        ).run(id, pinHash, salt, now);
-      } catch (error) {
-        if (!String(error.code).startsWith("ERR_SQLITE_CONSTRAINT"))
-          throw error;
-      }
-      row = db.prepare("SELECT * FROM users WHERE id = ?").get(id);
+  function transaction(action) {
+    db.exec("BEGIN IMMEDIATE");
+    try {
+      const result = action();
+      db.exec("COMMIT");
+      return result;
+    } catch (error) {
+      db.exec("ROLLBACK");
+      throw error;
     }
+  }
+  function verifyPin(row, pin, now, incorrectMessage) {
     if (row.locked_until > now)
       return {
         error: "Too many PIN attempts. Try again in 15 minutes.",
@@ -66,18 +56,63 @@ function createIdentityStore(file) {
       ).run(
         attempts >= 5 ? 0 : attempts,
         attempts >= 5 ? now + 15 * 60 * 1000 : 0,
-        id,
+        row.id,
       );
-      return { error: "ID or PIN is incorrect.", status: 401 };
+      return { error: incorrectMessage, status: 401 };
     }
-    db.prepare(
-      "UPDATE users SET failed_attempts=0, locked_until=0 WHERE id=?",
-    ).run(id);
-    const token = crypto.randomBytes(32).toString("base64url");
-    db.prepare(
-      "INSERT INTO sessions (token_hash,user_id,created_at,expires_at) VALUES (?,?,?,?)",
-    ).run(hash(token), id, now, now + SESSION_MS);
-    return { id, token };
+    return null;
+  }
+  function identify(id, pin) {
+    if (typeof id !== "string" || !ID_PATTERN.test(id) || !validPin(pin))
+      return {
+        error:
+          "Use an ID starting with a letter (4–32 lowercase letters or digits) and a 4-digit PIN.",
+        status: 400,
+      };
+    cleanup();
+    return transaction(() => {
+      const now = Date.now();
+      const row = db.prepare("SELECT * FROM users WHERE id = ?").get(id);
+      if (row) {
+        const failure = verifyPin(row, pin, now, "ID or PIN is incorrect.");
+        if (failure) return failure;
+        db.prepare(
+          "UPDATE users SET failed_attempts=0, locked_until=0 WHERE id=?",
+        ).run(id);
+      } else {
+        const salt = crypto.randomBytes(32);
+        const pinHash = crypto.scryptSync(pin, salt, 64);
+        db.prepare(
+          "INSERT INTO users (id,pin_hash,salt,created_at) VALUES (?,?,?,?)",
+        ).run(id, pinHash, salt, now);
+      }
+      const token = crypto.randomBytes(32).toString("base64url");
+      db.prepare(
+        "INSERT INTO sessions (token_hash,user_id,created_at,expires_at) VALUES (?,?,?,?)",
+      ).run(hash(token), id, now, now + SESSION_MS);
+      return { id, token };
+    });
+  }
+  function changePin(id, currentPin, newPin) {
+    if (!validPin(currentPin) || !validPin(newPin))
+      return { error: "Enter a four-digit PIN in both fields.", status: 400 };
+    return transaction(() => {
+      const row = db.prepare("SELECT * FROM users WHERE id = ?").get(id);
+      if (!row) return { error: "Identify yourself to continue.", status: 401 };
+      const failure = verifyPin(
+        row,
+        currentPin,
+        Date.now(),
+        "Current PIN is incorrect.",
+      );
+      if (failure) return failure;
+      const salt = crypto.randomBytes(32);
+      const pinHash = crypto.scryptSync(newPin, salt, 64);
+      db.prepare(
+        "UPDATE users SET pin_hash=?, salt=?, failed_attempts=0, locked_until=0 WHERE id=?",
+      ).run(pinHash, salt, id);
+      return { ok: true };
+    });
   }
   function tokenFromCookie(header = "") {
     return (
@@ -107,7 +142,14 @@ function createIdentityStore(file) {
   function exists(id) {
     return Boolean(db.prepare("SELECT 1 FROM users WHERE id=?").get(id));
   }
-  return { identify, session, logout, exists, close: () => db.close() };
+  return {
+    identify,
+    changePin,
+    session,
+    logout,
+    exists,
+    close: () => db.close(),
+  };
 }
 
 module.exports = { createIdentityStore, COOKIE, SESSION_MS, ID_PATTERN };

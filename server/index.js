@@ -228,6 +228,28 @@ app.delete("/api/identity", sameOrigin, (req, res) => {
   res.set("Set-Cookie", sessionCookie(req, "", 0));
   res.set("Cache-Control", "no-store").json({ ok: true });
 });
+app.patch(
+  "/api/identity/pin",
+  sameOrigin,
+  requireIdentity,
+  express.json({ limit: "1kb" }),
+  (req, res) => {
+    res.set("Cache-Control", "no-store");
+    try {
+      const result = identities.changePin(
+        req.identityId,
+        req.body?.currentPin,
+        req.body?.newPin,
+      );
+      if (result.error)
+        return res.status(result.status).json({ error: result.error });
+      res.json(result);
+    } catch (error) {
+      console.error("Could not change PIN:", error);
+      res.status(500).json({ error: "Identity service is unavailable." });
+    }
+  },
+);
 app.get("/api/seasons", (req, res) => {
   const identityId = signedIn(req);
   if (!identityId)
@@ -337,11 +359,33 @@ app.get("/api/players/:id/matches", requireIdentity, (req, res) => {
     res.status(500).json({ error: "Player match log is unavailable." });
   }
 });
-app.get("/api/players/:id", requireIdentity, (req, res) => {
+function profilePlayer(player) {
+  return {
+    id: player.id,
+    name: player.name,
+    role: player.role,
+    nationality: player.nationality,
+    photo: player.photo,
+    photoAttribution: player.photoAttribution,
+    legend: player.legend,
+  };
+}
+app.get("/api/players/:id", (req, res) => {
   try {
+    const catalogPlayer = DB.players.find(
+      (entry) => entry.id === req.params.id,
+    );
+    res.set("Cache-Control", "no-store");
+    if (!signedIn(req)) {
+      if (!catalogPlayer)
+        return res
+          .status(401)
+          .json({ error: "Identify yourself to continue." });
+      return res.json({ player: profilePlayer(catalogPlayer) });
+    }
     const seasons = seasonStore.playerSeasons(req.params.id);
     const player =
-      DB.players.find((entry) => entry.id === req.params.id) ||
+      catalogPlayer ||
       (seasons[0] ? { id: req.params.id, ...seasons[0] } : null);
     if (!player) return res.status(404).json({ error: "Player not found." });
     const sum = (key) =>
@@ -385,16 +429,8 @@ app.get("/api/players/:id", requireIdentity, (req, res) => {
           const [bw, br] = b.split("/").map(Number);
           return bw - aw || ar - br;
         })[0] || null;
-    res.set("Cache-Control", "no-store").json({
-      player: {
-        id: player.id,
-        name: player.name,
-        role: player.role,
-        nationality: player.nationality,
-        photo: player.photo,
-        photoAttribution: player.photoAttribution,
-        legend: player.legend,
-      },
+    res.json({
+      player: profilePlayer(player),
       seasons,
       totals: {
         seasons: seasons.length,
@@ -592,8 +628,18 @@ function getRoomAndUser(socket) {
     );
   return { room, user };
 }
-function emitError(socket, message) {
-  socket.emit("app:error", { message });
+function emitError(socket, message, code) {
+  socket.emit("app:error", { message, code });
+}
+function hasSeatIdentity(socket, user) {
+  return Boolean(user.identityId && socketIdentity(socket) === user.identityId);
+}
+function rejectRoomIdentity(socket, user, acknowledge) {
+  const message = user
+    ? "Identify yourself with the ID you used for this seat to continue."
+    : "Identify yourself before joining this room.";
+  emitError(socket, message, "ROOM_IDENTITY_REQUIRED");
+  if (typeof acknowledge === "function") acknowledge({ ok: false, message });
 }
 function verifyHost(socket, room, user) {
   if (!room || !user) {
@@ -672,6 +718,7 @@ function joinSocket(socket, room, user, reconnectToken, hostRecoveryToken) {
     userId: user.id,
     hostId: room.hostId,
     isHost: user.id === room.hostId,
+    identified: hasSeatIdentity(socket, user),
     ...(reconnectToken ? { reconnectToken } : {}),
     ...(hostRecoveryToken ? { hostRecoveryToken } : {}),
   });
@@ -734,6 +781,15 @@ io.on("connection", (socket) => {
     if (eventCount > 50) {
       socket.disconnect(true);
       return;
+    }
+    const { room, user } = getRoomAndUser(socket);
+    if (
+      room?.settings.identifiedOnly &&
+      user &&
+      !hasSeatIdentity(socket, user)
+    ) {
+      leaveCurrentRoom(socket);
+      return rejectRoomIdentity(socket, user, packet.at(-1));
     }
     if (
       objectEvents.has(event) &&
@@ -872,6 +928,8 @@ io.on("connection", (socket) => {
       const user = buildUser(name, teamId);
       if (!user) return emitError(socket, "Choose an IPL franchise first.");
       user.identityId = socketIdentity(socket);
+      if (room.settings.identifiedOnly && !user.identityId)
+        return rejectRoomIdentity(socket);
       if (
         user.identityId &&
         room.users.some((entry) => entry.identityId === user.identityId)
@@ -909,6 +967,8 @@ io.on("connection", (socket) => {
         socket,
         "Saved session or credentials not found. Create a new room or join using the room code.",
       );
+    if (room.settings.identifiedOnly && !hasSeatIdentity(socket, user))
+      return rejectRoomIdentity(socket, user);
     joinSocket(socket, room, user);
   });
 
@@ -928,7 +988,7 @@ io.on("connection", (socket) => {
     };
     if (!room || !user || !game.hostCheck(room, user.id))
       return fail("Only the host can record this season.");
-    if (!user.identityId || socketIdentity(socket) !== user.identityId)
+    if (!hasSeatIdentity(socket, user))
       return fail("Identify yourself as the host to record this season.");
     if (!room.settings.recordSeason)
       return fail("Season recording was not enabled in host options.");
@@ -970,6 +1030,8 @@ io.on("connection", (socket) => {
       !validCredential({ credentialHash: room.hostRecoveryHash }, recoveryToken)
     )
       return emitError(socket, "Host recovery code or room not found.");
+    if (room.settings.identifiedOnly && !hasSeatIdentity(socket, host))
+      return rejectRoomIdentity(socket, host);
     const reconnectToken = newCredential();
     const hostRecoveryToken = newCredential();
     host.credentialHash = credentialHash(reconnectToken);
@@ -1162,15 +1224,24 @@ io.on("connection", (socket) => {
   onAction("host:settings", (patch = {}) => {
     const { room, user } = getRoomAndUser(socket);
     if (!verifyHost(socket, room, user) || room.phase !== "lobby") return;
+    if (typeof patch.identifiedOnly === "boolean") {
+      if (!hasSeatIdentity(socket, user))
+        return emitError(
+          socket,
+          "Identify yourself as the host to change room access.",
+        );
+      if (patch.identifiedOnly && room.users.some((entry) => !entry.identityId))
+        return emitError(
+          socket,
+          "Remove guest seats before turning on identified-only access.",
+        );
+      room.settings.identifiedOnly = patch.identifiedOnly;
+    }
     if (Object.prototype.hasOwnProperty.call(patch, "recordSeason")) {
       if (patch.recordSeason === false) {
         room.settings.recordSeason = false;
         room.recordingOwnerIdentityId = null;
-      } else if (
-        patch.recordSeason === true &&
-        user.identityId &&
-        socketIdentity(socket) === user.identityId
-      ) {
+      } else if (patch.recordSeason === true && hasSeatIdentity(socket, user)) {
         room.settings.recordSeason = true;
         room.recordingOwnerIdentityId = user.identityId;
       }

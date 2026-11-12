@@ -58,6 +58,9 @@ test(
     await host.getByRole("button", { name: "Chennai Super Kings" }).click();
     await host.getByRole("button", { name: "Create private room" }).click();
     await expect(host.getByText("Host recovery and transfer")).toBeVisible();
+    await expect(
+      host.getByRole("button", { name: "Only allow identified users" }),
+    ).toHaveCount(0);
     const roomCode = await host.evaluate(() =>
       localStorage.getItem("iplRoomCode"),
     );
@@ -171,6 +174,35 @@ test(
       true,
       "mobile header controls should not overlap or be clipped",
     );
+    await host.getByRole("button", { name: /pause/i }).click();
+    await expect(host.getByRole("button", { name: /resume/i })).toBeVisible();
+    const seatId = await friend.evaluate(() =>
+      localStorage.getItem("iplUserId"),
+    );
+    const name = await friend.locator(".auction-player-name").textContent();
+    const profile = await friend
+      .locator(".auction-profile-link")
+      .getAttribute("href");
+    assert.match(profile, /^\/p\/[a-z0-9-]+$/);
+    for (const selector of [
+      ".player-avatar-large",
+      ".auction-player-name a",
+      ".auction-profile-link",
+    ]) {
+      const link = friend.locator(selector);
+      await expect(link).toHaveAttribute("href", profile);
+      await link.click();
+      await expect(friend).toHaveURL(url + profile);
+      await expect(
+        friend.getByRole("heading", { name, exact: true }),
+      ).toBeVisible();
+      await friend.getByRole("link", { name: "PLAY", exact: true }).click();
+      await expect(friend.locator(".auction-player-name")).toHaveText(name);
+      assert.equal(
+        await friend.evaluate(() => localStorage.getItem("iplUserId")),
+        seatId,
+      );
+    }
     assert.deepEqual(errors, []);
     await hostContext.close();
     await friendContext.close();

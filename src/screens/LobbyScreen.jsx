@@ -54,8 +54,9 @@ export function LobbyScreen(props) {
               <span className="field-label">ROOM CODE</span>
               <strong>{room.code}</strong>
               <p>
-                Share the code or invite link. Friends can still join
-                mid-auction.
+                {room.settings.identifiedOnly
+                  ? "Share the invite with friends. They need an identity to join."
+                  : "Share the code or invite link. Friends can still join mid-auction."}
               </p>
             </div>
             <button className="square-button" onClick={copyInvite}>
@@ -129,25 +130,46 @@ export function LobbyScreen(props) {
           {isHost ? (
             <>
               {identity && (
-                <div className="setting-row">
-                  <div>
-                    <strong>Record this season</strong>
-                    <p>
-                      Save the completed season to every identified
-                      participant’s Hub.
-                    </p>
+                <>
+                  <div className="setting-row">
+                    <div>
+                      <strong>Record this season</strong>
+                      <p>
+                        Save the completed season to every identified
+                        participant’s Hub.
+                      </p>
+                    </div>
+                    <button
+                      className={`toggle ${room.settings.recordSeason ? "on" : ""}`}
+                      onClick={() =>
+                        setSetting("recordSeason", !room.settings.recordSeason)
+                      }
+                      aria-label="Toggle season recording"
+                      aria-pressed={Boolean(room.settings.recordSeason)}
+                    >
+                      <i />
+                    </button>
                   </div>
-                  <button
-                    className={`toggle ${room.settings.recordSeason ? "on" : ""}`}
-                    onClick={() =>
-                      setSetting("recordSeason", !room.settings.recordSeason)
-                    }
-                    aria-label="Toggle season recording"
-                    aria-pressed={Boolean(room.settings.recordSeason)}
-                  >
-                    <i />
-                  </button>
-                </div>
+                  <div className="setting-row">
+                    <div>
+                      <strong>Only allow identified users</strong>
+                      <p>Require an Arena identity to join this room.</p>
+                    </div>
+                    <button
+                      className={`toggle ${room.settings.identifiedOnly ? "on" : ""}`}
+                      onClick={() =>
+                        setSetting(
+                          "identifiedOnly",
+                          !room.settings.identifiedOnly,
+                        )
+                      }
+                      aria-label="Only allow identified users"
+                      aria-pressed={Boolean(room.settings.identifiedOnly)}
+                    >
+                      <i />
+                    </button>
+                  </div>
+                </>
               )}
               <div className="setting-row">
                 <div>

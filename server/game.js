@@ -18,6 +18,7 @@ const DEFAULT_SETTINGS = {
   tradesEnabled: false,
   tradeLimit: 2,
   recordSeason: false,
+  identifiedOnly: false,
 };
 const MAX_SQUAD = rules.maxSquad;
 const MAX_OVERSEAS = rules.maxSquadOverseas;

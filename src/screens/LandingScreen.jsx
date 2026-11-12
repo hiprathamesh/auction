@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TeamLogo } from "../components/Brand";
+import { PinField } from "../components/PinField";
 import { socket } from "../socket";
 
 export function LandingScreen(props) {
@@ -23,12 +24,25 @@ export function LandingScreen(props) {
     recoverHost,
     identity,
     setIdentity,
+    clearError,
   } = props;
   const [identityInput, setIdentityInput] = useState("");
   const [pin, setPin] = useState("");
   const [identityError, setIdentityError] = useState("");
   const [identityBusy, setIdentityBusy] = useState(false);
-  const identify = async () => {
+  const [changingPin, setChangingPin] = useState(false);
+  const [currentPin, setCurrentPin] = useState("");
+  const [newPin, setNewPin] = useState("");
+  const [pinChanged, setPinChanged] = useState(false);
+  const canIdentify =
+    /^[a-z][a-z0-9]{3,31}$/.test(identityInput) &&
+    pin.length === 4 &&
+    !identityBusy;
+  const canChangePin =
+    currentPin.length === 4 && newPin.length === 4 && !identityBusy;
+  const identify = async (event) => {
+    event.preventDefault();
+    if (!canIdentify) return;
     setIdentityBusy(true);
     setIdentityError("");
     try {
@@ -43,7 +57,37 @@ export function LandingScreen(props) {
         throw new Error(result.error || "Could not identify you.");
       setIdentity(result.id);
       setPin("");
+      clearError();
       socket.disconnect().connect();
+    } catch (failure) {
+      setIdentityError(failure.message);
+    } finally {
+      setIdentityBusy(false);
+    }
+  };
+  const closePinForm = () => {
+    setChangingPin(false);
+    setCurrentPin("");
+    setNewPin("");
+    setIdentityError("");
+  };
+  const changePin = async (event) => {
+    event.preventDefault();
+    if (!canChangePin) return;
+    setIdentityBusy(true);
+    setIdentityError("");
+    try {
+      const response = await fetch("/api/identity/pin", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        credentials: "same-origin",
+        body: JSON.stringify({ currentPin, newPin }),
+      });
+      const result = await response.json();
+      if (!response.ok)
+        throw new Error(result.error || "Could not change your PIN.");
+      closePinForm();
+      setPinChanged(true);
     } catch (failure) {
       setIdentityError(failure.message);
     } finally {
@@ -52,6 +96,7 @@ export function LandingScreen(props) {
   };
   const signOut = async () => {
     setIdentityBusy(true);
+    setIdentityError("");
     try {
       const response = await fetch("/api/identity", {
         method: "DELETE",
@@ -59,6 +104,8 @@ export function LandingScreen(props) {
       });
       if (!response.ok) throw new Error("Could not sign out.");
       setIdentity(null);
+      closePinForm();
+      setPinChanged(false);
       socket.disconnect().connect();
     } catch (failure) {
       setIdentityError(failure.message);
@@ -142,6 +189,53 @@ export function LandingScreen(props) {
                   Your ID follows you across seasons. Your PIN stays on this
                   server; this browser keeps a private session cookie.
                 </p>
+                {changingPin ? (
+                  <form className="identity-form" onSubmit={changePin}>
+                    <PinField
+                      label="CURRENT PIN"
+                      value={currentPin}
+                      onChange={setCurrentPin}
+                      autoComplete="current-password"
+                      disabled={identityBusy}
+                      autoFocus
+                    />
+                    <PinField
+                      label="NEW PIN"
+                      value={newPin}
+                      onChange={setNewPin}
+                      autoComplete="new-password"
+                      disabled={identityBusy}
+                    />
+                    <div className="identity-actions">
+                      <button
+                        className="button ghost"
+                        type="button"
+                        disabled={identityBusy}
+                        onClick={closePinForm}
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        className="button primary"
+                        disabled={!canChangePin}
+                      >
+                        Confirm
+                      </button>
+                    </div>
+                  </form>
+                ) : (
+                  <button
+                    className="button secondary full-button"
+                    disabled={identityBusy}
+                    onClick={() => {
+                      setIdentityError("");
+                      setPinChanged(false);
+                      setChangingPin(true);
+                    }}
+                  >
+                    Change PIN
+                  </button>
+                )}
                 <button
                   className="button secondary full-button"
                   disabled={identityBusy}
@@ -149,9 +243,10 @@ export function LandingScreen(props) {
                 >
                   Sign out
                 </button>
+                {pinChanged && <p role="status">Your PIN has been changed.</p>}
               </>
             ) : (
-              <>
+              <form className="identity-form" onSubmit={identify}>
                 <p>
                   Choose a unique ID and a four-digit PIN. Use the same pair
                   next time to return to your profile.
@@ -163,6 +258,7 @@ export function LandingScreen(props) {
                   id="identity-id"
                   className="text-input"
                   autoComplete="username"
+                  disabled={identityBusy}
                   value={identityInput}
                   onChange={(e) =>
                     setIdentityInput(
@@ -177,38 +273,24 @@ export function LandingScreen(props) {
                 <small>
                   4–32 lowercase letters and digits; start with a letter.
                 </small>
-                <label className="field-label" htmlFor="identity-pin">
-                  FOUR-DIGIT PIN
-                </label>
-                <input
-                  id="identity-pin"
-                  className="text-input"
-                  type="password"
-                  inputMode="numeric"
+                <PinField
+                  label="FOUR-DIGIT PIN"
                   autoComplete="current-password"
                   value={pin}
-                  onChange={(e) =>
-                    setPin(e.target.value.replace(/\D/g, "").slice(0, 4))
-                  }
-                  onKeyDown={(e) => e.key === "Enter" && identify()}
-                  placeholder="••••"
+                  onChange={setPin}
+                  disabled={identityBusy}
                 />
                 <button
                   className="button primary full-button"
-                  disabled={
-                    identityBusy ||
-                    !/^[a-z][a-z0-9]{3,31}$/.test(identityInput) ||
-                    pin.length !== 4
-                  }
-                  onClick={identify}
+                  disabled={!canIdentify}
                 >
                   {identityBusy ? "Please wait…" : "Identify me ↗"}
                 </button>
-              </>
+              </form>
             )}
-            {identityError && (
+            {(identityError || error) && (
               <p className="error-banner" role="alert">
-                {identityError}
+                {identityError || error}
               </p>
             )}
           </div>

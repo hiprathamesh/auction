@@ -1,5 +1,6 @@
 import { TeamLogo } from "../components/Brand";
 import { AuctionTimer } from "../components/AuctionTimer";
+import { playerPath } from "../lib/format";
 
 export function AuctionScreen(props) {
   const {
@@ -41,6 +42,10 @@ export function AuctionScreen(props) {
     kickUser,
     hostAction,
   } = props;
+  const profileHref = currentLot ? playerPath(currentLot.player.id) : null;
+  const profileLabel = currentLot
+    ? `View ${currentLot.player.name}'s profile`
+    : "";
   return (
     <main className="wrap page-content auction-page">
       <div className="auction-toolbar">
@@ -196,8 +201,10 @@ export function AuctionScreen(props) {
                 <span>PLAYER ON THE BLOCK</span>
                 <span>#{String(currentLot.lotNumber).padStart(3, "0")}</span>
               </div>
-              <div
+              <a
                 className="player-avatar-large"
+                href={profileHref}
+                aria-label={profileLabel}
                 style={{
                   "--team-color": currentLot.player.legend
                     ? "#cba4ff"
@@ -234,8 +241,10 @@ export function AuctionScreen(props) {
                     ? "LEGEND"
                     : currentLot.player.nationality.toUpperCase()}
                 </i>
-              </div>
-              <h2 className="auction-player-name">{currentLot.player.name}</h2>
+              </a>
+              <h2 className="auction-player-name">
+                <a href={profileHref}>{currentLot.player.name}</a>
+              </h2>
               <div className="player-tags">
                 <span>{currentLot.player.role}</span>
                 <span>
@@ -252,6 +261,12 @@ export function AuctionScreen(props) {
                     )}
                   </span>
                 )}
+                <a
+                  className="auction-profile-link"
+                  href={profileHref}
+                  aria-label={profileLabel}
+                  title={profileLabel}
+                />
               </div>
               {room.settings.showRatings && (
                 <div className="ratings-strip">

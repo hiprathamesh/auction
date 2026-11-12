@@ -725,40 +725,47 @@ export function PlayerProfile({ id }) {
         title={player.name}
         art={<Portrait player={player} />}
       >
-        <div className="hub-masthead-meta">
-          <span>
-            <b>{totals.seasons}</b> signed
-          </span>
-          <span>
-            <b>{totals.seasonsPlayed}</b> seasons played
-          </span>
-          <span>
-            <b>{totals.matches}</b> {totals.matches === 1 ? "match" : "matches"}
-          </span>
-        </div>
+        {totals ? (
+          <div className="hub-masthead-meta">
+            <span>
+              <b>{totals.seasons}</b> signed
+            </span>
+            <span>
+              <b>{totals.seasonsPlayed}</b> seasons played
+            </span>
+            <span>
+              <b>{totals.matches}</b>{" "}
+              {totals.matches === 1 ? "match" : "matches"}
+            </span>
+          </div>
+        ) : (
+          <p>Career statistics are available to identified users.</p>
+        )}
       </Masthead>
-      <Tabs
-        label="Player statistics"
-        tabs={[
-          "Overview",
-          "Batting",
-          "Bowling",
-          "Match log",
-          "Honours & auction",
-        ]}
-        active={tab}
-        onChange={setTab}
-      >
-        {tab === "Overview" && (
-          <CareerOverview totals={totals} ranks={ranks} seasons={seasons} />
-        )}
-        {tab === "Batting" && <Batting totals={totals} seasons={seasons} />}
-        {tab === "Bowling" && <Bowling totals={totals} seasons={seasons} />}
-        {tab === "Match log" && <MatchLog id={id} />}
-        {tab === "Honours & auction" && (
-          <Honours totals={totals} seasons={seasons} />
-        )}
-      </Tabs>
+      {totals && (
+        <Tabs
+          label="Player statistics"
+          tabs={[
+            "Overview",
+            "Batting",
+            "Bowling",
+            "Match log",
+            "Honours & auction",
+          ]}
+          active={tab}
+          onChange={setTab}
+        >
+          {tab === "Overview" && (
+            <CareerOverview totals={totals} ranks={ranks} seasons={seasons} />
+          )}
+          {tab === "Batting" && <Batting totals={totals} seasons={seasons} />}
+          {tab === "Bowling" && <Bowling totals={totals} seasons={seasons} />}
+          {tab === "Match log" && <MatchLog id={id} />}
+          {tab === "Honours & auction" && (
+            <Honours totals={totals} seasons={seasons} />
+          )}
+        </Tabs>
+      )}
     </Shell>
   );
 }

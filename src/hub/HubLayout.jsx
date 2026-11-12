@@ -17,7 +17,7 @@ export const money = (value) =>
     : "₹" + Number(value).toFixed(2).replace(/\.00$/, "") + " Cr";
 export const rate = (top, bottom, scale = 1, digits = 1) =>
   bottom ? ((top * scale) / bottom).toFixed(digits) : "—";
-export const playerPath = (id) => "/p/" + encodeURIComponent(id);
+export { playerPath } from "../lib/format";
 export const matchPath = (season, match) =>
   `/s/${season}?match=${encodeURIComponent(match)}`;
 

@@ -185,6 +185,7 @@ function App() {
   );
   const [displayName, setDisplayName] = useState("");
   const [identity, setIdentity] = useState(null);
+  const [identifiedSeat, setIdentifiedSeat] = useState(false);
   const [teamId, setTeamId] = useState("MI");
   const [playerCount, setPlayerCount] = useState(null);
   const [hostRecoveryToken, setHostRecoveryToken] = useState(
@@ -300,6 +301,7 @@ function App() {
       roomCode: code,
       userId,
       isHost: host,
+      identified,
       reconnectToken,
       hostRecoveryToken: recoveryToken,
     }) => {
@@ -307,6 +309,7 @@ function App() {
       roomVersion.current = null;
       setRoomCode(code);
       setMeId(userId);
+      setIdentifiedSeat(identified);
       setPrivateRtmState({ playerId: null, isHolder: false, isOn: false });
       setOwnSquadOvrs({});
       localStorage.setItem("iplRoomCode", code);
@@ -350,7 +353,12 @@ function App() {
     };
     const onAppError = (payload) => {
       const message = payload?.message || "Something went wrong.";
-      if (waitingForRejoin) {
+      if (payload?.code === "ROOM_IDENTITY_REQUIRED") {
+        waitingForRejoin = false;
+        setRoom(null);
+        setMeId(null);
+        setView("identity");
+      } else if (waitingForRejoin) {
         waitingForRejoin = false;
         setRoom(null);
         setMeId(null);
@@ -945,7 +953,7 @@ function App() {
           room={room}
           recoveryToken={hostRecoveryToken}
           online={appOnline}
-          identity={identity}
+          identity={identity && identifiedSeat}
         />
       )}
 
@@ -971,6 +979,7 @@ function App() {
             recoverHost,
             identity,
             setIdentity,
+            clearError: () => setError(""),
           }}
         />
       )}
@@ -990,7 +999,7 @@ function App() {
             appOnline,
             allReady,
             hostAction,
-            identity,
+            identity: identity && identifiedSeat,
           }}
         />
       )}

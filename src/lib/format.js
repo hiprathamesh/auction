@@ -4,3 +4,4 @@ export const money = (value) =>
     .replace(/\.00$/, "")} Cr`;
 export const getTeam = (room, id) =>
   room?.users?.find((user) => user.id === id);
+export const playerPath = (id) => "/p/" + encodeURIComponent(id);

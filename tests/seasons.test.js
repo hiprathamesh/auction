@@ -191,6 +191,20 @@ test(
       assert.equal(profile.totals.seasons, 1);
       assert.ok(profile.seasons[0].squad.length >= 11);
       const player = room.users[0].squad[0];
+      const publicPlayer = await (
+        await fetch(`${server.url}/api/players/${player.id}`)
+      ).json();
+      assert.deepEqual(Object.keys(publicPlayer), ["player"]);
+      assert.equal(publicPlayer.player.id, player.id);
+      assert.equal(
+        (await fetch(`${server.url}/api/players/${player.id}/matches`)).status,
+        401,
+      );
+      assert.equal(
+        (await fetch(`${server.url}/api/identity/pin`, { method: "PATCH" }))
+          .status,
+        401,
+      );
       const playerProfile = await (
         await fetch(`${server.url}/api/players/${player.id}`, {
           headers: { Cookie: host.cookie },
@@ -455,10 +469,40 @@ test(
       });
       await fresh.goto(`${url}/?identity=1`);
       await fresh.getByLabel("YOUR ID").fill("newmanager");
-      await fresh.getByLabel("FOUR-DIGIT PIN").fill("2345");
+      const pin = fresh.getByLabel("FOUR-DIGIT PIN");
+      await pin.fill("23x45");
+      await expect(pin).toHaveValue("2345");
+      await expect(fresh.locator(".pin-slots span")).toHaveCount(4);
       await fresh.getByRole("button", { name: /identify me/i }).click();
       await expect(
         fresh.getByRole("link", { name: /your hub/i }),
+      ).toBeVisible();
+      await fresh.getByRole("button", { name: "Change PIN" }).click();
+      await expect(fresh.locator(".pin-slots span")).toHaveCount(8);
+      const currentPin = fresh.getByLabel("CURRENT PIN");
+      const newPin = fresh.getByLabel("NEW PIN");
+      await expect(currentPin).toBeFocused();
+      await currentPin.fill("0000");
+      await newPin.fill("0567");
+      await fresh.getByRole("button", { name: "Confirm" }).click();
+      await expect(fresh.getByRole("alert")).toHaveText(
+        "Current PIN is incorrect.",
+      );
+      await currentPin.fill("2345");
+      await newPin.press("Enter");
+      await expect(fresh.getByRole("status")).toHaveText(
+        "Your PIN has been changed.",
+      );
+      await fresh.getByRole("button", { name: "Sign out" }).click();
+      await pin.fill("2345");
+      await pin.press("Enter");
+      await expect(fresh.getByRole("alert")).toHaveText(
+        "ID or PIN is incorrect.",
+      );
+      await pin.fill("0567");
+      await pin.press("Enter");
+      await expect(
+        fresh.getByRole("button", { name: "Change PIN" }),
       ).toBeVisible();
       await fresh
         .getByRole("button", { name: "Create room", exact: true })
@@ -489,6 +533,30 @@ test(
       await expect(
         fresh.getByRole("button", { name: "Toggle season recording" }),
       ).toHaveAttribute("aria-pressed", "true");
+      const access = fresh.getByRole("button", {
+        name: "Only allow identified users",
+      });
+      await expect(access).toHaveAttribute("aria-pressed", "false");
+      await access.click();
+      await expect(access).toHaveAttribute("aria-pressed", "true");
+      const code = await fresh.evaluate(() =>
+        localStorage.getItem("iplRoomCode"),
+      );
+      const guest = await browser.newPage();
+      await guest.goto(`${url}/?room=${code}`);
+      await guest.getByLabel("YOUR DISPLAY NAME").fill("Guest Friend");
+      await guest.getByRole("button", { name: "Chennai Super Kings" }).click();
+      await guest.getByRole("button", { name: "Join auction room" }).click();
+      await expect(guest.getByRole("alert")).toHaveText(
+        "Identify yourself before joining this room.",
+      );
+      await guest.getByLabel("YOUR ID").fill("guestfriend");
+      await guest.getByLabel("FOUR-DIGIT PIN").fill("5678");
+      await guest.getByRole("button", { name: /identify me/i }).click();
+      await guest.getByRole("button", { name: "Join auction room" }).click();
+      await expect(
+        fresh.getByText("Guest Friend", { exact: true }),
+      ).toBeVisible();
       assert.deepEqual(errors, []);
     } finally {
       await browser.close();
