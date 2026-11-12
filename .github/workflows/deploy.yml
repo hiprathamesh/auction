@@ -15,7 +15,7 @@ concurrency:
 jobs:
   deploy:
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v7
         with:
@@ -43,9 +43,11 @@ jobs:
         if: steps.release.outputs.current == 'true'
         env:
           RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
+          DEPLOY_HOST: ${{ vars.VM_DEPLOY_HOST }}
           DEPLOY_KEY: ${{ secrets.VM_DEPLOY_PRIVATE_KEY }}
-          KNOWN_HOSTS: ${{ secrets.VM_KNOWN_HOSTS }}
+          KNOWN_HOSTS: ${{ secrets.VM_A1_KNOWN_HOSTS }}
         run: |
+          test -n "$DEPLOY_HOST"
           test -n "$DEPLOY_KEY"
           test -n "$KNOWN_HOSTS"
           printf '%s\n' "$DEPLOY_KEY" > "$RUNNER_TEMP/deploy-key"
@@ -53,5 +55,5 @@ jobs:
           printf '%s\n' "$KNOWN_HOSTS" > "$RUNNER_TEMP/known-hosts"
           ssh -T -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
             -o UserKnownHostsFile="$RUNNER_TEMP/known-hosts" \
-            -i "$RUNNER_TEMP/deploy-key" ubuntu@92.4.92.177 "$RELEASE_SHA" \
+            -i "$RUNNER_TEMP/deploy-key" "ubuntu@$DEPLOY_HOST" "$RELEASE_SHA" \
             < "$RUNNER_TEMP/auction-release.tar.gz"
