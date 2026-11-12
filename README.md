@@ -88,7 +88,7 @@ The tests use isolated loopback servers, simulated seasons, and a headless brows
 ## Game rules
 
 - Up to ten people can manage unique franchises. There are no bot teams.
-- The database contains 288 active-pool players and 52 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, Player Retain, and trades.
+- The database contains 288 active-pool players and 58 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, Player Retain, and trades.
 - Right to Match follows the identified manager who held the player in the latest recorded season's final squad, even if the manager changes franchise. The option expires after one season and costs the final winning bid when exercised.
 - With Player Retain enabled, managers can select up to the host's limit of one to three eligible players in the lobby. Those players join their squads for free and skip the auction. Retaining a player makes them ineligible for retention in the next recorded season. They remain eligible for RTM.
 - On an opening bid, the base price counts as the first step: for example, ×2 bids the base plus one increment. After bidding begins, ×2 adds two increments to the current bid. Increments follow the price ladder and may change at its thresholds.

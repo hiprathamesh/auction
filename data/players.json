@@ -50,6 +50,26 @@
       }
     },
     {
+      "id": "angkrish-raghuvanshi",
+      "name": "Angkrish Raghuvanshi",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 94,
+      "batting": 97,
+      "bowling": 57,
+      "fielding": 95,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        2,
+        3,
+        4
+      ],
+      "rtmTeamId": "KKR"
+    },
+    {
       "id": "arshdeep-singh",
       "name": "Arshdeep Singh",
       "set": "Marquee Set 1",
@@ -70,6 +90,26 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/13217/arshdeep-singh",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "ashutosh-sharma",
+      "name": "Ashutosh Sharma",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 93,
+      "batting": 96,
+      "bowling": 55,
+      "fielding": 96,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        5,
+        6,
+        7
+      ],
+      "rtmTeamId": "PBKS"
     },
     {
       "id": "axar-patel",
@@ -99,30 +139,24 @@
       }
     },
     {
-      "id": "ben-duckett",
-      "name": "Ben Duckett",
+      "id": "ayush-mhatre",
+      "name": "Ayush Mhatre",
       "set": "Marquee Set 1",
-      "role": "Wicketkeeper",
-      "nationality": "Overseas",
-      "overseas": true,
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
       "legend": false,
-      "ovr": 69,
-      "batting": 71,
-      "bowling": 20,
-      "fielding": 69,
-      "basePrice": 0.5,
+      "ovr": 94,
+      "batting": 96,
+      "bowling": 58,
+      "fielding": 95,
+      "basePrice": 2,
       "preferredBattingPositions": [
         1,
         2,
         3
       ],
-      "rtmTeamId": "DC",
-      "photo": "/player-portraits/ben-duckett.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/8502/ben-duckett",
-        "author": "Cricbuzz"
-      }
+      "rtmTeamId": "CSK"
     },
     {
       "id": "bhuvneshwar-kumar",
@@ -199,32 +233,6 @@
       }
     },
     {
-      "id": "deepak-hooda",
-      "name": "Deepak Hooda",
-      "set": "Marquee Set 1",
-      "role": "All-rounder",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 69,
-      "batting": 70,
-      "bowling": 69,
-      "fielding": 65,
-      "basePrice": 0.5,
-      "preferredBattingPositions": [
-        4,
-        5,
-        6
-      ],
-      "rtmTeamId": "LSG",
-      "photo": "/player-portraits/deepak-hooda.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/9427/deepak-hooda",
-        "author": "Cricbuzz"
-      }
-    },
-    {
       "id": "devon-conway",
       "name": "Devon Conway",
       "set": "Marquee Set 1",
@@ -273,32 +281,6 @@
       "photoAttribution": {
         "source": "Cricbuzz",
         "sourceUrl": "https://www.cricbuzz.com/profiles/11172/finn-allen",
-        "author": "Cricbuzz"
-      }
-    },
-    {
-      "id": "gus-atkinson",
-      "name": "Gus Atkinson",
-      "set": "Marquee Set 1",
-      "role": "All-rounder",
-      "nationality": "Overseas",
-      "overseas": true,
-      "legend": false,
-      "ovr": 73,
-      "batting": 74,
-      "bowling": 73,
-      "fielding": 69,
-      "basePrice": 0.75,
-      "preferredBattingPositions": [
-        8,
-        9,
-        10
-      ],
-      "rtmTeamId": "KKR",
-      "photo": "/player-portraits/gus-atkinson.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/13681/gus-atkinson",
         "author": "Cricbuzz"
       }
     },
@@ -377,58 +359,6 @@
       "photoAttribution": {
         "source": "Cricbuzz",
         "sourceUrl": "https://www.cricbuzz.com/profiles/10276/ishan-kishan",
-        "author": "Cricbuzz"
-      }
-    },
-    {
-      "id": "jake-fraser-mcgurk",
-      "name": "Jake Fraser-McGurk",
-      "set": "Marquee Set 1",
-      "role": "Batter",
-      "nationality": "Overseas",
-      "overseas": true,
-      "legend": false,
-      "ovr": 89,
-      "batting": 94,
-      "bowling": 48,
-      "fielding": 82,
-      "basePrice": 1.5,
-      "preferredBattingPositions": [
-        1,
-        2,
-        3
-      ],
-      "rtmTeamId": "DC",
-      "photo": "/player-portraits/jake-fraser-mcgurk.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/14501/jake-fraser-mcgurk",
-        "author": "Cricbuzz"
-      }
-    },
-    {
-      "id": "jamie-smith",
-      "name": "Jamie Smith",
-      "set": "Marquee Set 1",
-      "role": "Wicketkeeper",
-      "nationality": "Overseas",
-      "overseas": true,
-      "legend": false,
-      "ovr": 66,
-      "batting": 68,
-      "bowling": 20,
-      "fielding": 66,
-      "basePrice": 0.5,
-      "preferredBattingPositions": [
-        1,
-        2,
-        3
-      ],
-      "rtmTeamId": null,
-      "photo": "/player-portraits/jamie-smith.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/13810/jamie-smith",
         "author": "Cricbuzz"
       }
     },
@@ -551,32 +481,6 @@
       }
     },
     {
-      "id": "k-s-bharat",
-      "name": "K.S. Bharat",
-      "set": "Marquee Set 1",
-      "role": "Wicketkeeper",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 71,
-      "batting": 74,
-      "bowling": 20,
-      "fielding": 72,
-      "basePrice": 0.5,
-      "preferredBattingPositions": [
-        5,
-        6,
-        7
-      ],
-      "rtmTeamId": "RCB",
-      "photo": "/player-portraits/k-s-bharat.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/9025/srikar-bharat",
-        "author": "Cricbuzz"
-      }
-    },
-    {
       "id": "kagiso-rabada",
       "name": "Kagiso Rabada",
       "set": "Marquee Set 1",
@@ -596,6 +500,30 @@
         "source": "Cricbuzz",
         "sourceUrl": "https://www.cricbuzz.com/profiles/9585/kagiso-rabada",
         "author": "Cricbuzz"
+      }
+    },
+    {
+      "id": "karn-sharma",
+      "name": "Karn Sharma",
+      "set": "Marquee Set 1",
+      "role": "Bowler",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 95,
+      "batting": 64,
+      "bowling": 97,
+      "fielding": 96,
+      "basePrice": 2,
+      "preferredBattingPositions": [],
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/karn-sharma.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karn_Sharma_2015.jpg",
+        "author": "NAPARAZZI",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
       }
     },
     {
@@ -866,6 +794,46 @@
       }
     },
     {
+      "id": "naman-dhir",
+      "name": "Naman Dhir",
+      "set": "Marquee Set 1",
+      "role": "All-rounder",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 96,
+      "batting": 97,
+      "bowling": 96,
+      "fielding": 95,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        5,
+        6,
+        7
+      ],
+      "rtmTeamId": "MI"
+    },
+    {
+      "id": "nehal-wadhera",
+      "name": "Nehal Wadhera",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 96,
+      "batting": 97,
+      "bowling": 54,
+      "fielding": 95,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        4,
+        5,
+        6
+      ],
+      "rtmTeamId": "PBKS"
+    },
+    {
       "id": "nicholas-pooran",
       "name": "Nicholas Pooran",
       "set": "Marquee Set 1",
@@ -888,6 +856,32 @@
       "photoAttribution": {
         "source": "Cricbuzz",
         "sourceUrl": "https://www.cricbuzz.com/profiles/9406/nicholas-pooran",
+        "author": "Cricbuzz"
+      }
+    },
+    {
+      "id": "nitish-kumar-reddy",
+      "name": "Nitish Kumar Reddy",
+      "set": "Marquee Set 1",
+      "role": "All-rounder",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 95,
+      "batting": 97,
+      "bowling": 95,
+      "fielding": 96,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        4,
+        5,
+        6
+      ],
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/nitish-kumar-reddy.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/14701/nitish-kumar-reddy",
         "author": "Cricbuzz"
       }
     },
@@ -960,6 +954,25 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/10479/phil-salt",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "prabhsimran-singh",
+      "name": "Prabhsimran Singh",
+      "set": "Marquee Set 1",
+      "role": "Wicketkeeper",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 96,
+      "batting": 98,
+      "bowling": 35,
+      "fielding": 97,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        1,
+        2
+      ],
+      "rtmTeamId": "PBKS"
     },
     {
       "id": "prithvi-shaw",
@@ -1040,28 +1053,28 @@
       }
     },
     {
-      "id": "rahmanullah-gurbaz",
-      "name": "Rahmanullah Gurbaz",
+      "id": "rajat-patidar",
+      "name": "Rajat Patidar",
       "set": "Marquee Set 1",
-      "role": "Wicketkeeper",
-      "nationality": "Overseas",
-      "overseas": true,
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
       "legend": false,
-      "ovr": 70,
-      "batting": 72,
-      "bowling": 20,
-      "fielding": 70,
-      "basePrice": 0.5,
+      "ovr": 96,
+      "batting": 99,
+      "bowling": 52,
+      "fielding": 98,
+      "basePrice": 2,
       "preferredBattingPositions": [
-        1,
-        2,
-        3
+        3,
+        4,
+        5
       ],
-      "rtmTeamId": "KKR",
-      "photo": "/player-portraits/rahmanullah-gurbaz.webp",
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/rajat-patidar.webp",
       "photoAttribution": {
         "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/13213/rahmanullah-gurbaz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/10636/rajat-patidar",
         "author": "Cricbuzz"
       }
     },
@@ -1086,6 +1099,22 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/10738/rashid-khan",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "ravi-bishnoi",
+      "name": "Ravi Bishnoi",
+      "set": "Marquee Set 1",
+      "role": "Bowler",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 95,
+      "batting": 65,
+      "bowling": 96,
+      "fielding": 97,
+      "basePrice": 2,
+      "preferredBattingPositions": [],
+      "rtmTeamId": "PBKS"
     },
     {
       "id": "ravindra-jadeja",
@@ -1218,6 +1247,32 @@
       }
     },
     {
+      "id": "sai-sudharsan",
+      "name": "Sai Sudharsan",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 96,
+      "batting": 98,
+      "bowling": 54,
+      "fielding": 98,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": "GT",
+      "photo": "/player-portraits/sai-sudharsan.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/13866/sai-sudharsan",
+        "author": "Cricbuzz"
+      }
+    },
+    {
       "id": "sam-curran",
       "name": "Sam Curran",
       "set": "Marquee Set 1",
@@ -1241,6 +1296,34 @@
         "source": "Cricbuzz",
         "sourceUrl": "https://www.cricbuzz.com/profiles/10420/sam-curran",
         "author": "Cricbuzz"
+      }
+    },
+    {
+      "id": "sameer-rizvi",
+      "name": "Sameer Rizvi",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 92,
+      "batting": 94,
+      "bowling": 52,
+      "fielding": 90,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        4,
+        5,
+        6
+      ],
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/sameer-rizvi.jpg",
+      "photoAttribution": {
+        "source": "Wikimedia Commons",
+        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sameer_rizvi_With_Rashid_Zirak.jpg",
+        "author": "Akshayparmar.gu",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
       }
     },
     {
@@ -1294,6 +1377,26 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/9429/sarfaraz-khan",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "shashank-singh",
+      "name": "Shashank Singh",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 94,
+      "batting": 97,
+      "bowling": 55,
+      "fielding": 92,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        5,
+        6,
+        7
+      ],
+      "rtmTeamId": "PBKS"
     },
     {
       "id": "shimron-hetmyer",
@@ -1453,6 +1556,32 @@
       }
     },
     {
+      "id": "tilak-varma",
+      "name": "Tilak Varma",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 96,
+      "batting": 98,
+      "bowling": 62,
+      "fielding": 96,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        3,
+        4,
+        5
+      ],
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/tilak-varma.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/14504/tilak-varma",
+        "author": "Cricbuzz"
+      }
+    },
+    {
       "id": "tim-david",
       "name": "Tim David",
       "set": "Marquee Set 1",
@@ -1525,6 +1654,25 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/8117/trent-boult",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "vaibhav-suryavanshi",
+      "name": "Vaibhav Sooryavanshi",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 98,
+      "batting": 99,
+      "bowling": 56,
+      "fielding": 95,
+      "basePrice": 2,
+      "preferredBattingPositions": [
+        1,
+        2
+      ],
+      "rtmTeamId": "RR"
     },
     {
       "id": "varun-chakravarthy",
@@ -1623,32 +1771,6 @@
       "photoAttribution": {
         "source": "Cricbuzz",
         "sourceUrl": "https://www.cricbuzz.com/profiles/10926/wanindu-hasaranga",
-        "author": "Cricbuzz"
-      }
-    },
-    {
-      "id": "wiaan-mulder",
-      "name": "Wiaan Mulder",
-      "set": "Marquee Set 1",
-      "role": "All-rounder",
-      "nationality": "Overseas",
-      "overseas": true,
-      "legend": false,
-      "ovr": 73,
-      "batting": 74,
-      "bowling": 73,
-      "fielding": 69,
-      "basePrice": 0.75,
-      "preferredBattingPositions": [
-        6,
-        7,
-        8
-      ],
-      "rtmTeamId": "SRH",
-      "photo": "/player-portraits/wiaan-mulder.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/11200/wiaan-mulder",
         "author": "Cricbuzz"
       }
     },
@@ -2090,6 +2212,26 @@
       }
     },
     {
+      "id": "dwayne-smith",
+      "name": "Dwayne Smith",
+      "set": "Marquee Set 1",
+      "role": "All-rounder",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": true,
+      "ovr": 96,
+      "batting": 99,
+      "bowling": 88,
+      "fielding": 94,
+      "basePrice": 2.0,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": null
+    },
+    {
       "id": "faf-du-plessis",
       "name": "Faf du Plessis",
       "set": "Marquee Set 1",
@@ -2415,6 +2557,26 @@
       }
     },
     {
+      "id": "lendl-simmons",
+      "name": "Lendl Simmons",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": true,
+      "ovr": 99,
+      "batting": 99,
+      "bowling": 54,
+      "fielding": 97,
+      "basePrice": 2.0,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": null
+    },
+    {
       "id": "mahela-jayawardene",
       "name": "Mahela Jayawardene",
       "set": "Marquee Set 1",
@@ -2490,6 +2652,22 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/4772/michael-hussey",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "mitchell-johnson",
+      "name": "Mitchell Johnson",
+      "set": "Marquee Set 1",
+      "role": "Bowler",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": true,
+      "ovr": 98,
+      "batting": 66,
+      "bowling": 99,
+      "fielding": 92,
+      "basePrice": 2.0,
+      "preferredBattingPositions": [],
+      "rtmTeamId": null
     },
     {
       "id": "morne-morkel",
@@ -2583,6 +2761,26 @@
       }
     },
     {
+      "id": "parthiv-patel",
+      "name": "Parthiv Patel",
+      "set": "Marquee Set 1",
+      "role": "Wicketkeeper",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": true,
+      "ovr": 95,
+      "batting": 97,
+      "bowling": 42,
+      "fielding": 96,
+      "basePrice": 2.0,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": null
+    },
+    {
       "id": "pragyan-ojha",
       "name": "Pragyan Ojha",
       "set": "Marquee Set 1",
@@ -2651,6 +2849,26 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/27/rahul-dravid",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "ravichandran-ashwin",
+      "name": "Ravichandran Ashwin",
+      "set": "Marquee Set 1",
+      "role": "All-rounder",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": true,
+      "ovr": 98,
+      "batting": 92,
+      "bowling": 99,
+      "fielding": 93,
+      "basePrice": 2.0,
+      "preferredBattingPositions": [
+        6,
+        7,
+        8
+      ],
+      "rtmTeamId": null
     },
     {
       "id": "robin-uthappa",
@@ -2869,6 +3087,26 @@
         "sourceUrl": "https://www.cricbuzz.com/profiles/1446/shikhar-dhawan",
         "author": "Cricbuzz"
       }
+    },
+    {
+      "id": "sourav-ganguly",
+      "name": "Sourav Ganguly",
+      "set": "Marquee Set 1",
+      "role": "Batter",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": true,
+      "ovr": 97,
+      "batting": 98,
+      "bowling": 71,
+      "fielding": 93,
+      "basePrice": 2.0,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": null
     },
     {
       "id": "suresh-raina",
@@ -3274,32 +3512,6 @@
       }
     },
     {
-      "id": "rajat-patidar",
-      "name": "Rajat Patidar",
-      "set": "Set 1",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 90,
-      "batting": 95,
-      "bowling": 49,
-      "fielding": 83,
-      "basePrice": 1.5,
-      "preferredBattingPositions": [
-        2,
-        3,
-        4
-      ],
-      "rtmTeamId": "RCB",
-      "photo": "/player-portraits/rajat-patidar.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/10636/rajat-patidar",
-        "author": "Cricbuzz"
-      }
-    },
-    {
       "id": "riyan-parag",
       "name": "Riyan Parag",
       "set": "Set 1",
@@ -3378,32 +3590,6 @@
       }
     },
     {
-      "id": "sai-sudharsan",
-      "name": "Sai Sudharsan",
-      "set": "Set 1",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 91,
-      "batting": 96,
-      "bowling": 50,
-      "fielding": 84,
-      "basePrice": 2.0,
-      "preferredBattingPositions": [
-        2,
-        3,
-        4
-      ],
-      "rtmTeamId": "GT",
-      "photo": "/player-portraits/sai-sudharsan.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/13866/sai-sudharsan",
-        "author": "Cricbuzz"
-      }
-    },
-    {
       "id": "shardul-thakur",
       "name": "Shardul Thakur",
       "set": "Set 1",
@@ -3470,32 +3656,6 @@
       "photoAttribution": {
         "source": "Cricbuzz",
         "sourceUrl": "https://www.cricbuzz.com/profiles/10225/t-natarajan",
-        "author": "Cricbuzz"
-      }
-    },
-    {
-      "id": "tilak-varma",
-      "name": "Tilak Varma",
-      "set": "Set 1",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 92,
-      "batting": 97,
-      "bowling": 51,
-      "fielding": 85,
-      "basePrice": 2.0,
-      "preferredBattingPositions": [
-        2,
-        3,
-        4
-      ],
-      "rtmTeamId": "MI",
-      "photo": "/player-portraits/tilak-varma.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/14504/tilak-varma",
         "author": "Cricbuzz"
       }
     },
@@ -4202,32 +4362,6 @@
       }
     },
     {
-      "id": "nitish-kumar-reddy",
-      "name": "Nitish Kumar Reddy",
-      "set": "Set 3",
-      "role": "All-rounder",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 87,
-      "batting": 88,
-      "bowling": 87,
-      "fielding": 83,
-      "basePrice": 1.5,
-      "preferredBattingPositions": [
-        5,
-        6,
-        7
-      ],
-      "rtmTeamId": "SRH",
-      "photo": "/player-portraits/nitish-kumar-reddy.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/14701/nitish-kumar-reddy",
-        "author": "Cricbuzz"
-      }
-    },
-    {
       "id": "r-sai-kishore",
       "name": "R. Sai Kishore",
       "set": "Set 3",
@@ -4476,26 +4610,6 @@
       "rtmTeamId": "CSK"
     },
     {
-      "id": "angkrish-raghuvanshi",
-      "name": "Angkrish Raghuvanshi",
-      "set": "Set 4",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 65,
-      "batting": 70,
-      "bowling": 25,
-      "fielding": 58,
-      "basePrice": 0.3,
-      "preferredBattingPositions": [
-        3,
-        4,
-        5
-      ],
-      "rtmTeamId": "KKR"
-    },
-    {
       "id": "aniket-verma",
       "name": "Aniket Verma",
       "set": "Set 4",
@@ -4620,26 +4734,6 @@
       "rtmTeamId": "LSG"
     },
     {
-      "id": "ashutosh-sharma",
-      "name": "Ashutosh Sharma",
-      "set": "Set 4",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 58,
-      "batting": 62,
-      "bowling": 25,
-      "fielding": 50,
-      "basePrice": 0.2,
-      "preferredBattingPositions": [
-        3,
-        4,
-        5
-      ],
-      "rtmTeamId": "PBKS"
-    },
-    {
       "id": "ashwani-kumar",
       "name": "Ashwani Kumar",
       "set": "Set 4",
@@ -4676,24 +4770,56 @@
       "rtmTeamId": "LSG"
     },
     {
-      "id": "ayush-mhatre",
-      "name": "Ayush Mhatre",
+      "id": "ben-duckett",
+      "name": "Ben Duckett",
       "set": "Set 4",
-      "role": "Batter",
+      "role": "Wicketkeeper",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": false,
+      "ovr": 69,
+      "batting": 71,
+      "bowling": 20,
+      "fielding": 69,
+      "basePrice": 0.5,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/ben-duckett.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/8502/ben-duckett",
+        "author": "Cricbuzz"
+      }
+    },
+    {
+      "id": "deepak-hooda",
+      "name": "Deepak Hooda",
+      "set": "Set 4",
+      "role": "All-rounder",
       "nationality": "Indian",
       "overseas": false,
       "legend": false,
-      "ovr": 67,
-      "batting": 72,
-      "bowling": 26,
-      "fielding": 60,
+      "ovr": 69,
+      "batting": 70,
+      "bowling": 69,
+      "fielding": 65,
       "basePrice": 0.5,
       "preferredBattingPositions": [
-        3,
         4,
-        5
+        5,
+        6
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "LSG",
+      "photo": "/player-portraits/deepak-hooda.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/9427/deepak-hooda",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "digvesh-rathi",
@@ -4780,6 +4906,32 @@
       "rtmTeamId": "PBKS"
     },
     {
+      "id": "gus-atkinson",
+      "name": "Gus Atkinson",
+      "set": "Set 4",
+      "role": "All-rounder",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": false,
+      "ovr": 73,
+      "batting": 74,
+      "bowling": 73,
+      "fielding": 69,
+      "basePrice": 0.75,
+      "preferredBattingPositions": [
+        8,
+        9,
+        10
+      ],
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/gus-atkinson.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/13681/gus-atkinson",
+        "author": "Cricbuzz"
+      }
+    },
+    {
       "id": "harnoor-pannu",
       "name": "Harnoor Pannu",
       "set": "Set 4",
@@ -4858,6 +5010,84 @@
         5
       ],
       "rtmTeamId": "DC"
+    },
+    {
+      "id": "jake-fraser-mcgurk",
+      "name": "Jake Fraser-McGurk",
+      "set": "Set 4",
+      "role": "Batter",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": false,
+      "ovr": 89,
+      "batting": 94,
+      "bowling": 48,
+      "fielding": 82,
+      "basePrice": 1.5,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": "DC",
+      "photo": "/player-portraits/jake-fraser-mcgurk.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/14501/jake-fraser-mcgurk",
+        "author": "Cricbuzz"
+      }
+    },
+    {
+      "id": "jamie-smith",
+      "name": "Jamie Smith",
+      "set": "Set 4",
+      "role": "Wicketkeeper",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": false,
+      "ovr": 66,
+      "batting": 68,
+      "bowling": 20,
+      "fielding": 66,
+      "basePrice": 0.5,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": null,
+      "photo": "/player-portraits/jamie-smith.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/13810/jamie-smith",
+        "author": "Cricbuzz"
+      }
+    },
+    {
+      "id": "k-s-bharat",
+      "name": "K.S. Bharat",
+      "set": "Set 4",
+      "role": "Wicketkeeper",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": false,
+      "ovr": 71,
+      "batting": 74,
+      "bowling": 20,
+      "fielding": 72,
+      "basePrice": 0.5,
+      "preferredBattingPositions": [
+        5,
+        6,
+        7
+      ],
+      "rtmTeamId": "RCB",
+      "photo": "/player-portraits/k-s-bharat.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/9025/srikar-bharat",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "kumar-kushagra",
@@ -5052,46 +5282,6 @@
       "rtmTeamId": "PBKS"
     },
     {
-      "id": "naman-dhir",
-      "name": "Naman Dhir",
-      "set": "Set 4",
-      "role": "All-rounder",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 61,
-      "batting": 62,
-      "bowling": 61,
-      "fielding": 57,
-      "basePrice": 0.3,
-      "preferredBattingPositions": [
-        5,
-        6,
-        7
-      ],
-      "rtmTeamId": "MI"
-    },
-    {
-      "id": "nehal-wadhera",
-      "name": "Nehal Wadhera",
-      "set": "Set 4",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 65,
-      "batting": 70,
-      "bowling": 25,
-      "fielding": 58,
-      "basePrice": 0.3,
-      "preferredBattingPositions": [
-        3,
-        4,
-        5
-      ],
-      "rtmTeamId": "PBKS"
-    },
-    {
       "id": "nishant-sindhu",
       "name": "Nishant Sindhu",
       "set": "Set 4",
@@ -5110,26 +5300,6 @@
         7
       ],
       "rtmTeamId": "CSK"
-    },
-    {
-      "id": "prabhsimran-singh",
-      "name": "Prabhsimran Singh",
-      "set": "Set 4",
-      "role": "Wicketkeeper",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 61,
-      "batting": 63,
-      "bowling": 20,
-      "fielding": 61,
-      "basePrice": 0.3,
-      "preferredBattingPositions": [
-        3,
-        4,
-        5
-      ],
-      "rtmTeamId": "PBKS"
     },
     {
       "id": "prince-yadav",
@@ -5202,6 +5372,32 @@
       "basePrice": 0.3,
       "preferredBattingPositions": [],
       "rtmTeamId": "MI"
+    },
+    {
+      "id": "rahmanullah-gurbaz",
+      "name": "Rahmanullah Gurbaz",
+      "set": "Set 4",
+      "role": "Wicketkeeper",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": false,
+      "ovr": 70,
+      "batting": 72,
+      "bowling": 20,
+      "fielding": 70,
+      "basePrice": 0.5,
+      "preferredBattingPositions": [
+        1,
+        2,
+        3
+      ],
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/rahmanullah-gurbaz.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/13213/rahmanullah-gurbaz",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "raj-angad-bawa",
@@ -5306,54 +5502,6 @@
         5
       ],
       "rtmTeamId": "MI"
-    },
-    {
-      "id": "sameer-rizvi",
-      "name": "Sameer Rizvi",
-      "set": "Set 4",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 58,
-      "batting": 62,
-      "bowling": 25,
-      "fielding": 50,
-      "basePrice": 0.2,
-      "preferredBattingPositions": [
-        3,
-        4,
-        5
-      ],
-      "rtmTeamId": "DC",
-      "photo": "/player-portraits/sameer-rizvi.jpg",
-      "photoAttribution": {
-        "source": "Wikimedia Commons",
-        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Sameer_rizvi_With_Rashid_Zirak.jpg",
-        "author": "Akshayparmar.gu",
-        "license": "CC BY-SA 4.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
-      }
-    },
-    {
-      "id": "shashank-singh",
-      "name": "Shashank Singh",
-      "set": "Set 4",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 66,
-      "batting": 71,
-      "bowling": 25,
-      "fielding": 59,
-      "basePrice": 0.5,
-      "preferredBattingPositions": [
-        3,
-        4,
-        5
-      ],
-      "rtmTeamId": "PBKS"
     },
     {
       "id": "shreyas-gopal",
@@ -5536,26 +5684,6 @@
       "rtmTeamId": "KKR"
     },
     {
-      "id": "vaibhav-suryavanshi",
-      "name": "Vaibhav Suryavanshi",
-      "set": "Set 4",
-      "role": "Batter",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 65,
-      "batting": 70,
-      "bowling": 25,
-      "fielding": 58,
-      "basePrice": 0.3,
-      "preferredBattingPositions": [
-        3,
-        4,
-        5
-      ],
-      "rtmTeamId": "RR"
-    },
-    {
       "id": "vipraj-nigam",
       "name": "Vipraj Nigam",
       "set": "Set 4",
@@ -5606,6 +5734,32 @@
       "basePrice": 0.2,
       "preferredBattingPositions": [],
       "rtmTeamId": "RCB"
+    },
+    {
+      "id": "wiaan-mulder",
+      "name": "Wiaan Mulder",
+      "set": "Set 4",
+      "role": "All-rounder",
+      "nationality": "Overseas",
+      "overseas": true,
+      "legend": false,
+      "ovr": 73,
+      "batting": 74,
+      "bowling": 73,
+      "fielding": 69,
+      "basePrice": 0.75,
+      "preferredBattingPositions": [
+        6,
+        7,
+        8
+      ],
+      "rtmTeamId": "SRH",
+      "photo": "/player-portraits/wiaan-mulder.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/11200/wiaan-mulder",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "yash-thakur",
@@ -5880,22 +6034,6 @@
       "bowling": 77,
       "fielding": 65,
       "basePrice": 0.75,
-      "preferredBattingPositions": [],
-      "rtmTeamId": "PBKS"
-    },
-    {
-      "id": "ravi-bishnoi",
-      "name": "Ravi Bishnoi",
-      "set": "SP1",
-      "role": "Bowler",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 66,
-      "batting": 35,
-      "bowling": 70,
-      "fielding": 58,
-      "basePrice": 0.5,
       "preferredBattingPositions": [],
       "rtmTeamId": "PBKS"
     },
@@ -6466,30 +6604,6 @@
       "basePrice": 0.3,
       "preferredBattingPositions": [],
       "rtmTeamId": "SRH"
-    },
-    {
-      "id": "karn-sharma",
-      "name": "Karn Sharma",
-      "set": "USP1",
-      "role": "Bowler",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 61,
-      "batting": 30,
-      "bowling": 65,
-      "fielding": 53,
-      "basePrice": 0.3,
-      "preferredBattingPositions": [],
-      "rtmTeamId": "RCB",
-      "photo": "/player-portraits/karn-sharma.jpg",
-      "photoAttribution": {
-        "source": "Wikimedia Commons",
-        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karn_Sharma_2015.jpg",
-        "author": "NAPARAZZI",
-        "license": "CC BY-SA 2.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
-      }
     },
     {
       "id": "kumar-kartikeya-singh",

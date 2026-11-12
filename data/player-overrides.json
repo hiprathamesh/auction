@@ -758,6 +758,16 @@
     }
   },
   "nitish-kumar-reddy": {
+    "ovr": 95,
+    "batting": 97,
+    "bowling": 95,
+    "fielding": 96,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      4,
+      5,
+      6
+    ],
     "photo": "/player-portraits/nitish-kumar-reddy.webp",
     "photoAttribution": {
       "source": "Cricbuzz",
@@ -786,6 +796,16 @@
     }
   },
   "sameer-rizvi": {
+    "ovr": 92,
+    "batting": 94,
+    "bowling": 52,
+    "fielding": 90,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      4,
+      5,
+      6
+    ],
     "photo": "/player-portraits/sameer-rizvi.jpg",
     "photoAttribution": {
       "source": "Wikimedia Commons",
@@ -846,6 +866,11 @@
     }
   },
   "karn-sharma": {
+    "ovr": 95,
+    "batting": 64,
+    "bowling": 97,
+    "fielding": 96,
+    "basePrice": 2,
     "photo": "/player-portraits/karn-sharma.jpg",
     "photoAttribution": {
       "source": "Wikimedia Commons",
@@ -1382,6 +1407,16 @@
     }
   },
   "rajat-patidar": {
+    "ovr": 96,
+    "batting": 99,
+    "bowling": 52,
+    "fielding": 98,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      3,
+      4,
+      5
+    ],
     "photo": "/player-portraits/rajat-patidar.webp",
     "photoAttribution": {
       "source": "Cricbuzz",
@@ -1414,6 +1449,16 @@
     }
   },
   "sai-sudharsan": {
+    "ovr": 96,
+    "batting": 98,
+    "bowling": 54,
+    "fielding": 98,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      1,
+      2,
+      3
+    ],
     "photo": "/player-portraits/sai-sudharsan.webp",
     "photoAttribution": {
       "source": "Cricbuzz",
@@ -1446,6 +1491,16 @@
     }
   },
   "tilak-varma": {
+    "ovr": 96,
+    "batting": 98,
+    "bowling": 62,
+    "fielding": 96,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      3,
+      4,
+      5
+    ],
     "photo": "/player-portraits/tilak-varma.webp",
     "photoAttribution": {
       "source": "Cricbuzz",
@@ -1676,5 +1731,127 @@
       "sourceUrl": "https://www.cricbuzz.com/profiles/19027/umran-malik",
       "author": "Cricbuzz"
     }
+  },
+  "angkrish-raghuvanshi": {
+    "ovr": 94,
+    "batting": 97,
+    "bowling": 57,
+    "fielding": 95,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      2,
+      3,
+      4
+    ]
+  },
+  "ashutosh-sharma": {
+    "ovr": 93,
+    "batting": 96,
+    "bowling": 55,
+    "fielding": 96,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      5,
+      6,
+      7
+    ]
+  },
+  "ayush-mhatre": {
+    "ovr": 94,
+    "batting": 96,
+    "bowling": 58,
+    "fielding": 95,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      1,
+      2,
+      3
+    ]
+  },
+  "naman-dhir": {
+    "ovr": 96,
+    "batting": 97,
+    "bowling": 96,
+    "fielding": 95,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      5,
+      6,
+      7
+    ]
+  },
+  "nehal-wadhera": {
+    "ovr": 96,
+    "batting": 97,
+    "bowling": 54,
+    "fielding": 95,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      4,
+      5,
+      6
+    ]
+  },
+  "prabhsimran-singh": {
+    "ovr": 96,
+    "batting": 98,
+    "bowling": 35,
+    "fielding": 97,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      1,
+      2
+    ]
+  },
+  "ravi-bishnoi": {
+    "ovr": 95,
+    "batting": 65,
+    "bowling": 96,
+    "fielding": 97,
+    "basePrice": 2
+  },
+  "shashank-singh": {
+    "ovr": 94,
+    "batting": 97,
+    "bowling": 55,
+    "fielding": 92,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      5,
+      6,
+      7
+    ]
+  },
+  "vaibhav-suryavanshi": {
+    "ovr": 98,
+    "batting": 99,
+    "bowling": 56,
+    "fielding": 95,
+    "basePrice": 2,
+    "preferredBattingPositions": [
+      1,
+      2
+    ]
+  },
+  "dwayne-smith": {
+    "batting": 99
+  },
+  "lendl-simmons": {
+    "ovr": 99,
+    "batting": 99,
+    "fielding": 97
+  },
+  "mitchell-johnson": {
+    "fielding": 92
+  },
+  "ravichandran-ashwin": {
+    "batting": 92,
+    "fielding": 93,
+    "preferredBattingPositions": [
+      6,
+      7,
+      8
+    ],
+    "role": "All-rounder"
   }
 }

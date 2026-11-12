@@ -26,7 +26,7 @@ def atomic_write_text(destination, content):
 # Roles are inferred from the player's usual T20/auction role. This is game metadata, not an official classification.
 BAT='Batter'; BOWL='Bowler'; AR='All-rounder'; WK='Wicketkeeper'
 role_lists = {
- BAT: '''Aiden Markram Ishan Kishan Phil Salt Rinku Singh Rishabh Pant Ruturaj Gaikwad Shimron Hetmyer Shivam Dube Shubman Gill Suryakumar Yadav Tim David Travis Head Virat Kohli Will Jacks Abhishek Sharma Dhruv Jurel Glenn Phillips Rajat Patidar Riyan Parag Sai Sudharsan Sherfane Rutherford Tilak Varma Tristan Stubbs Dewald Brevis Jacob Bethell Matthew Breetzke Nitish Rana Ryan Rickelton Ajinkya Rahane Devdutt Padikkal Karun Nair Manish Pandey Shahrukh Khan Abdul Samad Abhishek Porel Angkrish Raghuvanshi Ashutosh Sharma Ayush Badoni Ayush Mhatre Donovan Ferreira Harnoor Pannu Himmat Singh Nehal Wadhera Prabhsimran Singh Priyansh Arya Sameer Rizvi Shashank Singh Shubham Dubey Smaran Ravichandaran Urvil Patel Vaibhav Suryavanshi Virat Kohli Cameron Green David Miller Devon Conway Jake Fraser-McGurk Prithvi Shaw Sarfaraz Khan Aarya Desai Abhinav Manohar Abhinav Tejrana Anmolpreet Singh Atharva Taide Yash Dhull Ackeem Auguste Mayank Agarawal Pathum Nissanka Rahul Tripathi Reeza Hendricks Sediqullah Atal Steve Smith Tim Robinson Akshat Raghuwanshi Aman Rao Perala Ankit Kumar Danish Malewar Manan Vohra Pukhraj Mann Rohan Kunnummal Salman Nizar'''.split(),
+ BAT: '''Aiden Markram Ishan Kishan Phil Salt Rinku Singh Rishabh Pant Ruturaj Gaikwad Shimron Hetmyer Shivam Dube Shubman Gill Suryakumar Yadav Tim David Travis Head Virat Kohli Will Jacks Abhishek Sharma Dhruv Jurel Glenn Phillips Rajat Patidar Riyan Parag Sai Sudharsan Sherfane Rutherford Tilak Varma Tristan Stubbs Dewald Brevis Jacob Bethell Matthew Breetzke Nitish Rana Ryan Rickelton Ajinkya Rahane Devdutt Padikkal Karun Nair Manish Pandey Shahrukh Khan Abdul Samad Abhishek Porel Angkrish Raghuvanshi Ashutosh Sharma Ayush Badoni Ayush Mhatre Donovan Ferreira Harnoor Pannu Himmat Singh Nehal Wadhera Prabhsimran Singh Priyansh Arya Sameer Rizvi Shashank Singh Shubham Dubey Smaran Ravichandaran Urvil Patel Vaibhav Sooryavanshi Virat Kohli Cameron Green David Miller Devon Conway Jake Fraser-McGurk Prithvi Shaw Sarfaraz Khan Aarya Desai Abhinav Manohar Abhinav Tejrana Anmolpreet Singh Atharva Taide Yash Dhull Ackeem Auguste Mayank Agarawal Pathum Nissanka Rahul Tripathi Reeza Hendricks Sediqullah Atal Steve Smith Tim Robinson Akshat Raghuwanshi Aman Rao Perala Ankit Kumar Danish Malewar Manan Vohra Pukhraj Mann Rohan Kunnummal Salman Nizar'''.split(),
  AR: '''Hardik Pandya Marco Jansen Marcus Stoinis Mitchell Marsh Ravindra Jadeja Sam Curran Sunil Narine Azmatullah Omarzai Krunal Pandya Romario Shepherd Rovman Powell Washington Sundar Corbin Bosch Kamindu Mendis Mitchell Owen Rahul Tewatia Nitish Kumar Reddy Shahbaz Ahmed Anukul Roy Ajay Mandal Arshin Kulkarni Aniket Verma Harpreet Brar Harsh Dubey Musheer Khan Naman Dhir Nishant Sindhu Raj Angad Bawa Ramakrishna Ghosh Ramandeep Singh Suryansh Shedge Swapnil Singh Yudhvir Charak Deepak Hooda Gus Atkinson Liam Livingstone Rachin Ravindra Venkatesh Iyer Wanindu Hasaranga Wiaan Mulder Auqib Dar Edhen Tom Kamlesh Nagarkoti Mahipal Lomror Prashant Veer Rajvardhan Hangargekar Sanvir Singh Shivang Kumar Tanush Kotian Vijay Shankar Ben Dwarshuis Daniel Sams Daryl Mitchell Dasun Shanaka Jason Holder Matthew Short Michael Bracewell Sean Abbott'''.split(),
  WK: '''Heinrich Klaasen Ishan Kishan MS Dhoni Phil Salt Rishabh Pant Jos Buttler Dhruv Jurel Jitesh Sharma Abhishek Porel Anuj Rawat Kumar Kushagra Prabhsimran Singh Robin Minz Vishnu Vinod Lhuan-Dre Pretorious Ben Duckett Finn Allen Jamie Smith Jonny Bairstow K.S. Bharat Quinton De Kock Rahmanullah Gurbaz Kartik Sharma Mukul Choudhary Ruchit Ahir Tejasvi Singh Tushar Raheja Vansh Bedi Benjamin McDermott Jordan Cox Josh Inglis Kusal Mendis Kusal Perera Shai Hope Tim Seifert Tom Banton'''.split(),
  BOWL: '''Arshdeep Singh Bhuvneshwar Kumar Jofra Archer Josh Hazlewood Kagiso Rabada Kuldeep Yadav Lockie Ferguson Mitchell Starc Mohammad Shami Mohammad Siraj Noor Ahmad Pat Cummins Rashid Khan Trent Boult Varun Chakravarthy Yuzvendra Chahal Avesh Khan Deepak Chahar Harshal Patel Khaleel Ahmed Mayank Yadav Mitchell Santner Prasidh Krishna Shardul Thakur T. Natarajan Allah Ghazanfar Brydon Carse Dushmantha Chameera Jamie Overton Jaydev Unadkat Mukesh Kumar Nandre Burger Nathan Ellis Nuwan Thushara Xavier Bartlett Harshit Rana Ishant Sharma Jayant Yadav R. Sai Kishore Sandeep Sharma Tushar Deshpande Umran Malik Yash Dayal Abhinandan Singh Akash Singh Anshul Kamboj Ashwani Kumar Eshan Malinga Gurjapneet Singh Gurnoor Brar Kwena Maphaka M. Siddharth Manav Suthar Mayank Markande Mohd. Arshad Khan Mohsin Khan Mukesh Choudhary Prince Yadav Raghu Sharma Rasikh Salam Suyash Sharma Vaibhav Arora Vipraj Nigam Vyshak Vijaykumar Yash Thakur Zeeshan Ansari Akash Deep Anrich Nortje Fazalhaq Farooqi Gerald Coetzee Jacob Duffy Matheesha Pathirana Matt Henry Shivam Mavi Spencer Johnson Akeal Hosein Maheesh Theekshana Mujeeb Rahman Rahul Chahar Ravi Bishnoi Akash Madhwal Ashok Sharma Kartik Tyagi Naman Tiwari Raj Limbani Simarjeet Singh Sushant Mishra Karn Sharma Kumar Kartikeya Singh Prashant Solanki Shivam Shukla Vignesh Puthur Wahidullah Zadran Yash Raj Punja Adam Milne Chetan Sakariya Kuldeep Sen Kyle Jamieson Lungisani Ngidi Mustafizur Rahman Saqib Mahmood Umesh Yadav William Orourke Mohammad Waqar Salamkheil Qais Ahmad Rishad Hossain Viyaskanth Vijayakanth'''.split()
@@ -140,6 +140,12 @@ legends = [
     ('Michael Hussey', 'Marquee Set 1', 'Batter', 'Overseas', 96, 98, 55, 95),
     ('Faf du Plessis', 'Marquee Set 1', 'Batter', 'Overseas', 97, 98, 55, 96),
     ('Muttiah Muralitharan', 'Marquee Set 1', 'Bowler', 'Overseas', 99, 58, 99, 93),
+    ('Ravichandran Ashwin', 'Marquee Set 1', AR, 'Indian', 98, 72, 99, 92),
+    ('Lendl Simmons', 'Marquee Set 1', BAT, 'Overseas', 96, 98, 54, 94),
+    ('Mitchell Johnson', 'Marquee Set 1', BOWL, 'Overseas', 98, 66, 99, 93),
+    ('Sourav Ganguly', 'Marquee Set 1', BAT, 'Indian', 97, 98, 71, 93),
+    ('Dwayne Smith', 'Marquee Set 1', AR, 'Overseas', 96, 98, 88, 94),
+    ('Parthiv Patel', 'Marquee Set 1', WK, 'Indian', 95, 97, 42, 96),
 ]
 for name, st, role, nationality, ovr, bat, bowl, field in legends:
     players.append({'name':name,'set':st,'legend':True,'role':role,'nationality':nationality,'ovr':ovr,'batting':bat,'bowling':bowl,'fielding':field})
@@ -183,6 +189,8 @@ preferred_position_overrides = {
     # Newly added legends
     'David Warner': [1, 2], 'Kane Williamson': [3, 4, 5], 'Michael Hussey': [1, 2, 3],
     'Faf du Plessis': [1, 2],
+    'Dwayne Smith': [1, 2, 3], 'Lendl Simmons': [1, 2, 3],
+    'Parthiv Patel': [1, 2, 3], 'Sourav Ganguly': [1, 2, 3],
 }
 
 def default_preferred_positions(name, role, auction_set):
@@ -265,7 +273,7 @@ rtm_team_overrides = {
     'Rasikh Salam': 'DC', 'Robin Minz': 'MI', 'Sameer Rizvi': 'DC',
     'Shashank Singh': 'PBKS', 'Shreyas Gopal': 'RR', 'Suyash Sharma': 'KKR',
     'Swapnil Singh': 'RCB', 'Urvil Patel': 'GT', 'Vaibhav Arora': 'KKR',
-    'Vaibhav Suryavanshi': 'RR', 'Vipraj Nigam': 'DC', 'Vishnu Vinod': 'MI',
+    'Vaibhav Sooryavanshi': 'RR', 'Vipraj Nigam': 'DC', 'Vishnu Vinod': 'MI',
     'Vyshak Vijaykumar': 'RCB', 'Yash Thakur': 'LSG', 'Yudhvir Charak': 'LSG',
     'Akash Deep': 'RCB', 'Anrich Nortje': 'DC', 'Fazalhaq Farooqi': 'SRH',
     'Gerald Coetzee': 'MI', 'Matheesha Pathirana': 'CSK', 'Shivam Mavi': 'KKR',
@@ -324,6 +332,9 @@ rtm_team_overrides = {
     'Kusal Mendis': 'GT', 'Viyaskanth Vijayakanth': 'SRH',
 }
 VALID_RTM_TEAM_IDS = {'CSK', 'MI', 'RCB', 'KKR', 'SRH', 'RR', 'DC', 'PBKS', 'GT', 'LSG'}
+
+# Preserve profile URLs and recorded-season ownership after a spelling correction.
+stable_player_ids = {'Vaibhav Sooryavanshi': 'vaibhav-suryavanshi'}
 
 # Explicit overrides are the source of truth for manually edited values.
 # A project without that file retains the old database-preservation behavior.
@@ -412,7 +423,7 @@ for p in players:
     if legend: base=max(base,1.0 if ovr<90 else 2.0)
     slug=re.sub(r'[^a-z0-9]+','-',name.lower()).strip('-')
     # Add stable suffix only if necessary.
-    pid=slug
+    pid=stable_player_ids.get(name, slug)
     if any(q['id']==pid for q in output): pid += '-' + hashlib.md5(name.encode()).hexdigest()[:4]
     preferred_positions = default_preferred_positions(name, role, st)
     output.append({'id':pid,'name':name,'set':st,'role':role,'nationality':nationality,'overseas':nationality=='Overseas','legend':legend,'ovr':int(ovr),'batting':int(batting),'bowling':int(bowling),'fielding':int(fielding),'basePrice':base,'preferredBattingPositions':preferred_positions,'rtmTeamId':rtm_team_overrides.get(name)})

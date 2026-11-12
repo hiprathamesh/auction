@@ -298,7 +298,7 @@ export function LobbyScreen(props) {
               <div className="setting-row">
                 <div>
                   <strong>Retired IPL legends</strong>
-                  <p>Add 52 boosted legends in Marquee Set 1</p>
+                  <p>Add 58 boosted legends in Marquee Set 1</p>
                 </div>
                 <button
                   className={`toggle ${room.settings.includeLegends ? "on" : ""}`}

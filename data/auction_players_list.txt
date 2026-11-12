@@ -50,23 +50,30 @@ Yashasvi Jaiswal
 Cameron Green
 David Miller
 Devon Conway
-Jake Fraser-McGurk
 Prithvi Shaw
 Sarfaraz Khan
-Deepak Hooda
-Gus Atkinson
 Liam Livingstone
 Rachin Ravindra
 Venkatesh Iyer
 Wanindu Hasaranga
-Wiaan Mulder
-Ben Duckett
 Finn Allen
-Jamie Smith
 Jonny Bairstow
-K.S. Bharat
 Quinton De Kock
-Rahmanullah Gurbaz
+Angkrish Raghuvanshi
+Ashutosh Sharma
+Ayush Mhatre
+Karn Sharma
+Naman Dhir
+Nehal Wadhera
+Nitish Kumar Reddy
+Prabhsimran Singh
+Rajat Patidar
+Ravi Bishnoi
+Sai Sudharsan
+Sameer Rizvi
+Shashank Singh
+Tilak Varma
+Vaibhav Sooryavanshi
 
 Set 1
 Abhishek Sharma
@@ -81,15 +88,12 @@ Krunal Pandya
 Mayank Yadav
 Mitchell Santner
 Prasidh Krishna
-Rajat Patidar
 Riyan Parag
 Romario Shepherd
 Rovman Powell
-Sai Sudharsan
 Shardul Thakur
 Sherfane Rutherford
 T. Natarajan
-Tilak Varma
 Tristan Stubbs
 Washington Sundar
 
@@ -123,7 +127,6 @@ Jayant Yadav
 Jitesh Sharma
 Karun Nair
 Manish Pandey
-Nitish Kumar Reddy
 R. Sai Kishore
 Sandeep Sharma
 Shahbaz Ahmed
@@ -138,26 +141,29 @@ Abhinandan Singh
 Abhishek Porel
 Ajay Mandal
 Akash Singh
-Angkrish Raghuvanshi
 Aniket Verma
 Anshul Kamboj
 Anuj Rawat
 Anukul Roy
 Arjun Tendulkar
 Arshin Kulkarni
-Ashutosh Sharma
 Ashwani Kumar
 Ayush Badoni
-Ayush Mhatre
+Ben Duckett
+Deepak Hooda
 Digvesh Rathi
 Donovan Ferreira
 Eshan Malinga
 Gurjapneet Singh
 Gurnoor Brar
+Gus Atkinson
 Harnoor Pannu
 Harpreet Brar
 Harsh Dubey
 Himmat Singh
+Jake Fraser-McGurk
+Jamie Smith
+K.S. Bharat
 Kumar Kushagra
 Kwena Maphaka
 Lhuan-Dre Pretorious
@@ -169,21 +175,17 @@ Mohd. Arshad Khan
 Mohsin Khan
 Mukesh Choudhary
 Musheer Khan
-Naman Dhir
-Nehal Wadhera
 Nishant Sindhu
-Prabhsimran Singh
 Prince Yadav
 Priyansh Arya
 Pyla Avinash
 Raghu Sharma
+Rahmanullah Gurbaz
 Raj Angad Bawa
 Ramakrishna Ghosh
 Ramandeep Singh
 Rasikh Salam
 Robin Minz
-Sameer Rizvi
-Shashank Singh
 Shreyas Gopal
 Shubham Dubey
 Smaran Ravichandaran
@@ -193,10 +195,10 @@ Swapnil Singh
 Tripurana Vijay
 Urvil Patel
 Vaibhav Arora
-Vaibhav Suryavanshi
 Vipraj Nigam
 Vishnu Vinod
 Vyshak Vijaykumar
+Wiaan Mulder
 Yash Thakur
 Yudhvir Charak
 Zeeshan Ansari
@@ -217,7 +219,6 @@ Akeal Hosein
 Maheesh Theekshana
 Mujeeb Rahman
 Rahul Chahar
-Ravi Bishnoi
 
 UBA1
 Aarya Desai
@@ -257,7 +258,6 @@ Simarjeet Singh
 Sushant Mishra
 
 USP1
-Karn Sharma
 Kumar Kartikeya Singh
 Prashant Solanki
 Shivam Shukla
