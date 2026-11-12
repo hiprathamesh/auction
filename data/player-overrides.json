@@ -871,13 +871,11 @@
     "bowling": 97,
     "fielding": 96,
     "basePrice": 2,
-    "photo": "/player-portraits/karn-sharma.jpg",
+    "photo": "/player-portraits/karn-sharma.webp",
     "photoAttribution": {
-      "source": "Wikimedia Commons",
-      "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karn_Sharma_2015.jpg",
-      "author": "NAPARAZZI",
-      "license": "CC BY-SA 2.0",
-      "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1844/karn-sharma",
+      "author": "Cricbuzz"
     }
   },
   "reeza-hendricks": {
@@ -1742,7 +1740,13 @@
       2,
       3,
       4
-    ]
+    ],
+    "photo": "/player-portraits/angkrish-raghuvanshi.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/22566/angkrish-raghuvanshi",
+      "author": "Cricbuzz"
+    }
   },
   "ashutosh-sharma": {
     "ovr": 93,
@@ -1766,7 +1770,13 @@
       1,
       2,
       3
-    ]
+    ],
+    "photo": "/player-portraits/ayush-mhatre.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1431163/ayush-mhatre",
+      "author": "Cricbuzz"
+    }
   },
   "naman-dhir": {
     "ovr": 96,
@@ -1778,7 +1788,13 @@
       5,
       6,
       7
-    ]
+    ],
+    "photo": "/player-portraits/naman-dhir.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/36139/naman-dhir",
+      "author": "Cricbuzz"
+    }
   },
   "nehal-wadhera": {
     "ovr": 96,
@@ -1801,14 +1817,26 @@
     "preferredBattingPositions": [
       1,
       2
-    ]
+    ],
+    "photo": "/player-portraits/prabhsimran-singh.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14254/prabhsimran-singh",
+      "author": "Cricbuzz"
+    }
   },
   "ravi-bishnoi": {
     "ovr": 95,
     "batting": 65,
     "bowling": 96,
     "fielding": 97,
-    "basePrice": 2
+    "basePrice": 2,
+    "photo": "/player-portraits/ravi-bishnoi.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/14659/ravi-bishnoi",
+      "author": "Cricbuzz"
+    }
   },
   "shashank-singh": {
     "ovr": 94,
@@ -1831,18 +1859,42 @@
     "preferredBattingPositions": [
       1,
       2
-    ]
+    ],
+    "photo": "/player-portraits/vaibhav-suryavanshi.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/51791/vaibhav-sooryavanshi",
+      "author": "Cricbuzz"
+    }
   },
   "dwayne-smith": {
-    "batting": 99
+    "batting": 99,
+    "photo": "/player-portraits/dwayne-smith.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/255/dwayne-smith",
+      "author": "Cricbuzz"
+    }
   },
   "lendl-simmons": {
     "ovr": 99,
     "batting": 99,
-    "fielding": 97
+    "fielding": 97,
+    "photo": "/player-portraits/lendl-simmons.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/599/lendl-simmons",
+      "author": "Cricbuzz"
+    }
   },
   "mitchell-johnson": {
-    "fielding": 92
+    "fielding": 92,
+    "photo": "/player-portraits/mitchell-johnson.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/496/mitchell-johnson",
+      "author": "Cricbuzz"
+    }
   },
   "ravichandran-ashwin": {
     "batting": 92,
@@ -1852,6 +1904,28 @@
       7,
       8
     ],
-    "role": "All-rounder"
+    "role": "All-rounder",
+    "photo": "/player-portraits/ravichandran-ashwin.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/1593/ravichandran-ashwin",
+      "author": "Cricbuzz"
+    }
+  },
+  "sourav-ganguly": {
+    "photo": "/player-portraits/sourav-ganguly.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/29/sourav-ganguly",
+      "author": "Cricbuzz"
+    }
+  },
+  "parthiv-patel": {
+    "photo": "/player-portraits/parthiv-patel.webp",
+    "photoAttribution": {
+      "source": "Cricbuzz",
+      "sourceUrl": "https://www.cricbuzz.com/profiles/74/parthiv-patel",
+      "author": "Cricbuzz"
+    }
   }
 }

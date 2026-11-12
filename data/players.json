@@ -67,7 +67,13 @@
         3,
         4
       ],
-      "rtmTeamId": "KKR"
+      "rtmTeamId": "KKR",
+      "photo": "/player-portraits/angkrish-raghuvanshi.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/22566/angkrish-raghuvanshi",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "arshdeep-singh",
@@ -156,7 +162,13 @@
         2,
         3
       ],
-      "rtmTeamId": "CSK"
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/ayush-mhatre.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/1431163/ayush-mhatre",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "bhuvneshwar-kumar",
@@ -517,13 +529,11 @@
       "basePrice": 2,
       "preferredBattingPositions": [],
       "rtmTeamId": "RCB",
-      "photo": "/player-portraits/karn-sharma.jpg",
+      "photo": "/player-portraits/karn-sharma.webp",
       "photoAttribution": {
-        "source": "Wikimedia Commons",
-        "sourceUrl": "https://commons.wikimedia.org/wiki/File:Karn_Sharma_2015.jpg",
-        "author": "NAPARAZZI",
-        "license": "CC BY-SA 2.0",
-        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/1844/karn-sharma",
+        "author": "Cricbuzz"
       }
     },
     {
@@ -811,7 +821,13 @@
         6,
         7
       ],
-      "rtmTeamId": "MI"
+      "rtmTeamId": "MI",
+      "photo": "/player-portraits/naman-dhir.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/36139/naman-dhir",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "nehal-wadhera",
@@ -972,7 +988,13 @@
         1,
         2
       ],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/prabhsimran-singh.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/14254/prabhsimran-singh",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "prithvi-shaw",
@@ -1114,7 +1136,13 @@
       "fielding": 97,
       "basePrice": 2,
       "preferredBattingPositions": [],
-      "rtmTeamId": "PBKS"
+      "rtmTeamId": "PBKS",
+      "photo": "/player-portraits/ravi-bishnoi.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/14659/ravi-bishnoi",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "ravindra-jadeja",
@@ -1672,7 +1700,13 @@
         1,
         2
       ],
-      "rtmTeamId": "RR"
+      "rtmTeamId": "RR",
+      "photo": "/player-portraits/vaibhav-suryavanshi.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/51791/vaibhav-sooryavanshi",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "varun-chakravarthy",
@@ -2229,7 +2263,13 @@
         2,
         3
       ],
-      "rtmTeamId": null
+      "rtmTeamId": null,
+      "photo": "/player-portraits/dwayne-smith.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/255/dwayne-smith",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "faf-du-plessis",
@@ -2574,7 +2614,13 @@
         2,
         3
       ],
-      "rtmTeamId": null
+      "rtmTeamId": null,
+      "photo": "/player-portraits/lendl-simmons.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/599/lendl-simmons",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "mahela-jayawardene",
@@ -2667,7 +2713,13 @@
       "fielding": 92,
       "basePrice": 2.0,
       "preferredBattingPositions": [],
-      "rtmTeamId": null
+      "rtmTeamId": null,
+      "photo": "/player-portraits/mitchell-johnson.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/496/mitchell-johnson",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "morne-morkel",
@@ -2778,7 +2830,13 @@
         2,
         3
       ],
-      "rtmTeamId": null
+      "rtmTeamId": null,
+      "photo": "/player-portraits/parthiv-patel.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/74/parthiv-patel",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "pragyan-ojha",
@@ -2868,7 +2926,13 @@
         7,
         8
       ],
-      "rtmTeamId": null
+      "rtmTeamId": null,
+      "photo": "/player-portraits/ravichandran-ashwin.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/1593/ravichandran-ashwin",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "robin-uthappa",
@@ -3106,7 +3170,13 @@
         2,
         3
       ],
-      "rtmTeamId": null
+      "rtmTeamId": null,
+      "photo": "/player-portraits/sourav-ganguly.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/29/sourav-ganguly",
+        "author": "Cricbuzz"
+      }
     },
     {
       "id": "suresh-raina",
