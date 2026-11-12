@@ -18,28 +18,37 @@ export const money = (value) =>
 export const rate = (top, bottom, scale = 1, digits = 1) =>
   bottom ? ((top * scale) / bottom).toFixed(digits) : "—";
 export const playerPath = (id) => "/p/" + encodeURIComponent(id);
+export const matchPath = (season, match) =>
+  `/s/${season}?match=${encodeURIComponent(match)}`;
+
+export function HubHeader({ section = "hub" }) {
+  return (
+    <header className="archive-top hub-top">
+      <ArenaBrand />
+      <nav aria-label="Arena navigation">
+        {[
+          ["hub", "/s", "HUB"],
+          ["seasons", "/s/all", "SEASONS"],
+          ["players", "/p", "PLAYERS"],
+          ["play", "/", "PLAY"],
+        ].map(([id, href, label]) => (
+          <a
+            key={id}
+            href={href}
+            aria-current={section === id ? "location" : undefined}
+          >
+            {label}
+          </a>
+        ))}
+      </nav>
+    </header>
+  );
+}
 
 export function Shell({ section = "hub", children }) {
   return (
     <>
-      <header className="archive-top hub-top">
-        <ArenaBrand />
-        <nav aria-label="Arena navigation">
-          <a
-            href="/s"
-            aria-current={section === "hub" ? "location" : undefined}
-          >
-            Hub
-          </a>
-          <a
-            href="/p"
-            aria-current={section === "players" ? "location" : undefined}
-          >
-            Players
-          </a>
-          <a href="/">Play ↗</a>
-        </nav>
-      </header>
+      <HubHeader section={section} />
       <main className="archive-wrap hub-wrap">{children}</main>
     </>
   );

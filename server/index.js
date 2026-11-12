@@ -26,6 +26,7 @@ const DIST = process.env.DIST_DIR
 const DB = JSON.parse(
   fs.readFileSync(path.join(ROOT, "data", "players.json"), "utf8"),
 );
+const careerMetrics = require("../shared/career-metrics.json");
 const databaseErrors = validatePlayerDatabase(DB, {
   publicDirectory: path.join(ROOT, "public"),
   franchiseIds: game.FRANCHISES.map((team) => team.id),
@@ -289,6 +290,10 @@ app.get("/api/players", requireIdentity, (_req, res) => {
     const leaders = new Map(
       seasonStore.playerLeaders(10000).map((item) => [item.id, item]),
     );
+    const statsFor = (id) => {
+      const { id: _id, name: _name, ...stats } = leaders.get(id) || {};
+      return stats;
+    };
     const players = DB.players.map((player) => ({
       id: player.id,
       name: player.name,
@@ -296,10 +301,7 @@ app.get("/api/players", requireIdentity, (_req, res) => {
       nationality: player.nationality,
       photo: player.photo,
       legend: player.legend,
-      seasons: leaders.get(player.id)?.seasons || 0,
-      runs: leaders.get(player.id)?.runs || 0,
-      wickets: leaders.get(player.id)?.wickets || 0,
-      mvpScore: leaders.get(player.id)?.mvpScore || 0,
+      ...statsFor(player.id),
     }));
     for (const [id, leader] of leaders)
       if (!players.some((player) => player.id === id)) {
@@ -311,10 +313,7 @@ app.get("/api/players", requireIdentity, (_req, res) => {
           nationality: latest?.nationality,
           photo: latest?.photo,
           legend: latest?.legend,
-          seasons: leader.seasons,
-          runs: leader.runs,
-          wickets: leader.wickets,
-          mvpScore: leader.mvpScore,
+          ...statsFor(id),
         });
       }
     res.set("Cache-Control", "no-store").json({
@@ -323,6 +322,19 @@ app.get("/api/players", requireIdentity, (_req, res) => {
   } catch (error) {
     console.error("Could not list players:", error);
     res.status(500).json({ error: "Players are unavailable." });
+  }
+});
+app.get("/api/players/:id/matches", requireIdentity, (req, res) => {
+  const id = req.params.id;
+  if (!/^[a-z][a-z0-9-]*$/.test(id))
+    return res.status(404).json({ error: "Player not found." });
+  try {
+    res
+      .set("Cache-Control", "no-store")
+      .json({ matches: seasonStore.playerMatchLog(id) });
+  } catch (error) {
+    console.error("Could not load player matches:", error);
+    res.status(500).json({ error: "Player match log is unavailable." });
   }
 });
 app.get("/api/players/:id", requireIdentity, (req, res) => {
@@ -335,10 +347,34 @@ app.get("/api/players/:id", requireIdentity, (req, res) => {
     const sum = (key) =>
       seasons.reduce((total, row) => total + (Number(row[key]) || 0), 0);
     const leaders = seasonStore.playerLeaders(10000);
-    const rank = (key) =>
-      [...leaders]
-        .sort((a, b) => b[key] - a[key])
-        .findIndex((row) => row.id === player.id) + 1;
+    const own = leaders.find((row) => row.id === player.id);
+    const ranks = Object.fromEntries(
+      Object.entries(careerMetrics).map(([key, metric]) => {
+        const value = (row) => {
+          if (!row || (metric.sample && row[metric.sample] < metric.career))
+            return null;
+          if (!metric.bottom) return row[key] > 0 ? row[key] : null;
+          return row[metric.bottom] > 0
+            ? (row[metric.top] * (metric.scale || 1)) / row[metric.bottom]
+            : null;
+        };
+        const score = value(own);
+        const qualified = leaders.map(value).filter((entry) => entry !== null);
+        return [
+          key,
+          score === null
+            ? null
+            : {
+                rank:
+                  1 +
+                  qualified.filter((entry) =>
+                    metric.low ? entry < score : entry > score,
+                  ).length,
+                of: qualified.length,
+              },
+        ];
+      }),
+    );
     const priced = seasons.filter((row) => row.price != null);
     const bestBowling =
       seasons
@@ -362,6 +398,7 @@ app.get("/api/players/:id", requireIdentity, (req, res) => {
       seasons,
       totals: {
         seasons: seasons.length,
+        seasonsPlayed: seasons.filter((row) => row.matches > 0).length,
         matches: sum("matches"),
         innings: sum("innings"),
         runs: sum("runs"),
@@ -388,12 +425,7 @@ app.get("/api/players/:id", requireIdentity, (req, res) => {
           ? priced.reduce((total, row) => total + row.price, 0) / priced.length
           : null,
       },
-      ranks: {
-        runs: rank("runs") || null,
-        wickets: rank("wickets") || null,
-        mvp: rank("mvpScore") || null,
-        of: leaders.length,
-      },
+      ranks,
     });
   } catch (error) {
     console.error("Could not load player profile:", error);

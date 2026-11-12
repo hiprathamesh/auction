@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { CareerBoards } from "./Leaderboards";
 import {
   date,
   number,
@@ -143,11 +144,11 @@ export function HubHome() {
         )}
         {tab === "Player leaders" && (
           <Panel
-            title="Career run leaders"
+            title="Career leaderboards"
             kicker="ALL RECORDED SEASONS"
             aside={playerLink}
           >
-            <LeaderList leaders={leaders} />
+            <CareerBoards />
           </Panel>
         )}
         {tab === "Managers" && (
@@ -211,9 +212,9 @@ export function HubSeasons() {
     return () => controller.abort();
   }, [before, retry]);
   if (!items.length && (state.loading || state.error))
-    return <Status state={state} />;
+    return <Status state={state} section="seasons" />;
   return (
-    <Shell>
+    <Shell section="seasons">
       <div className="archive-breadcrumb">
         <a href="/s">HUB</a>
         <span>/</span>

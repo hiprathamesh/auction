@@ -3,6 +3,7 @@ import { TeamLogo } from "../components/Brand";
 import {
   date,
   money,
+  matchPath,
   number,
   playerPath,
   rate,
@@ -109,6 +110,125 @@ function ManagerOverview({ seasons, totals }) {
   );
 }
 
+function ManagerMatchRecords({ seasons }) {
+  const opponents = new Map();
+  const playoffs = [];
+  for (const season of seasons) {
+    for (const match of season.results) {
+      if (match.playoff)
+        playoffs.push({
+          ...match,
+          seasonId: season.id,
+          id: season.id + ":" + match.matchId,
+        });
+      if (!match.opponentId) continue;
+      if (!opponents.has(match.opponentId))
+        opponents.set(match.opponentId, {
+          id: match.opponentId,
+          name: match.opponentName,
+          win: 0,
+          loss: 0,
+          tie: 0,
+        });
+      opponents.get(match.opponentId)[match.result]++;
+    }
+  }
+  const rows = [...opponents.values()].sort(
+    (a, b) =>
+      b.win + b.loss + b.tie - (a.win + a.loss + a.tie) ||
+      a.name.localeCompare(b.name),
+  );
+  const outcome = { win: "Won", loss: "Lost", tie: "Tied" };
+  return (
+    <div className="hub-stack">
+      <Panel title="Head-to-head" kicker="AGAINST IDENTIFIED MANAGERS">
+        {rows.length ? (
+          <Table
+            label="Manager head-to-head record"
+            rows={rows}
+            columns={[
+              [
+                "Manager",
+                (row) => (
+                  <a className="hub-data-link" href={"/u/" + row.id}>
+                    {row.name || row.id}
+                  </a>
+                ),
+              ],
+              ["Played", (row) => row.win + row.loss + row.tie],
+              ["Won", (row) => row.win],
+              ["Lost", (row) => row.loss],
+              ["Tied", (row) => row.tie],
+            ]}
+          />
+        ) : (
+          <Empty>No matches against identified managers yet.</Empty>
+        )}
+      </Panel>
+      <Panel
+        title="Playoff record"
+        aside={
+          playoffs.length ? (
+            <span>
+              {playoffs.filter((match) => match.result === "win").length} wins ·{" "}
+              {playoffs.length} matches
+            </span>
+          ) : null
+        }
+      >
+        {playoffs.length ? (
+          <Table
+            label="Manager playoff record"
+            rows={playoffs}
+            columns={[
+              ["Season", (row) => seasonCode(row.seasonId)],
+              [
+                "Round",
+                (row) => (
+                  <a
+                    className="hub-data-link"
+                    href={matchPath(row.seasonId, row.matchId)}
+                  >
+                    {row.stage}
+                  </a>
+                ),
+              ],
+              [
+                "Opponent",
+                (row) =>
+                  row.opponentId ? (
+                    <a href={"/u/" + row.opponentId}>{row.opponentTeam}</a>
+                  ) : (
+                    row.opponentTeam || "—"
+                  ),
+              ],
+              ["Result", (row) => outcome[row.result]],
+            ]}
+          />
+        ) : (
+          <Empty>No playoff matches recorded yet.</Empty>
+        )}
+      </Panel>
+    </div>
+  );
+}
+
+function FinishTimeline({ seasons }) {
+  return seasons.length ? (
+    <ol className="hub-finish-timeline" aria-label="Season finish timeline">
+      {[...seasons].reverse().map((season) => (
+        <li key={season.id}>
+          <a href={"/s/" + season.id}>
+            <small>{seasonCode(season.id)}</small>
+            <strong>{season.finalFinish?.label || "—"}</strong>
+            <span>{season.teamName}</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+  ) : null;
+}
+
 export function UserProfile({ id }) {
   const state = useData("/api/users/" + encodeURIComponent(id));
   const [tab, setTab] = useState("Overview");
@@ -151,13 +271,21 @@ export function UserProfile({ id }) {
       </Masthead>
       <Tabs
         label="Manager profile sections"
-        tabs={["Overview", "Seasons", "Squads"]}
+        tabs={["Overview", "Seasons", "Squads", "Match records"]}
         active={tab}
         onChange={setTab}
       >
         {tab === "Overview" && (
-          <ManagerOverview seasons={seasons} totals={totals} />
+          <div className="hub-stack">
+            <ManagerOverview seasons={seasons} totals={totals} />
+            {seasons.length > 0 && (
+              <Panel title="Season finish timeline">
+                <FinishTimeline seasons={seasons} />
+              </Panel>
+            )}
+          </div>
         )}
+        {tab === "Match records" && <ManagerMatchRecords seasons={seasons} />}
         {tab === "Seasons" && (
           <Panel title="Season results">
             {seasons.length ? (
@@ -228,10 +356,31 @@ export function UserProfile({ id }) {
                 <div className="hub-squad-summary">
                   <Franchise season={squad} />
                   <span>
-                    Top scorer <b>{squad.topScorer || "—"}</b>
+                    Top scorer{" "}
+                    {squad.topScorer ? (
+                      <a
+                        className="hub-data-link"
+                        href={playerPath(squad.topScorer.id)}
+                      >
+                        {squad.topScorer.name} · {squad.topScorer.runs} runs
+                      </a>
+                    ) : (
+                      "—"
+                    )}
                   </span>
                   <span>
-                    Top wicket taker <b>{squad.topWicketTaker || "—"}</b>
+                    Top wicket taker{" "}
+                    {squad.topWicketTaker ? (
+                      <a
+                        className="hub-data-link"
+                        href={playerPath(squad.topWicketTaker.id)}
+                      >
+                        {squad.topWicketTaker.name} ·{" "}
+                        {squad.topWicketTaker.wickets} wickets
+                      </a>
+                    ) : (
+                      "—"
+                    )}
                   </span>
                 </div>
                 {squad.squad.length ? (
@@ -258,6 +407,8 @@ export function UserProfile({ id }) {
                           player.inXi ? <strong>Playing XI</strong> : "Squad",
                       ],
                       ["Price", (player) => money(player.price)],
+                      ["Runs", (player) => number(player.runs)],
+                      ["Wickets", (player) => number(player.wickets)],
                     ]}
                   />
                 ) : (

@@ -180,6 +180,7 @@ function indexSeason(database, id, season) {
 
 function createSeasonStore(file) {
   let db;
+  let leadersCache;
   function open() {
     if (db) return db;
     const { DatabaseSync } = require("node:sqlite");
@@ -265,6 +266,7 @@ function createSeasonStore(file) {
         );
       indexSeason(database, Number(result.lastInsertRowid), season);
       database.exec("COMMIT");
+      leadersCache = undefined;
       return { id: Number(result.lastInsertRowid), created: true };
     } catch (error) {
       database.exec("ROLLBACK");
@@ -286,11 +288,12 @@ function createSeasonStore(file) {
       .map((row) => ({ ...row, id: Number(row.id) }));
   }
   function remove(id) {
-    return (
+    const removed =
       Number(
         open().prepare("DELETE FROM seasons WHERE id = ?").run(id).changes,
-      ) > 0
-    );
+      ) > 0;
+    if (removed) leadersCache = undefined;
+    return removed;
   }
   function listForUser(userId, before = Number.MAX_SAFE_INTEGER, limit = 24) {
     return open()
@@ -319,24 +322,54 @@ function createSeasonStore(file) {
       .map(({ data, roomUserId, ...row }) => {
         const season = JSON.parse(data);
         const team = season.teams.find((entry) => entry.id === roomUserId);
+        const stats = new Map(
+          (season.playerStats || []).map((player) => [player.playerId, player]),
+        );
         const squad =
           team?.squad?.map((player) => ({
             id: player.id,
             name: player.name,
             inXi: team.lineup?.includes(player.id) || false,
             price: player.purchasePrice,
+            runs: stats.get(player.id)?.runs || 0,
+            wickets: stats.get(player.id)?.wickets || 0,
           })) || [];
-        const players = (season.playerStats || []).filter((player) =>
-          squad.some((entry) => entry.id === player.playerId),
-        );
+        const teams = new Map(season.teams.map((entry) => [entry.id, entry]));
+        const results = season.matches.flatMap((match) => {
+          if (match.homeId !== roomUserId && match.awayId !== roomUserId)
+            return [];
+          const opponent = teams.get(
+            match.homeId === roomUserId ? match.awayId : match.homeId,
+          );
+          return [
+            {
+              matchId: match.id,
+              stage: match.round || "League",
+              playoff: match.type !== "league",
+              opponentId: opponent?.identityId || null,
+              opponentName: opponent?.name,
+              opponentTeam: opponent?.teamName,
+              result: match.winnerId
+                ? match.winnerId === roomUserId
+                  ? "win"
+                  : "loss"
+                : "tie",
+            },
+          ];
+        });
         return {
           ...row,
           squad,
           finalFinish: finalPlacement(season, roomUserId),
+          results,
           topScorer:
-            [...players].sort((a, b) => b.runs - a.runs)[0]?.name || null,
+            [...squad]
+              .sort((a, b) => b.runs - a.runs)
+              .find((player) => player.runs > 0) || null,
           topWicketTaker:
-            [...players].sort((a, b) => b.wickets - a.wickets)[0]?.name || null,
+            [...squad]
+              .sort((a, b) => b.wickets - a.wickets)
+              .find((player) => player.wickets > 0) || null,
         };
       });
   }
@@ -359,15 +392,94 @@ function createSeasonStore(file) {
       .all(playerId)
       .map((row) => JSON.parse(row.data));
   }
+  function playerMatchLog(playerId) {
+    const seasons = open()
+      .prepare(
+        `SELECT s.id, s.data FROM season_players p JOIN seasons s ON s.id=p.season_id
+        WHERE p.player_id=? ORDER BY s.id DESC`,
+      )
+      .all(playerId);
+    return seasons.flatMap(({ id, data }) => {
+      const season = JSON.parse(data);
+      const team = season.teams.find((entry) =>
+        entry.squad?.some((player) => player.id === playerId),
+      );
+      if (!team) return [];
+      const teams = new Map(season.teams.map((entry) => [entry.id, entry]));
+      return season.matches.flatMap((match) => {
+        if (match.homeId !== team.id && match.awayId !== team.id) return [];
+        const batting = [],
+          bowling = [];
+        for (const innings of match.innings || []) {
+          const batter = innings.batters?.find(
+            (entry) => entry.player?.id === playerId,
+          );
+          if (batter && (batter.balls || batter.runs || batter.out))
+            batting.push({
+              runs: batter.runs,
+              balls: batter.balls,
+              fours: batter.fours,
+              sixes: batter.sixes,
+              out: batter.out,
+              dismissal: batter.dismissal,
+            });
+          const bowler = innings.bowlers?.find(
+            (entry) => entry.player?.id === playerId,
+          );
+          if (bowler && (bowler.legalBalls || bowler.runs || bowler.wickets))
+            bowling.push({
+              wickets: bowler.wickets,
+              runs: bowler.runs,
+              balls: bowler.legalBalls,
+              maidens: bowler.maidens,
+            });
+        }
+        if (
+          !batting.length &&
+          !bowling.length &&
+          !team.lineup?.includes(playerId)
+        )
+          return [];
+        const opponent = teams.get(
+          match.homeId === team.id ? match.awayId : match.homeId,
+        );
+        return [
+          {
+            seasonId: id,
+            matchId: match.id,
+            stage: match.round || "League",
+            team: team.teamName,
+            opponent: opponent?.teamName,
+            batting,
+            bowling,
+          },
+        ];
+      });
+    });
+  }
   function playerLeaders(limit = 1000) {
-    return open()
+    const database = open();
+    // The version changes when an import or another connection commits.
+    const version = database.prepare("PRAGMA data_version").get().data_version;
+    if (leadersCache?.version === version)
+      return leadersCache.rows.slice(0, limit);
+    const rows = database
       .prepare(
         `SELECT player_id AS id, MAX(name) AS name,
       COUNT(*) AS seasons, SUM(runs) AS runs, SUM(wickets) AS wickets,
-      SUM(mvp_score) AS mvpScore FROM season_players
-      GROUP BY player_id ORDER BY runs DESC, wickets DESC LIMIT ?`,
+      SUM(mvp_score) AS mvpScore,
+      SUM(CASE WHEN json_extract(data, '$.matches') > 0 THEN 1 ELSE 0 END) AS seasonsPlayed,
+      SUM(COALESCE(json_extract(data, '$.balls'), 0)) AS balls,
+      SUM(COALESCE(json_extract(data, '$.outs'), 0)) AS outs,
+      SUM(COALESCE(json_extract(data, '$.bowlerBalls'), 0)) AS bowlerBalls,
+      SUM(COALESCE(json_extract(data, '$.bowlerRuns'), 0)) AS bowlerRuns,
+      COUNT(json_extract(data, '$.price')) AS auctionSales,
+      SUM(COALESCE(json_extract(data, '$.price'), 0)) AS auctionSpend FROM season_players
+      GROUP BY player_id ORDER BY runs DESC, wickets DESC, player_id`,
       )
-      .all(limit);
+      .all();
+    leadersCache = { version, rows };
+    return rows.slice(0, limit);
   }
   function ownerOf(id) {
     return (
@@ -398,6 +510,7 @@ function createSeasonStore(file) {
         .run(seasonId);
       indexSeason(database, seasonId, season);
       database.exec("COMMIT");
+      leadersCache = undefined;
     } catch (error) {
       database.exec("ROLLBACK");
       throw error;
@@ -412,6 +525,7 @@ function createSeasonStore(file) {
     userSeasons,
     coPlayers,
     playerSeasons,
+    playerMatchLog,
     playerLeaders,
     ownerOf,
     linkMember,
@@ -419,6 +533,7 @@ function createSeasonStore(file) {
       if (db) {
         db.close();
         db = null;
+        leadersCache = undefined;
       }
     },
   };

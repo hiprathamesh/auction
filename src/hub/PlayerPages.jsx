@@ -1,6 +1,14 @@
 import { useState } from "react";
 import {
+  formatMetric,
+  metrics,
+  overs,
+  qualification,
+  rankedRows,
+} from "./Leaderboards";
+import {
   date,
+  matchPath,
   money,
   number,
   playerPath,
@@ -24,10 +32,10 @@ const roles = {
   Wicketkeeper: "Wicketkeepers",
 };
 const sorts = {
-  runs: "Runs",
-  wickets: "Wickets",
-  mvpScore: "MVP points",
-  seasons: "Seasons",
+  ...Object.fromEntries(
+    Object.entries(metrics).map(([key, metric]) => [key, metric.label]),
+  ),
+  seasonsPlayed: "Seasons played",
   name: "Name",
 };
 const pageSize = 25;
@@ -63,22 +71,24 @@ export function PlayersIndex() {
   const [page, setPage] = useState(0);
   if (!state.data) return <Status state={state} section="players" />;
   const search = query.trim().toLowerCase();
-  const players = state.data.players
-    .filter(
-      (player) =>
-        (role === "All players" || roles[player.role] === role) &&
-        [
-          player.name,
-          player.role,
-          player.nationality,
-          player.legend ? "legend" : "",
-        ].some((value) => value?.toLowerCase().includes(search)),
-    )
-    .sort(
-      (a, b) =>
-        (sort === "name" ? 0 : b[sort] - a[sort]) ||
-        a.name.localeCompare(b.name),
-    );
+  const filtered = state.data.players.filter(
+    (player) =>
+      (role === "All players" || roles[player.role] === role) &&
+      [
+        player.name,
+        player.role,
+        player.nationality,
+        player.legend ? "legend" : "",
+      ].some((value) => value?.toLowerCase().includes(search)),
+  );
+  const ranked = Boolean(metrics[sort]?.bottom);
+  const players = ranked
+    ? rankedRows(filtered, sort)
+    : filtered.sort(
+        (a, b) =>
+          (sort === "name" ? 0 : (b[sort] || 0) - (a[sort] || 0)) ||
+          a.name.localeCompare(b.name),
+      );
   const start = page * pageSize;
   const visible = players.slice(start, start + pageSize);
   return (
@@ -135,6 +145,9 @@ export function PlayersIndex() {
               </select>
             </label>
           </div>
+          {qualification(sort) && (
+            <p className="archive-note">{qualification(sort)}</p>
+          )}
           {players.length ? (
             <>
               <Table
@@ -146,19 +159,42 @@ export function PlayersIndex() {
                     (player, index) => (
                       <div className="hub-directory-name">
                         <span className="hub-position">
-                          {start + index + 1}
+                          {player.rank ?? start + index + 1}
                         </span>
                         <PlayerName player={player} />
                       </div>
                     ),
                   ],
-                  ["Seasons", (player) => number(player.seasons)],
+                  ["Played", (player) => number(player.seasonsPlayed)],
                   ["Runs", (player) => number(player.runs)],
                   ["Wickets", (player) => number(player.wickets)],
                   [
                     "MVP points",
                     (player) => number(Math.round(player.mvpScore)),
                   ],
+                  ...(ranked
+                    ? [
+                        [
+                          sorts[sort],
+                          (player) => formatMetric(sort, player.value),
+                        ],
+                        [
+                          metrics[sort].sample === "bowlerBalls"
+                            ? "Overs"
+                            : sort === "averagePrice"
+                              ? "Sales"
+                              : "Balls",
+                          (player) =>
+                            metrics[sort].sample === "bowlerBalls"
+                              ? overs(player.bowlerBalls)
+                              : number(
+                                  sort === "averagePrice"
+                                    ? player.auctionSales
+                                    : player.balls,
+                                ),
+                        ],
+                      ]
+                    : []),
                 ]}
               />
               <nav className="hub-pagination" aria-label="Leaderboard pages">
@@ -249,8 +285,60 @@ function BarValue({ value, max }) {
   );
 }
 
+function SeasonTrend({ seasons, title, value, format = number }) {
+  const points = [...seasons].reverse().flatMap((season) => {
+    const score = value(season);
+    return score == null ? [] : [{ id: season.seasonId, score }];
+  });
+  if (points.length < 2) return null;
+  const max = Math.max(1, ...points.map((point) => point.score));
+  const x = (index) => 5 + (index * 230) / (points.length - 1);
+  const y = (score) => 38 - (score / max) * 31;
+  return (
+    <figure className="hub-form-trend">
+      <figcaption>
+        <strong>{title}</strong>
+        <span>
+          {seasonCode(points[0].id)}–{seasonCode(points.at(-1).id)}
+        </span>
+      </figcaption>
+      <svg viewBox="0 0 240 44" aria-hidden="true" preserveAspectRatio="none">
+        <line
+          x1="5"
+          x2="235"
+          y1="38"
+          y2="38"
+          stroke="#394653"
+          vectorEffect="non-scaling-stroke"
+        />
+        <polyline
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="2"
+          vectorEffect="non-scaling-stroke"
+          points={points
+            .map((point, index) => `${x(index)},${y(point.score)}`)
+            .join(" ")}
+        />
+        {points.map((point, index) => (
+          <circle
+            key={point.id}
+            cx={x(index)}
+            cy={y(point.score)}
+            r="2"
+            fill="currentColor"
+          >
+            <title>
+              {seasonCode(point.id)} · {format(point.score)}
+            </title>
+          </circle>
+        ))}
+      </svg>
+    </figure>
+  );
+}
+
 function CareerOverview({ totals, ranks, seasons }) {
-  const rankLabel = (key) => (ranks[key] ? "#" + ranks[key] : "—");
   return (
     <div className="hub-stack">
       <div className="archive-overview-grid hub-overview">
@@ -287,19 +375,15 @@ function CareerOverview({ totals, ranks, seasons }) {
             </div>
           </div>
         </Panel>
-        <Panel
-          title="Career rankings"
-          kicker={ranks.of ? number(ranks.of) + " RANKED PLAYERS" : undefined}
-        >
+        <Panel title="Career rankings">
           <Ledger
-            entries={[
-              ["Runs", totals.runs > 0 ? rankLabel("runs") : "—"],
-              ["Wickets", totals.wickets > 0 ? rankLabel("wickets") : "—"],
-              ["MVP points", rankLabel("mvp")],
-            ]}
+            entries={Object.entries(metrics).map(([key, metric]) => [
+              metric.label,
+              ranks[key] ? `#${ranks[key].rank} of ${ranks[key].of}` : "—",
+            ])}
           />
           <p className="archive-note">
-            {number(Math.round(totals.mvpScore))} career MVP points
+            Rate rankings require 120 balls faced or 20 overs bowled.
           </p>
         </Panel>
       </div>
@@ -310,6 +394,7 @@ function CareerOverview({ totals, ranks, seasons }) {
           columns={[
             ["Finish", (row) => row.finalFinish?.label || "—"],
             ["Matches", (row) => number(row.matches)],
+            ["Status", (row) => (row.matches ? "Played" : "Squad only")],
             ["Runs", (row) => number(row.runs)],
             ["Wickets", (row) => number(row.wickets)],
             ["MVP points", (row) => number(Math.round(row.mvpScore))],
@@ -356,6 +441,7 @@ function Batting({ totals, seasons }) {
           <Ledger
             entries={[
               ["Innings", number(totals.innings)],
+              ["Not outs", number(totals.innings - totals.outs)],
               ["Balls faced", number(totals.balls)],
               ["50s", number(totals.fifties)],
               ["100s", number(totals.hundreds)],
@@ -364,6 +450,11 @@ function Batting({ totals, seasons }) {
         </Panel>
       </div>
       <Panel title="Batting by season">
+        <SeasonTrend
+          seasons={seasons}
+          title="Runs trend"
+          value={(row) => (row.matches ? row.runs : null)}
+        />
         <SeasonTable
           seasons={seasons}
           label="Batting by season"
@@ -384,10 +475,6 @@ function Batting({ totals, seasons }) {
   );
 }
 
-function overs(balls) {
-  return Math.floor(balls / 6) + "." + (balls % 6);
-}
-
 function Bowling({ totals, seasons }) {
   const best = Math.max(0, ...seasons.map((row) => row.wickets));
   return (
@@ -402,12 +489,28 @@ function Bowling({ totals, seasons }) {
               ["Overs", overs(totals.bowlerBalls)],
               ["Runs conceded", number(totals.bowlerRuns)],
               ["Economy", rate(totals.bowlerRuns, totals.bowlerBalls, 6, 2)],
+              ["Strike rate", rate(totals.bowlerBalls, totals.wickets, 1, 2)],
               ["Best figures", totals.bestBowling || "—"],
             ]}
           />
         </div>
       </Panel>
       <Panel title="Bowling by season">
+        <div className="archive-overview-grid hub-overview">
+          <SeasonTrend
+            seasons={seasons}
+            title="Wickets trend"
+            value={(row) => (row.bowlerBalls ? row.wickets : null)}
+          />
+          <SeasonTrend
+            seasons={seasons}
+            title="Economy trend"
+            value={(row) =>
+              row.bowlerBalls ? (row.bowlerRuns * 6) / row.bowlerBalls : null
+            }
+            format={(value) => value.toFixed(2)}
+          />
+        </div>
         <SeasonTable
           seasons={seasons}
           label="Bowling by season"
@@ -417,7 +520,130 @@ function Bowling({ totals, seasons }) {
             ["Runs conceded", (row) => number(row.bowlerRuns)],
             ["Wickets", (row) => <BarValue value={row.wickets} max={best} />],
             ["Economy", (row) => rate(row.bowlerRuns, row.bowlerBalls, 6, 2)],
+            ["Average", (row) => rate(row.bowlerRuns, row.wickets, 1, 2)],
+            ["Strike rate", (row) => rate(row.bowlerBalls, row.wickets, 1, 2)],
             ["Best", (row) => row.bestBowling || "—"],
+          ]}
+        />
+      </Panel>
+    </div>
+  );
+}
+
+function MatchLog({ id }) {
+  const state = useData(`/api/players/${encodeURIComponent(id)}/matches`);
+  const [season, setSeason] = useState("");
+  if (state.error)
+    return (
+      <p className="archive-note" role="alert">
+        {state.error}
+      </p>
+    );
+  if (!state.data) return <Empty>Loading match log…</Empty>;
+  const { matches } = state.data;
+  if (!matches.length) return <Empty>No recorded appearances yet.</Empty>;
+  const bestBatting = matches
+    .flatMap((match) => match.batting.map((figure) => ({ match, figure })))
+    .sort(
+      (a, b) =>
+        b.figure.runs - a.figure.runs ||
+        Number(a.figure.out) - Number(b.figure.out) ||
+        a.figure.balls - b.figure.balls,
+    )[0];
+  const bestBowling = matches
+    .flatMap((match) => match.bowling.map((figure) => ({ match, figure })))
+    .sort(
+      (a, b) =>
+        b.figure.wickets - a.figure.wickets || a.figure.runs - b.figure.runs,
+    )[0];
+  const batting = (figure) =>
+    `${figure.runs}${figure.out ? "" : "*"} (${figure.balls})`;
+  const bowling = (figure) =>
+    `${figure.wickets}/${figure.runs} · ${overs(figure.balls)} ov`;
+  const matchLink = (match, label) => (
+    <a
+      className="hub-data-link"
+      href={matchPath(match.seasonId, match.matchId)}
+    >
+      {label}
+    </a>
+  );
+  const selected = season || String(matches[0].seasonId);
+  const highlights = [
+    ["Career-best innings", bestBatting, batting],
+    ["Career-best spell", bestBowling, bowling],
+  ];
+  return (
+    <div className="hub-stack">
+      <div className="archive-overview-grid hub-overview">
+        {highlights
+          .filter(([, best]) => best)
+          .map(([title, best, format]) => (
+            <Panel key={title} title={title}>
+              <p className="hub-score">
+                <strong>{format(best.figure)}</strong>
+              </p>
+              <p className="archive-note">
+                {matchLink(
+                  best.match,
+                  `${seasonCode(best.match.seasonId)} · ${best.match.stage} vs ${best.match.opponent}`,
+                )}
+              </p>
+            </Panel>
+          ))}
+      </div>
+      <Panel title="Match log">
+        <div className="stats-controls hub-filters">
+          <label>
+            Season{" "}
+            <select
+              value={selected}
+              onChange={(event) => setSeason(event.target.value)}
+            >
+              {[...new Set(matches.map((match) => match.seasonId))].map(
+                (seasonId) => (
+                  <option key={seasonId} value={seasonId}>
+                    {seasonCode(seasonId)}
+                  </option>
+                ),
+              )}
+            </select>
+          </label>
+        </div>
+        <Table
+          label="Player match log"
+          rowKey="matchId"
+          rows={matches.filter((match) => String(match.seasonId) === selected)}
+          columns={[
+            ["Match", (match) => matchLink(match, match.stage)],
+            ["Opponent", (match) => match.opponent || "—"],
+            [
+              "Batting",
+              (match) =>
+                match.batting.length
+                  ? match.batting.map((figure) => (
+                      <span key={figure.runs + ":" + figure.balls}>
+                        <b>{batting(figure)}</b>
+                        <small>
+                          {figure.dismissal || "Not out"} · {figure.fours} fours
+                          · {figure.sixes} sixes
+                        </small>
+                      </span>
+                    ))
+                  : "—",
+            ],
+            [
+              "Bowling",
+              (match) =>
+                match.bowling.length
+                  ? match.bowling.map((figure) => (
+                      <span key={figure.wickets + ":" + figure.balls}>
+                        <b>{bowling(figure)}</b>
+                        <small>{figure.maidens || 0} maidens</small>
+                      </span>
+                    ))
+                  : "—",
+            ],
           ]}
         />
       </Panel>
@@ -501,8 +727,10 @@ export function PlayerProfile({ id }) {
       >
         <div className="hub-masthead-meta">
           <span>
-            <b>{totals.seasons}</b>{" "}
-            {totals.seasons === 1 ? "season" : "seasons"}
+            <b>{totals.seasons}</b> signed
+          </span>
+          <span>
+            <b>{totals.seasonsPlayed}</b> seasons played
           </span>
           <span>
             <b>{totals.matches}</b> {totals.matches === 1 ? "match" : "matches"}
@@ -511,7 +739,13 @@ export function PlayerProfile({ id }) {
       </Masthead>
       <Tabs
         label="Player statistics"
-        tabs={["Overview", "Batting", "Bowling", "Honours & auction"]}
+        tabs={[
+          "Overview",
+          "Batting",
+          "Bowling",
+          "Match log",
+          "Honours & auction",
+        ]}
         active={tab}
         onChange={setTab}
       >
@@ -520,6 +754,7 @@ export function PlayerProfile({ id }) {
         )}
         {tab === "Batting" && <Batting totals={totals} seasons={seasons} />}
         {tab === "Bowling" && <Bowling totals={totals} seasons={seasons} />}
+        {tab === "Match log" && <MatchLog id={id} />}
         {tab === "Honours & auction" && (
           <Honours totals={totals} seasons={seasons} />
         )}

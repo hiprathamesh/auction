@@ -1,4 +1,12 @@
 import { useEffect, useMemo, useState } from "react";
+import { HubHeader } from "../hub/HubLayout";
+import {
+  formatMetric,
+  metrics,
+  qualification,
+  rankedRows,
+} from "../hub/Leaderboards";
+import { ScoreProgression } from "./ScoreProgression";
 import "./season.css";
 
 const money = (value) =>
@@ -51,17 +59,7 @@ function Crest({ team, large = false }) {
 }
 
 function Header() {
-  return (
-    <header className="archive-top">
-      <a className="archive-brand" href="/">
-        <span>✦</span> AUCTION <b>ARENA</b>
-      </a>
-      <nav>
-        <a href="/s">My Hub</a>
-        <a href="/">Play the game ↗</a>
-      </nav>
-    </header>
-  );
+  return <HubHeader section="seasons" />;
 }
 
 function ArchiveIndex() {
@@ -426,19 +424,22 @@ function InningsCard({ innings, full }) {
   );
 }
 
-function MatchCard({ season, match, index }) {
-  const [expanded, setExpanded] = useState(false);
+function MatchCard({ season, match, index, selected }) {
+  const [expanded, setExpanded] = useState(selected);
   const [balls, setBalls] = useState(null);
+  const [view, setView] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const home = teamFor(season, match.homeId),
     away = teamFor(season, match.awayId),
     winner = teamFor(season, match.winnerId);
-  const showBalls = async () => {
-    if (balls) {
-      setBalls(null);
+  const showDeliveries = async (next) => {
+    if (view === next) {
+      setView(null);
       return;
     }
+    setView(next);
+    if (balls) return;
     setLoading(true);
     setError("");
     try {
@@ -454,7 +455,7 @@ function MatchCard({ season, match, index }) {
     }
   };
   return (
-    <article className="archive-match">
+    <article className="archive-match" id={"match-" + match.id}>
       <div className="archive-match-meta">
         <span>
           {match.round ||
@@ -504,17 +505,30 @@ function MatchCard({ season, match, index }) {
           {expanded ? "Show brief scorecard ↑" : "Full scorecard ↓"}
         </button>
         {match.hasBallByBall && (
-          <button
-            onClick={showBalls}
-            disabled={loading}
-            aria-expanded={Boolean(balls)}
-          >
-            {loading
-              ? "Loading…"
-              : balls
-                ? "Hide ball-by-ball ↑"
-                : "Ball-by-ball ↓"}
-          </button>
+          <>
+            <button
+              onClick={() => showDeliveries("balls")}
+              disabled={loading}
+              aria-expanded={view === "balls"}
+            >
+              {loading && view === "balls"
+                ? "Loading…"
+                : view === "balls"
+                  ? "Hide ball-by-ball ↑"
+                  : "Ball-by-ball ↓"}
+            </button>
+            <button
+              onClick={() => showDeliveries("progression")}
+              disabled={loading}
+              aria-expanded={view === "progression"}
+            >
+              {loading && view === "progression"
+                ? "Loading…"
+                : view === "progression"
+                  ? "Hide score progression ↑"
+                  : "Score progression ↓"}
+            </button>
+          </>
         )}
       </div>
       {error && (
@@ -522,7 +536,13 @@ function MatchCard({ season, match, index }) {
           {error}
         </p>
       )}
-      {balls && (
+      {balls && view === "progression" && (
+        <ScoreProgression
+          innings={match.innings}
+          deliveries={balls.innings || []}
+        />
+      )}
+      {balls && view === "balls" && (
         <div className="archive-deliveries">
           {[...(balls.innings || []), ...(balls.superOver || [])].map(
             (events, i) => (
@@ -544,8 +564,14 @@ function MatchCard({ season, match, index }) {
   );
 }
 
-function Fixtures({ season }) {
+function Fixtures({ season, selectedMatch }) {
   const [filter, setFilter] = useState("all");
+  useEffect(() => {
+    if (selectedMatch)
+      document
+        .getElementById("match-" + selectedMatch)
+        ?.scrollIntoView({ block: "start" });
+  }, [selectedMatch]);
   const matches = season.matches.filter(
     (match) =>
       filter === "all" ||
@@ -578,12 +604,13 @@ function Fixtures({ season }) {
         ))}
       </div>
       <div className="archive-matches">
-        {matches.map((match, index) => (
+        {matches.map((match) => (
           <MatchCard
             key={match.id}
             season={season}
             match={match}
             index={season.matches.indexOf(match)}
+            selected={match.id === selectedMatch}
           />
         ))}
       </div>
@@ -597,17 +624,29 @@ function Fixtures({ season }) {
 function Statistics({ season }) {
   const [sort, setSort] = useState("runs");
   const [query, setQuery] = useState("");
+  const records = useMemo(() => {
+    const outs = new Map();
+    for (const match of season.matches) {
+      for (const innings of match.innings || []) {
+        for (const batter of innings.batters || []) {
+          if (batter.out)
+            outs.set(batter.player.id, (outs.get(batter.player.id) || 0) + 1);
+        }
+      }
+    }
+    return season.playerStats.map((row) => ({
+      ...row,
+      outs: outs.get(row.playerId) || 0,
+    }));
+  }, [season]);
   const rows = useMemo(
     () =>
-      [...season.playerStats]
-        .filter((p) =>
-          `${p.name} ${p.teamName}`.toLowerCase().includes(query.toLowerCase()),
-        )
-        .sort(
-          (a, b) =>
-            (b[sort] || 0) - (a[sort] || 0) || a.name.localeCompare(b.name),
-        ),
-    [season.playerStats, sort, query],
+      rankedRows(records, sort, "season").filter((row) =>
+        `${row.name} ${row.teamName}`
+          .toLowerCase()
+          .includes(query.trim().toLowerCase()),
+      ),
+    [records, sort, query],
   );
   return (
     <section className="archive-panel">
@@ -635,9 +674,13 @@ function Statistics({ season }) {
             value={sort}
             onChange={(event) => setSort(event.target.value)}
           >
-            <option value="runs">Runs</option>
-            <option value="wickets">Wickets</option>
-            <option value="mvpScore">MVP points</option>
+            {Object.entries(metrics)
+              .filter(([, metric]) => metric.group !== "Auction")
+              .map(([key, metric]) => (
+                <option key={key} value={key}>
+                  {metric.label}
+                </option>
+              ))}
             <option value="sixes">Sixes</option>
             <option value="fours">Fours</option>
             <option value="fifties">Fifties</option>
@@ -645,6 +688,9 @@ function Statistics({ season }) {
           </select>
         </label>
       </div>
+      {qualification(sort, "season") && (
+        <p className="archive-note">{qualification(sort, "season")}</p>
+      )}
       <div className="archive-table-scroll">
         <table className="archive-table stats-table">
           <thead>
@@ -662,12 +708,16 @@ function Statistics({ season }) {
               <th>ECON</th>
               <th>BEST</th>
               <th>MVP</th>
+              {metrics[sort]?.bottom &&
+                !["strikeRate", "economy"].includes(sort) && (
+                  <th>{metrics[sort].label}</th>
+                )}
             </tr>
           </thead>
           <tbody>
-            {rows.map((p, i) => (
+            {rows.map((p) => (
               <tr key={p.playerId}>
-                <td>{i + 1}</td>
+                <td>{p.rank}</td>
                 <td>
                   <div>
                     <strong>
@@ -687,78 +737,199 @@ function Statistics({ season }) {
                 <td>{economy(p.bowlerRuns, p.bowlerBalls)}</td>
                 <td>{p.bestBowling || "—"}</td>
                 <td>{Math.round(p.mvpScore || 0)}</td>
+                {metrics[sort]?.bottom &&
+                  !["strikeRate", "economy"].includes(sort) && (
+                    <td>{formatMetric(sort, p.value)}</td>
+                  )}
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      {!rows.length && <p className="archive-note">No matching players.</p>}
+      {!rows.length && (
+        <p className="archive-note">
+          No qualifying players match these filters.
+        </p>
+      )}
     </section>
   );
 }
 
 function Auction({ season }) {
   const [query, setQuery] = useState("");
-  const sales = [...season.auction.sales]
-    .filter((sale) =>
-      `${sale.player.name} ${sale.teamName}`
-        .toLowerCase()
-        .includes(query.toLowerCase()),
+  const [franchise, setFranchise] = useState("");
+  const [set, setSet] = useState("");
+  const [order, setOrder] = useState("lot");
+  const lots = useMemo(() => {
+    const { sales, unsold, history } = season.auction;
+    const teamByPlayer = new Map(
+      season.teams.flatMap((team) =>
+        team.squad.map((player) => [player.id, team.teamName]),
+      ),
+    );
+    const salesByLot = new Map(sales.map((sale) => [sale.lotNumber, sale]));
+    const unsoldByLot = new Map(
+      unsold.map((entry) => [entry.lotNumber, entry]),
+    );
+    const tradedPlayers = new Set(
+      (season.trades || []).flatMap((trade) => [
+        trade.fromPlayer,
+        trade.toPlayer,
+      ]),
+    );
+    const originalLots = history?.length
+      ? history
+      : [
+          ...sales.map((sale) => ({
+            lotNumber: sale.lotNumber,
+            playerId: sale.player.id,
+            playerName: sale.player.name,
+            teamName: tradedPlayers.has(sale.player.name)
+              ? null
+              : sale.teamName,
+            price: sale.price,
+            rtm: sale.rtm,
+            result: sale.rtm ? "RTM" : "SOLD",
+          })),
+          ...unsold.map((entry) => ({
+            lotNumber: entry.lotNumber,
+            playerId: entry.player.id,
+            playerName: entry.player.name,
+            result: "UNSOLD",
+          })),
+        ];
+    return originalLots.map((lot) => ({
+      ...lot,
+      buyer: lot.teamName || null,
+      finalTeam: teamByPlayer.get(lot.playerId) || null,
+      role: salesByLot.get(lot.lotNumber)?.player.role,
+      basePrice: unsoldByLot.get(lot.lotNumber)?.basePrice,
+    }));
+  }, [season]);
+  const sets = [...new Set(lots.map((lot) => lot.set).filter(Boolean))];
+  const rows = lots
+    .filter(
+      (lot) =>
+        (!franchise ||
+          lot.buyer === franchise ||
+          lot.finalTeam === franchise) &&
+        (!set || lot.set === set) &&
+        `${lot.playerName} ${lot.buyer || ""} ${lot.finalTeam || ""}`
+          .toLowerCase()
+          .includes(query.trim().toLowerCase()),
     )
-    .sort((a, b) => b.price - a.price);
+    .sort((a, b) =>
+      order === "price"
+        ? (b.price ?? -1) - (a.price ?? -1) || a.lotNumber - b.lotNumber
+        : a.lotNumber - b.lotNumber,
+    );
+  const paidLots = rows.filter(
+    (lot) => lot.price != null && (!franchise || lot.buyer === franchise),
+  );
   return (
     <section className="archive-panel">
       <div className="panel-title">
         <div>
           <small>WHERE THE TEAMS WERE BUILT</small>
           <h2>
-            Auction room<span>.</span>
+            Auction ledger<span>.</span>
           </h2>
         </div>
-        <span>{season.auction.sales.length} SIGNINGS</span>
+        <span>{rows.length} LOTS</span>
       </div>
       <div className="stats-controls">
         <label>
-          Search signings
+          Search lots
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="Player or team"
           />
         </label>
+        <label>
+          Franchise{" "}
+          <select
+            value={franchise}
+            onChange={(event) => setFranchise(event.target.value)}
+          >
+            <option value="">All franchises</option>
+            {season.teams.map((team) => (
+              <option key={team.id} value={team.teamName}>
+                {team.teamName}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Set{" "}
+          <select value={set} onChange={(event) => setSet(event.target.value)}>
+            <option value="">All sets</option>
+            {sets.map((name) => (
+              <option key={name}>{name}</option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Sort by{" "}
+          <select
+            value={order}
+            onChange={(event) => setOrder(event.target.value)}
+          >
+            <option value="lot">Lot order</option>
+            <option value="price">Highest price</option>
+          </select>
+        </label>
       </div>
+      {paidLots.length > 0 && (
+        <p className="archive-note">
+          {paidLots.length} sold lots ·{" "}
+          {money(paidLots.reduce((sum, lot) => sum + lot.price, 0))} in recorded
+          winning bids
+        </p>
+      )}
       <div className="archive-table-scroll">
         <table className="archive-table">
           <thead>
             <tr>
               <th>PLAYER</th>
-              <th>FRANCHISE</th>
               <th>LOT</th>
+              <th>SET</th>
+              <th>RESULT</th>
+              <th>ORIGINAL BUYER</th>
+              <th>FINAL SQUAD</th>
               <th>PRICE</th>
             </tr>
           </thead>
           <tbody>
-            {sales.map((sale, i) => (
-              <tr key={`${sale.player.id}-${i}`}>
+            {rows.map((lot) => (
+              <tr key={`${lot.lotNumber}-${lot.playerId}`}>
                 <td>
                   <strong>
-                    <PlayerLink player={sale.player} />
+                    <PlayerLink
+                      player={{ id: lot.playerId, name: lot.playerName }}
+                    />
                   </strong>
-                  <small>
-                    {sale.player.role}
-                    {sale.rtm ? " · RTM" : ""}
-                  </small>
+                  <small>{lot.role}</small>
                 </td>
-                <td>{sale.teamName}</td>
-                <td>{sale.lotNumber}</td>
+                <td>{lot.lotNumber}</td>
+                <td>{lot.set || "—"}</td>
+                <td>{lot.result}</td>
+                <td>{lot.buyer || "—"}</td>
+                <td>{lot.finalTeam || "—"}</td>
                 <td>
-                  <strong>{money(sale.price)}</strong>
+                  <strong>{lot.price != null ? money(lot.price) : "—"}</strong>
+                  {lot.price == null && lot.basePrice != null && (
+                    <small>{money(lot.basePrice)} base</small>
+                  )}
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      {!rows.length && (
+        <p className="archive-note">No lots match these filters.</p>
+      )}
       {Boolean(season.trades?.length) && (
         <div className="archive-trades">
           <h3>Trades</h3>
@@ -769,21 +940,6 @@ function Auction({ season }) {
             </p>
           ))}
         </div>
-      )}
-      <p className="archive-note">
-        Franchise reflects ownership at the end of the auction and trading
-        period.
-      </p>
-      {Boolean(season.auction.unsold.length) && (
-        <details className="archive-trades">
-          <summary>Unsold players ({season.auction.unsold.length})</summary>
-          {season.auction.unsold.map((entry, i) => (
-            <p key={`${entry.player.id}-${i}`}>
-              <PlayerLink player={entry.player} /> · base price{" "}
-              {money(entry.basePrice)}
-            </p>
-          ))}
-        </details>
       )}
     </section>
   );
@@ -862,7 +1018,11 @@ function DeleteSeason({ season }) {
 }
 
 function SeasonDetail({ season }) {
-  const [tab, setTab] = useState("overview");
+  const matchParam = new URLSearchParams(window.location.search).get("match");
+  const selectedMatch = season.matches.some((match) => match.id === matchParam)
+    ? matchParam
+    : null;
+  const [tab, setTab] = useState(selectedMatch ? "fixtures" : "overview");
   const [identity, setIdentity] = useState(null);
   useEffect(() => {
     fetch("/api/identity")
@@ -1045,7 +1205,9 @@ function SeasonDetail({ season }) {
           )}
           {tab === "table" && <Standings season={season} />}
           {tab === "squads" && <Squads season={season} />}
-          {tab === "fixtures" && <Fixtures season={season} />}
+          {tab === "fixtures" && (
+            <Fixtures season={season} selectedMatch={selectedMatch} />
+          )}
           {tab === "stats" && <Statistics season={season} />}
           {tab === "auction" && <Auction season={season} />}
         </div>

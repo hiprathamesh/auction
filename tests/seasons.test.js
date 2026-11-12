@@ -45,6 +45,23 @@ function sampleRoom() {
     user.lineup = user.squad.map((player) => player.id);
     user.bowlerIds = user.lineup.slice(0, 5);
   }
+  const signing = room.users[0].squad[0];
+  room.sold.push({
+    player: signing,
+    price: 7,
+    userId: room.users[0].id,
+    teamName: room.users[0].teamName,
+    lotNumber: 1,
+  });
+  room.lotHistory.push({
+    lotNumber: 1,
+    playerId: signing.id,
+    playerName: signing.name,
+    set: signing.set,
+    result: "SOLD",
+    teamName: room.users[1].teamName,
+    price: 7,
+  });
   const fixture = {
     id: "league-1",
     type: "league",
@@ -90,6 +107,7 @@ test("season snapshots persist scorecards and indexed profiles without private r
     /credentialHash|hostRecoveryHash|socketId/,
   );
   const store = createSeasonStore(file);
+  assert.deepEqual(store.playerLeaders(), []);
   assert.deepEqual(store.save(room.seasonKey, snapshot), {
     id: 1,
     created: true,
@@ -107,8 +125,15 @@ test("season snapshots persist scorecards and indexed profiles without private r
   const playerId = snapshot.teams[0].squad[0].id;
   assert.equal(store.playerSeasons(playerId).length, 1);
   assert.equal(store.playerSeasons(playerId)[0].matches, 1);
+  assert.equal(
+    store.playerLeaders().find((row) => row.id === playerId).auctionSpend,
+    7,
+  );
   assert.equal(store.ownerOf(1), "host44");
-  assert.equal(store.remove(1), true);
+  const writer = createSeasonStore(file);
+  assert.equal(writer.remove(1), true);
+  writer.close();
+  assert.deepEqual(store.playerLeaders(), []);
   assert.equal(store.listForUser("host44").length, 0);
   assert.equal(store.playerSeasons(playerId).length, 0);
   store.close();
@@ -173,6 +198,15 @@ test(
       ).json();
       assert.equal(playerProfile.seasons.length, 1);
       assert.equal(playerProfile.seasons[0].squadOwnerId, "host44");
+      assert.deepEqual(playerProfile.ranks.averagePrice, { rank: 1, of: 1 });
+      const matchLog = await (
+        await fetch(`${server.url}/api/players/${player.id}/matches`, {
+          headers: { Cookie: host.cookie },
+        })
+      ).json();
+      assert.equal(matchLog.matches[0].matchId, "league-1");
+      assert.equal(matchLog.matches[0].opponent, room.users[1].teamName);
+      assert.equal(profile.seasons[0].results[0].opponentId, "friend44");
       assert.equal(
         (
           await fetch(`${server.url}/api/seasons/1`, {
@@ -307,10 +341,33 @@ test(
       await expect(
         page.getByRole("heading", { name: /welcome back/i }),
       ).toBeVisible();
+      const navigation = () =>
+        page
+          .getByRole("navigation", { name: "Arena navigation" })
+          .getByRole("link");
+      await expect(navigation()).toHaveText([
+        "HUB",
+        "SEASONS",
+        "PLAYERS",
+        "PLAY",
+      ]);
+      await page.getByRole("tab", { name: "Player leaders" }).click();
+      await page.getByRole("button", { name: "Bowling", exact: true }).click();
+      await expect(
+        page.getByRole("heading", { name: "Economy." }),
+      ).toBeVisible();
+      await page.getByRole("button", { name: "Auction", exact: true }).click();
+      await expect(
+        page.getByRole("region", { name: "Average auction price leaders" }),
+      ).toContainText("₹7 Cr");
       await page.getByRole("link", { name: "Your manager profile ↗" }).click();
       await expect(
         page.getByRole("heading", { name: room.users[0].name, exact: true }),
       ).toBeVisible();
+      await page.getByRole("tab", { name: "Match records" }).click();
+      await expect(
+        page.getByRole("region", { name: "Manager head-to-head record" }),
+      ).toContainText("Friend");
       await page.getByRole("tab", { name: "Squads" }).click();
       await page
         .getByRole("region", { name: "Squad and playing XI" })
@@ -320,6 +377,15 @@ test(
       await expect(
         page.getByRole("heading", { name: /career scoreboard/i }),
       ).toBeVisible();
+      await page.getByRole("tab", { name: "Match log" }).click();
+      await expect(
+        page.getByRole("region", { name: "Player match log" }),
+      ).toContainText(room.users[1].teamName);
+      const scorecardUrl = await page
+        .getByRole("region", { name: "Player match log" })
+        .getByRole("link")
+        .first()
+        .getAttribute("href");
       const batting = page.getByRole("tab", { name: "Batting" });
       await batting.click();
       await expect(
@@ -348,12 +414,42 @@ test(
       );
       await page.getByRole("tab", { name: "Fixtures" }).click();
       await page.getByRole("button", { name: /full scorecard/i }).click();
+      await page.getByRole("button", { name: /score progression/i }).click();
+      await expect(
+        page.getByRole("img", { name: "Score progression" }),
+      ).toBeVisible();
+      await page.setViewportSize({ width: 320, height: 740 });
+      await expect(navigation()).toHaveText([
+        "HUB",
+        "SEASONS",
+        "PLAYERS",
+        "PLAY",
+      ]);
       assert.equal(
         await page.evaluate(
           "document.documentElement.scrollWidth <= window.innerWidth",
         ),
         true,
       );
+      await page.getByRole("tab", { name: "Auction" }).click();
+      await expect(
+        page.getByRole("row", {
+          name: new RegExp(room.users[0].squad[0].name),
+        }),
+      ).toContainText(room.users[1].teamName);
+      await expect(
+        page.getByRole("row", {
+          name: new RegExp(room.users[0].squad[0].name),
+        }),
+      ).toContainText(room.users[0].teamName);
+      await page.goto(url + scorecardUrl);
+      await expect(page.getByRole("tab", { name: "Fixtures" })).toHaveAttribute(
+        "aria-selected",
+        "true",
+      );
+      await expect(
+        page.getByRole("button", { name: /show brief scorecard/i }),
+      ).toBeVisible();
       const fresh = await browser.newPage({
         viewport: { width: 1280, height: 800 },
       });

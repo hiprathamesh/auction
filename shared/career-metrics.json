@@ -1,0 +1,66 @@
+{
+  "runs": { "label": "Runs", "group": "Batting" },
+  "battingAverage": {
+    "label": "Batting average",
+    "group": "Batting",
+    "top": "runs",
+    "bottom": "outs",
+    "sample": "balls",
+    "career": 120,
+    "season": 60,
+    "unit": "balls faced"
+  },
+  "strikeRate": {
+    "label": "Batting strike rate",
+    "group": "Batting",
+    "top": "runs",
+    "bottom": "balls",
+    "scale": 100,
+    "sample": "balls",
+    "career": 120,
+    "season": 60,
+    "unit": "balls faced"
+  },
+  "wickets": { "label": "Wickets", "group": "Bowling" },
+  "economy": {
+    "label": "Economy",
+    "group": "Bowling",
+    "top": "bowlerRuns",
+    "bottom": "bowlerBalls",
+    "scale": 6,
+    "low": true,
+    "sample": "bowlerBalls",
+    "career": 120,
+    "season": 60,
+    "unit": "overs bowled"
+  },
+  "bowlingAverage": {
+    "label": "Bowling average",
+    "group": "Bowling",
+    "top": "bowlerRuns",
+    "bottom": "wickets",
+    "low": true,
+    "sample": "bowlerBalls",
+    "career": 120,
+    "season": 60,
+    "unit": "overs bowled"
+  },
+  "bowlingStrikeRate": {
+    "label": "Bowling strike rate",
+    "group": "Bowling",
+    "top": "bowlerBalls",
+    "bottom": "wickets",
+    "low": true,
+    "sample": "bowlerBalls",
+    "career": 120,
+    "season": 60,
+    "unit": "overs bowled"
+  },
+  "mvpScore": { "label": "MVP points", "group": "MVP" },
+  "averagePrice": {
+    "label": "Average auction price",
+    "group": "Auction",
+    "top": "auctionSpend",
+    "bottom": "auctionSales"
+  }
+}
