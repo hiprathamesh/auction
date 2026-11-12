@@ -1,5 +1,64 @@
 import { TeamLogo } from "../components/Brand";
 
+function RetentionOptions({
+  seasonId,
+  limit,
+  retention,
+  ready,
+  online,
+  select,
+}) {
+  const { candidates = [], selected = [] } = retention || {};
+  return (
+    <fieldset className="retention-options">
+      <legend>Player Retain</legend>
+      {candidates.length ? (
+        <>
+          <p>
+            {selected.length}/{limit} selected from S
+            {String(seasonId).padStart(2, "0")}. Picks join your squad for free
+            before bidding.
+            {ready && " Undo ready to change your picks."}
+          </p>
+          <div className="retention-list">
+            {candidates.map((player) => {
+              const checked = selected.includes(player.id);
+              return (
+                <label key={player.id}>
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    disabled={
+                      !online || ready || (!checked && selected.length >= limit)
+                    }
+                    onChange={(event) =>
+                      select(player.id, event.target.checked)
+                    }
+                  />
+                  <span>
+                    <strong>{player.name}</strong>
+                    <small>
+                      {player.role}
+                      {player.overseas && " · Overseas"}
+                      {player.legend && " · Legend"}
+                    </small>
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+        </>
+      ) : (
+        <p>
+          {seasonId
+            ? "You have no eligible players from the previous recorded season."
+            : "No previous recorded season is available."}
+        </p>
+      )}
+    </fieldset>
+  );
+}
+
 export function LobbyScreen(props) {
   const {
     copyInvite,
@@ -15,6 +74,7 @@ export function LobbyScreen(props) {
     allReady,
     hostAction,
     identity,
+    retention,
   } = props;
   return (
     <main className="wrap page-content">
@@ -118,6 +178,18 @@ export function LobbyScreen(props) {
             </span>
             <span>2–3 teams: league-only test · 4+ teams: playoffs</span>
           </div>
+          {room.settings.retentionEnabled && (
+            <RetentionOptions
+              seasonId={room.previousSeasonId}
+              limit={room.settings.retentionLimit ?? 1}
+              retention={retention}
+              ready={me?.ready}
+              online={appOnline}
+              select={(playerId, selected) =>
+                emitAction("lobby:retain", { playerId, selected })
+              }
+            />
+          )}
         </section>
         <section className="glass-card settings-panel">
           <div className="panel-header">
@@ -265,7 +337,7 @@ export function LobbyScreen(props) {
               <div className="setting-row">
                 <div>
                   <strong>Right to Match</strong>
-                  <p>Allow original franchises to match the final bid</p>
+                  <p>Let the previous season’s manager match the final bid</p>
                 </div>
                 <button
                   className={`toggle ${room.settings.rtmEnabled ? "on" : ""}`}
@@ -273,6 +345,7 @@ export function LobbyScreen(props) {
                     setSetting("rtmEnabled", !room.settings.rtmEnabled)
                   }
                   aria-label="Toggle Right to Match"
+                  aria-pressed={Boolean(room.settings.rtmEnabled)}
                 >
                   <i />
                 </button>
@@ -281,7 +354,7 @@ export function LobbyScreen(props) {
                 <div>
                   <strong>Reveal RTM activation publicly</strong>
                   <p>
-                    When off, only the franchise holder sees the live ON/OFF
+                    When off, only the manager with RTM sees the live ON/OFF
                     state
                   </p>
                 </div>
@@ -301,8 +374,8 @@ export function LobbyScreen(props) {
               </div>
               <div className="setting-row">
                 <div>
-                  <strong>RTM uses per team</strong>
-                  <p>Maximum times a franchise can exercise RTM</p>
+                  <strong>RTM uses per manager</strong>
+                  <p>Maximum times each manager can exercise RTM</p>
                 </div>
                 <select
                   value={room.settings.rtmUses ?? 1}
@@ -315,6 +388,46 @@ export function LobbyScreen(props) {
                   <option value={2}>2 uses</option>
                   <option value={3}>3 uses</option>
                   <option value={4}>4 uses</option>
+                </select>
+              </div>
+              <div className="setting-row">
+                <div>
+                  <strong>Player Retain</strong>
+                  <p>Keep eligible players from last season’s squad for free</p>
+                </div>
+                <button
+                  className={`toggle ${room.settings.retentionEnabled ? "on" : ""}`}
+                  onClick={() =>
+                    setSetting(
+                      "retentionEnabled",
+                      !room.settings.retentionEnabled,
+                    )
+                  }
+                  aria-label="Toggle Player Retain"
+                  aria-pressed={Boolean(room.settings.retentionEnabled)}
+                >
+                  <i />
+                </button>
+              </div>
+              <div className="setting-row">
+                <div>
+                  <strong>Retentions per manager</strong>
+                  <p>
+                    Players retained last season cannot be retained again this
+                    season
+                  </p>
+                </div>
+                <select
+                  aria-label="Retentions per manager"
+                  value={room.settings.retentionLimit ?? 1}
+                  disabled={!room.settings.retentionEnabled}
+                  onChange={(event) =>
+                    setSetting("retentionLimit", Number(event.target.value))
+                  }
+                >
+                  <option value={1}>1 player</option>
+                  <option value={2}>2 players</option>
+                  <option value={3}>3 players</option>
                 </select>
               </div>
               <div className="setting-row">
@@ -388,10 +501,9 @@ export function LobbyScreen(props) {
                 <span>ⓘ</span>
                 <p>
                   Roster rules: max 25 players, 8 overseas in a squad, and 4
-                  overseas plus 4 legends in the playing XI. Auction legend
-                  limit and optional RTM are configurable above. RTM appears
-                  only for players with an assigned franchise in the player
-                  database.
+                  overseas plus 4 legends in the playing XI. RTM and retention
+                  rights follow identified managers from the previous recorded
+                  season.
                 </p>
               </div>
             </>

@@ -20,6 +20,10 @@ export function ResultsScreen(props) {
     DEFAULT_AUCTION_LEGEND_LIMIT,
     kickUser,
   } = props;
+  const retainedCount = room.users.reduce(
+    (sum, user) => sum + user.squad.filter((player) => player.retained).length,
+    0,
+  );
   return (
     <main className="wrap page-content">
       <div className="page-heading">
@@ -31,8 +35,10 @@ export function ResultsScreen(props) {
             The squads are <em>taking shape.</em>
           </h2>
           <p>
-            {room.sold.length} players sold · {room.unsold.length} unsold ·{" "}
-            {room.users.length} franchises in this room.
+            {room.sold.length} players sold ·{" "}
+            {retainedCount > 0 && `${retainedCount} retained · `}
+            {room.unsold.length} unsold · {room.users.length} franchises in this
+            room.
           </p>
         </div>
         <div className="result-actions">

@@ -406,7 +406,11 @@ export function UserProfile({ id }) {
                         (player) =>
                           player.inXi ? <strong>Playing XI</strong> : "Squad",
                       ],
-                      ["Price", (player) => money(player.price)],
+                      [
+                        "Price",
+                        (player) =>
+                          player.retained ? "Retained" : money(player.price),
+                      ],
                       ["Runs", (player) => number(player.runs)],
                       ["Wickets", (player) => number(player.wickets)],
                     ]}

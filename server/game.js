@@ -14,6 +14,8 @@ const DEFAULT_SETTINGS = {
   rtmEnabled: false,
   rtmUses: 1,
   rtmPublicStatus: true,
+  retentionEnabled: false,
+  retentionLimit: 1,
   bidMultipliers: [2, 5, 10],
   tradesEnabled: false,
   tradeLimit: 2,
@@ -257,6 +259,80 @@ function roomRtmUsesRemaining(user, settings = {}) {
   );
 }
 
+function retentionLimit(room) {
+  return room.settings.retentionLimit ?? DEFAULT_SETTINGS.retentionLimit;
+}
+
+function canRetainPlayer(room, user, player) {
+  if (!room.settings.retentionEnabled || !user.identityId || !player)
+    return false;
+  const previous = room.previousSeason?.players[player.id];
+  return (
+    previous?.identityId === user.identityId &&
+    !previous.retained &&
+    (!player.legend || room.settings.includeLegends)
+  );
+}
+
+function selectedRetentions(room, user, findPlayer = room.findPlayer) {
+  return (user.retentionPlayerIds || [])
+    .map((id) => findPlayer(id))
+    .filter((player) => canRetainPlayer(room, user, player))
+    .slice(0, retentionLimit(room));
+}
+
+function setRetention(room, user, playerId, selected) {
+  if (!room.settings.retentionEnabled || room.phase !== "lobby")
+    return {
+      error: "Player Retain is only available in the lobby when enabled.",
+    };
+  if (user.ready) return { error: "Undo ready to change your retentions." };
+  const player = room.findPlayer(playerId);
+  if (!canRetainPlayer(room, user, player))
+    return { error: "You cannot retain this player from the previous season." };
+  const picks = new Set(selectedRetentions(room, user).map((pick) => pick.id));
+  if (selected) picks.add(playerId);
+  else picks.delete(playerId);
+  if (picks.size > retentionLimit(room))
+    return { error: `You can retain up to ${retentionLimit(room)} players.` };
+  user.retentionPlayerIds = [...picks];
+  return { ok: true };
+}
+
+function resetRetentionReadiness(room) {
+  for (const user of room.users) {
+    user.retentionPlayerIds = selectedRetentions(room, user).map(
+      (player) => player.id,
+    );
+    user.ready = false;
+  }
+}
+
+function privateRetention(room, user) {
+  if (
+    room.phase !== "lobby" ||
+    !room.settings.retentionEnabled ||
+    !room.previousSeason ||
+    !room.verifySeatIdentity?.(user)
+  )
+    return null;
+  const candidates = Object.keys(room.previousSeason.players)
+    .map(room.findPlayer)
+    .filter((player) => canRetainPlayer(room, user, player))
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .map(({ id, name, role, overseas, legend }) => ({
+      id,
+      name,
+      role,
+      overseas,
+      legend,
+    }));
+  return {
+    candidates,
+    selected: selectedRetentions(room, user).map((player) => player.id),
+  };
+}
+
 function publicUser(user, settings, includeBowlingRanks = false) {
   const bowlingRank = includeBowlingRanks
     ? new Map(
@@ -327,7 +403,6 @@ function publicRoom(room, viewerId) {
           : Math.max(0, (room.auctionEndsAt || Date.now()) - Date.now()),
         endsAt: room.auctionEndsAt,
         outUserIds: [...(room.currentLot.outUserIds || [])],
-        rtmTeamId: room.currentLot.player.rtmTeamId || null,
         rtmHolderUserId: room.currentLot.rtmHolderUserId || null,
         rtmHolderName:
           room.users.find((u) => u.id === room.currentLot.rtmHolderUserId)
@@ -357,6 +432,7 @@ function publicRoom(room, viewerId) {
     hostId: room.hostId,
     viewerId,
     settings: room.settings,
+    previousSeasonId: room.previousSeason?.id ?? null,
     users: room.users.map((u) =>
       publicUser(u, room.settings, room.phase === "lineup"),
     ),
@@ -747,7 +823,7 @@ function makePlayerSquadView(user) {
   };
 }
 
-function startAuction(io, room, playerDB) {
+function startAuction(io, room, playerDB, latestRoster) {
   if (room.phase !== "lobby")
     return { error: "The auction has already been started." };
   if (room.users.length < 2)
@@ -756,6 +832,28 @@ function startAuction(io, room, playerDB) {
     };
   if (room.users.some((u) => !u.ready))
     return { error: "Everyone must be ready before the auction starts." };
+  const previousSeason =
+    room.settings.rtmEnabled || room.settings.retentionEnabled
+      ? (latestRoster?.() ?? null)
+      : null;
+  const retentionSourceChanged =
+    room.settings.retentionEnabled &&
+    JSON.stringify(room.previousSeason ?? null) !==
+      JSON.stringify(previousSeason);
+  room.previousSeason = previousSeason;
+  if (retentionSourceChanged) {
+    resetRetentionReadiness(room);
+    room.lastNotice = {
+      kind: "settings",
+      text: "The latest recorded season changed. Review your retentions and ready up again.",
+    };
+    broadcast(io, room);
+    return { ok: false };
+  }
+  const players = new Map(
+    playerDB.players.map((player) => [player.id, player]),
+  );
+  const retainedIds = new Set();
   room.phase = "auction";
   room.currentSetIndex = 0;
   room.sold = [];
@@ -763,7 +861,13 @@ function startAuction(io, room, playerDB) {
   room.lotHistory = [];
   for (const u of room.users) {
     u.purse = room.settings.startingPurse;
-    u.squad = [];
+    u.squad = selectedRetentions(room, u, (id) => players.get(id)).map(
+      (player) => {
+        retainedIds.add(player.id);
+        return { ...player, purchasePrice: 0, retained: true };
+      },
+    );
+    delete u.retentionPlayerIds;
     u.lineup = [];
     u.bowlerIds = [];
     u.tactics = { ...DEFAULT_TACTICS };
@@ -773,7 +877,8 @@ function startAuction(io, room, playerDB) {
   const bySet = new Map();
   for (const s of room.setOrder) bySet.set(s, []);
   for (const p of playerDB.players) {
-    if (!room.settings.includeLegends && p.legend) continue;
+    if (retainedIds.has(p.id) || (!room.settings.includeLegends && p.legend))
+      continue;
     if (!bySet.has(p.set)) bySet.set(p.set, []);
     bySet.get(p.set).push(p);
   }
@@ -827,17 +932,27 @@ function skipLegendLotsWhenFull(room) {
   return skippedCount;
 }
 
+function hasRtmRight(room, user, player) {
+  // Auctions already in progress before season-based rights keep their rules.
+  if (room.previousSeason === undefined)
+    return user.teamId === player.rtmTeamId;
+  return Boolean(
+    user.identityId &&
+    room.previousSeason?.players[player.id]?.identityId === user.identityId,
+  );
+}
+
 function refreshCurrentLotRtmHolder(room) {
   const lot = room?.currentLot;
   if (!lot) return null;
-  if (!room.settings?.rtmEnabled || !lot.player?.rtmTeamId) {
+  if (!room.settings?.rtmEnabled) {
     lot.rtmHolderUserId = null;
     lot.rtmOptInUserId = null;
     return null;
   }
   const holder = room.users.find(
     (user) =>
-      user.teamId === lot.player.rtmTeamId &&
+      hasRtmRight(room, user, lot.player) &&
       roomRtmUsesRemaining(user, room.settings) > 0 &&
       canUserAcquirePlayer(
         user,
@@ -931,7 +1046,7 @@ function canRtmHolderStillChangeDecision(room, lot, highestBidder) {
   );
   if (!holder || holder.id === highestBidder?.id) return false;
   if ((lot.outUserIds || []).includes(holder.id)) return false;
-  if (holder.teamId !== lot.player.rtmTeamId) return false;
+  if (!hasRtmRight(room, holder, lot.player)) return false;
   // An eligible holder keeps the bid window even during a brief disconnect,
   // giving them a chance to reconnect before the authoritative deadline.
   return (
@@ -985,7 +1100,7 @@ function settleLot(io, room, forced = false, fastClosed = false) {
     rtmHolder.id !== highestBidder.id &&
     room.settings.rtmEnabled &&
     roomRtmUsesRemaining(rtmHolder, room.settings) > 0 &&
-    rtmHolder.teamId === lot.player.rtmTeamId &&
+    hasRtmRight(room, rtmHolder, lot.player) &&
     canUserAcquirePlayer(rtmHolder, lot.player, lot.currentBid, room.settings)
   ) {
     winner = rtmHolder;
@@ -1558,12 +1673,15 @@ function startPlayoffs(io, room) {
 function privateState(room, user) {
   const lot = room.currentLot;
   const isRtmHolder = Boolean(
-    lot?.rtmHolderUserId && lot.rtmHolderUserId === user.id,
+    lot?.rtmHolderUserId &&
+    lot.rtmHolderUserId === user.id &&
+    (room.previousSeason === undefined || room.verifySeatIdentity?.(user)),
   );
   return {
     rtmPlayerId: lot?.player?.id || null,
     isRtmHolder,
     rtmIsOn: Boolean(isRtmHolder && lot.rtmOptInUserId === user.id),
+    retention: privateRetention(room, user),
     ownSquadOvrs: room.settings.showRatings
       ? null
       : Object.fromEntries(
@@ -1677,6 +1795,9 @@ module.exports = {
   getLegendAuctionLimit,
   canUserAcquirePlayer,
   roomRtmUsesRemaining,
+  hasRtmRight,
+  setRetention,
+  resetRetentionReadiness,
   refreshCurrentLotRtmHolder,
   hasEligibleNextBidder,
   canRtmHolderStillChangeDecision,

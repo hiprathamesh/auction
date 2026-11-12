@@ -281,7 +281,13 @@ function Squads({ season }) {
             ? "XI"
             : "SQUAD"}
       </span>
-      <b>{player.purchasePrice != null ? money(player.purchasePrice) : "—"}</b>
+      <b>
+        {player.retained
+          ? "Retained"
+          : player.purchasePrice != null
+            ? money(player.purchasePrice)
+            : "—"}
+      </b>
     </div>
   );
   return (
@@ -798,13 +804,26 @@ function Auction({ season }) {
             result: "UNSOLD",
           })),
         ];
-    return originalLots.map((lot) => ({
+    const auctionLots = originalLots.map((lot) => ({
       ...lot,
       buyer: lot.teamName || null,
       finalTeam: teamByPlayer.get(lot.playerId) || null,
       role: salesByLot.get(lot.lotNumber)?.player.role,
       basePrice: unsoldByLot.get(lot.lotNumber)?.basePrice,
     }));
+    const retained = season.teams.flatMap((team) =>
+      team.squad
+        .filter((player) => player.retained)
+        .map((player) => ({
+          lotNumber: null,
+          playerId: player.id,
+          playerName: player.name,
+          finalTeam: team.teamName,
+          role: player.role,
+          result: "RETAINED",
+        })),
+    );
+    return [...retained, ...auctionLots];
   }, [season]);
   const sets = [...new Set(lots.map((lot) => lot.set).filter(Boolean))];
   const rows = lots
@@ -826,6 +845,7 @@ function Auction({ season }) {
   const paidLots = rows.filter(
     (lot) => lot.price != null && (!franchise || lot.buyer === franchise),
   );
+  const retainedCount = rows.filter((lot) => lot.result === "RETAINED").length;
   return (
     <section className="archive-panel">
       <div className="panel-title">
@@ -835,11 +855,14 @@ function Auction({ season }) {
             Auction ledger<span>.</span>
           </h2>
         </div>
-        <span>{rows.length} LOTS</span>
+        <span>
+          {rows.length - retainedCount} LOTS
+          {retainedCount > 0 && ` · ${retainedCount} RETAINED`}
+        </span>
       </div>
       <div className="stats-controls">
         <label>
-          Search lots
+          Search players
           <input
             value={query}
             onChange={(event) => setQuery(event.target.value)}
@@ -911,13 +934,19 @@ function Auction({ season }) {
                   </strong>
                   <small>{lot.role}</small>
                 </td>
-                <td>{lot.lotNumber}</td>
+                <td>{lot.lotNumber ?? "—"}</td>
                 <td>{lot.set || "—"}</td>
                 <td>{lot.result}</td>
                 <td>{lot.buyer || "—"}</td>
                 <td>{lot.finalTeam || "—"}</td>
                 <td>
-                  <strong>{lot.price != null ? money(lot.price) : "—"}</strong>
+                  <strong>
+                    {lot.result === "RETAINED"
+                      ? "Free"
+                      : lot.price != null
+                        ? money(lot.price)
+                        : "—"}
+                  </strong>
                   {lot.price == null && lot.basePrice != null && (
                     <small>{money(lot.basePrice)} base</small>
                   )}
@@ -928,7 +957,7 @@ function Auction({ season }) {
         </table>
       </div>
       {!rows.length && (
-        <p className="archive-note">No lots match these filters.</p>
+        <p className="archive-note">No players match these filters.</p>
       )}
       {Boolean(season.trades?.length) && (
         <div className="archive-trades">

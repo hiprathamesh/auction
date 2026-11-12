@@ -132,13 +132,13 @@ export function SquadCard({
                   {showRatings && (
                     <span className="squad-player-ovr">{p.ovr}</span>
                   )}
-                  <b>{money(p.purchasePrice)}</b>
+                  <b>{p.retained ? "Retained" : money(p.purchasePrice)}</b>
                 </div>
               ))}
             </div>
           ))
         ) : (
-          <div className="empty-mini">No players purchased.</div>
+          <div className="empty-mini">No players in the squad yet.</div>
         )}
       </div>
     </section>

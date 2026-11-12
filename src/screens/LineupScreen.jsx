@@ -155,7 +155,7 @@ export function LineupScreen(props) {
                       <b className="player-ovr">{p.ovr}</b>
                     )}
                     <span className="lineup-price">
-                      {money(p.purchasePrice)}
+                      {p.retained ? "Retained" : money(p.purchasePrice)}
                     </span>
                   </button>
                 );

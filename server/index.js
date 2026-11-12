@@ -26,6 +26,7 @@ const DIST = process.env.DIST_DIR
 const DB = JSON.parse(
   fs.readFileSync(path.join(ROOT, "data", "players.json"), "utf8"),
 );
+const playersById = new Map(DB.players.map((player) => [player.id, player]));
 const careerMetrics = require("../shared/career-metrics.json");
 const databaseErrors = validatePlayerDatabase(DB, {
   publicDirectory: path.join(ROOT, "public"),
@@ -149,11 +150,18 @@ const checkpoints = createCheckpointStore({
     ? path.resolve(process.env.ROOM_DATA_DIR)
     : path.join(ROOT, ".local", "rooms"),
 });
-for (const restored of checkpoints.load(idleHours * 60 * 60 * 1000)) {
-  restored.saveCheckpoint = checkpoints.save;
-  restored.recordCompletedSeason = () => recordCompletedSeason(restored);
-  rooms.set(restored.code, restored);
+function registerRoom(room) {
+  room.saveCheckpoint = checkpoints.save;
+  room.recordCompletedSeason = () => recordCompletedSeason(room);
+  room.findPlayer = (id) => playersById.get(id);
+  room.verifySeatIdentity = (user) => {
+    const socket = io.sockets.sockets.get(user.socketId);
+    return Boolean(socket && hasSeatIdentity(socket, user));
+  };
+  rooms.set(room.code, room);
 }
+for (const restored of checkpoints.load(idleHours * 60 * 60 * 1000))
+  registerRoom(restored);
 const cleanupInterval = setInterval(() => {
   const expired = expireInactiveRooms(rooms, {
     now: Date.now(),
@@ -761,6 +769,7 @@ io.on("connection", (socket) => {
     "host:transfer",
     "host:kickUser",
     "host:settings",
+    "lobby:retain",
     "auction:bid",
     "auction:rtmToggle",
     "auction:out",
@@ -823,6 +832,8 @@ io.on("connection", (socket) => {
           !stringField("userId") ||
           !stringField("reconnectToken"))) ||
       (event === "room:join" && !stringField("code", 32)) ||
+      (event === "lobby:retain" &&
+        (!stringField("playerId") || typeof payload.selected !== "boolean")) ||
       (event === "auction:bid" &&
         (!stringField("lotId") ||
           !stringField("actionId") ||
@@ -893,9 +904,7 @@ io.on("connection", (socket) => {
     const room = game.createRoom(code, user, DB);
     room.hostRecoveryHash = credentialHash(hostRecoveryToken);
     room.emptySince = null;
-    room.saveCheckpoint = checkpoints.save;
-    room.recordCompletedSeason = () => recordCompletedSeason(room);
-    rooms.set(code, room);
+    registerRoom(room);
     joinSocket(socket, room, user, reconnectToken, hostRecoveryToken);
   });
 
@@ -1113,6 +1122,16 @@ io.on("connection", (socket) => {
       }
     }
     room.sold = room.sold.filter((sale) => sale.userId !== target.id);
+    const releasedRetentions = target.squad
+      .filter((player) => player.retained)
+      .map(
+        ({ retained: _retained, purchasePrice: _price, ...player }) => player,
+      );
+    if (releasedRetentions.length) {
+      room.auctionQueue.push(...releasedRetentions);
+      room.totalLots += releasedRetentions.length;
+      if (room.currentLot) room.currentLot.totalLots = room.totalLots;
+    }
 
     // If the removed user was leading the current lot, cancel their bid and restart the clock.
     if (
@@ -1153,7 +1172,7 @@ io.on("connection", (socket) => {
     }
     socketByUser.delete(target.id);
 
-    const recoveredCount = recoveredSales.length;
+    const recoveredCount = recoveredSales.length + releasedRetentions.length;
     const wasLineupPhase = room.phase === "lineup";
     room.tradeOffers = (room.tradeOffers || []).filter(
       (offer) => offer.fromId !== target.id && offer.toId !== target.id,
@@ -1182,7 +1201,7 @@ io.on("connection", (socket) => {
     }
 
     const recoveredMessage = recoveredCount
-      ? ` ${recoveredCount} purchased player${recoveredCount === 1 ? "" : "s"} returned to the unsold pool.`
+      ? ` ${recoveredCount} squad player${recoveredCount === 1 ? "" : "s"} returned to the auction pool.`
       : "";
     const lineupMessage = wasLineupPhase
       ? " The room returned to Auction Results and all remaining teams must select their XIs again."
@@ -1221,6 +1240,15 @@ io.on("connection", (socket) => {
     game.broadcast(io, room);
   });
 
+  onAction("lobby:retain", ({ playerId, selected }) => {
+    const { room, user } = getRoomAndUser(socket);
+    if (!room || !user || !hasSeatIdentity(socket, user))
+      return emitError(socket, "Identify yourself to select retained players.");
+    const result = game.setRetention(room, user, playerId, selected);
+    if (result.error) return emitError(socket, result.error);
+    game.broadcast(io, room, false, true);
+  });
+
   onAction("host:settings", (patch = {}) => {
     const { room, user } = getRoomAndUser(socket);
     if (!verifyHost(socket, room, user) || room.phase !== "lobby") return;
@@ -1235,8 +1263,12 @@ io.on("connection", (socket) => {
           socket,
           "Remove guest seats before turning on identified-only access.",
         );
-      room.settings.identifiedOnly = patch.identifiedOnly;
     }
+    if (patch.retentionEnabled === true && room.previousSeason === undefined)
+      room.previousSeason = seasonStore.latestRoster();
+    if (typeof patch.identifiedOnly === "boolean")
+      room.settings.identifiedOnly = patch.identifiedOnly;
+    const { retentionEnabled, retentionLimit, includeLegends } = room.settings;
     if (Object.prototype.hasOwnProperty.call(patch, "recordSeason")) {
       if (patch.recordSeason === false) {
         room.settings.recordSeason = false;
@@ -1255,6 +1287,8 @@ io.on("connection", (socket) => {
       rtmEnabled: [true, false],
       rtmUses: [1, 2, 3, 4],
       rtmPublicStatus: [true, false],
+      retentionEnabled: [true, false],
+      retentionLimit: [1, 2, 3],
       tradesEnabled: [true, false],
       tradeLimit: [1, 2, 3, 4, 5, 6, 8, 10],
     };
@@ -1278,6 +1312,13 @@ io.on("connection", (socket) => {
         );
       }
     }
+    if (
+      Boolean(retentionEnabled) !== Boolean(room.settings.retentionEnabled) ||
+      (room.settings.retentionEnabled &&
+        (retentionLimit !== room.settings.retentionLimit ||
+          includeLegends !== room.settings.includeLegends))
+    )
+      game.resetRetentionReadiness(room);
     for (const u of room.users) u.purse = room.settings.startingPurse;
     setNotice(room, { kind: "settings", text: "Auction settings updated." });
     game.broadcast(io, room);
@@ -1286,7 +1327,7 @@ io.on("connection", (socket) => {
   onAction("host:startAuction", () => {
     const { room, user } = getRoomAndUser(socket);
     if (!verifyHost(socket, room, user)) return;
-    const result = game.startAuction(io, room, DB);
+    const result = game.startAuction(io, room, DB, seasonStore.latestRoster);
     if (result.error) return emitError(socket, result.error);
   });
 
@@ -1296,6 +1337,7 @@ io.on("connection", (socket) => {
     io,
     game,
     getRoomAndUser,
+    hasSeatIdentity,
     verifyHost,
     emitError,
     setNotice,

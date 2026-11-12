@@ -95,9 +95,13 @@ async function identify(url, id, pin = "1234") {
 test("season snapshots persist scorecards and indexed profiles without private room credentials", (t) => {
   const file = path.join(temporary(t), "seasons.sqlite");
   const { room } = sampleRoom();
+  const retained = room.users[0].squad[1];
+  retained.retained = true;
+  retained.purchasePrice = 0;
   const snapshot = makeSeasonSnapshot(room);
   assert.equal(snapshot.matches.length, 1);
   assert.equal(snapshot.teams[0].identityId, "host44");
+  assert.equal(snapshot.teams[0].squad[1].retained, true);
   room.recordingOwnerIdentityId = "host44";
   room.hostId = "user1";
   assert.equal(makeSeasonSnapshot(room).ownerIdentityId, "host44");
@@ -125,6 +129,11 @@ test("season snapshots persist scorecards and indexed profiles without private r
   const playerId = snapshot.teams[0].squad[0].id;
   assert.equal(store.playerSeasons(playerId).length, 1);
   assert.equal(store.playerSeasons(playerId)[0].matches, 1);
+  assert.equal(store.playerSeasons(retained.id)[0].price, null);
+  assert.deepEqual(store.latestRoster().players[retained.id], {
+    identityId: "host44",
+    retained: true,
+  });
   assert.equal(
     store.playerLeaders().find((row) => row.id === playerId).auctionSpend,
     7,
@@ -314,6 +323,11 @@ test(
     const { room } = sampleRoom();
     const file = path.join(directory, "seasons.sqlite");
     const store = createSeasonStore(file);
+    const previouslyRetained = room.users[1].squad.find(
+      (player) => !player.legend,
+    );
+    previouslyRetained.retained = true;
+    previouslyRetained.purchasePrice = 0;
     store.save(room.seasonKey, makeSeasonSnapshot(room));
     store.close();
     const backend = await startServer(t, { SEASONS_DB_PATH: file });
@@ -446,6 +460,11 @@ test(
         true,
       );
       await page.getByRole("tab", { name: "Auction" }).click();
+      const retentionRow = page.getByRole("row", {
+        name: new RegExp(previouslyRetained.name),
+      });
+      await expect(retentionRow).toContainText("RETAINED");
+      await expect(retentionRow).toContainText("Free");
       await expect(
         page.getByRole("row", {
           name: new RegExp(room.users[0].squad[0].name),
@@ -542,7 +561,9 @@ test(
       const code = await fresh.evaluate(() =>
         localStorage.getItem("iplRoomCode"),
       );
-      const guest = await browser.newPage();
+      const guest = await browser.newPage({
+        viewport: { width: 390, height: 844 },
+      });
       await guest.goto(`${url}/?room=${code}`);
       await guest.getByLabel("YOUR DISPLAY NAME").fill("Guest Friend");
       await guest.getByRole("button", { name: "Chennai Super Kings" }).click();
@@ -550,13 +571,50 @@ test(
       await expect(guest.getByRole("alert")).toHaveText(
         "Identify yourself before joining this room.",
       );
-      await guest.getByLabel("YOUR ID").fill("guestfriend");
+      await guest.getByLabel("YOUR ID").fill("friend44");
       await guest.getByLabel("FOUR-DIGIT PIN").fill("5678");
       await guest.getByRole("button", { name: /identify me/i }).click();
       await guest.getByRole("button", { name: "Join auction room" }).click();
       await expect(
         fresh.getByText("Guest Friend", { exact: true }),
       ).toBeVisible();
+      await fresh.getByRole("button", { name: "Toggle Player Retain" }).click();
+      const options = guest.getByRole("group", { name: "Player Retain" });
+      const eligible = options.getByRole("checkbox");
+      const pick = room.users[1].squad.find(
+        (player) => !player.legend && !player.retained,
+      );
+      const checkbox = options.getByRole("checkbox", {
+        name: new RegExp(pick.name),
+      });
+      await fresh
+        .getByRole("combobox", { name: "Retentions per manager" })
+        .selectOption("2");
+      await expect(options).toContainText("0/2 selected from S01");
+      await expect(
+        options.getByRole("checkbox", {
+          name: new RegExp(previouslyRetained.name),
+        }),
+      ).toHaveCount(0);
+      await checkbox.click();
+      await expect(checkbox).toBeChecked();
+      await expect(options).toContainText("1/2 selected from S01");
+      await fresh
+        .getByRole("combobox", { name: "Retentions per manager" })
+        .selectOption("1");
+      await expect(options).toContainText("1/1 selected from S01");
+      await expect(
+        eligible.and(guest.locator(":not(:checked)")).first(),
+      ).toBeDisabled();
+      await guest.getByRole("button", { name: "I'm ready" }).click();
+      await expect(checkbox).toBeDisabled();
+      await fresh.getByRole("button", { name: "I'm ready" }).click();
+      await fresh.getByRole("button", { name: "Start auction" }).click();
+      await expect(guest.locator(".auction-player-name")).toBeVisible();
+      const mySquad = guest
+        .locator(".mini-player")
+        .filter({ hasText: pick.name });
+      await expect(mySquad).toContainText("Retained");
       assert.deepEqual(errors, []);
     } finally {
       await browser.close();

@@ -216,6 +216,7 @@ function App() {
     isHolder: false,
     isOn: false,
   });
+  const [retention, setRetention] = useState(null);
   const [ownSquadOvrs, setOwnSquadOvrs] = useState({});
   const [expandedBidderId, setExpandedBidderId] = useState(null);
   const [tradeTarget, setTradeTarget] = useState("");
@@ -311,6 +312,7 @@ function App() {
       setMeId(userId);
       setIdentifiedSeat(identified);
       setPrivateRtmState({ playerId: null, isHolder: false, isOn: false });
+      setRetention(null);
       setOwnSquadOvrs({});
       localStorage.setItem("iplRoomCode", code);
       localStorage.setItem("iplUserId", userId);
@@ -370,6 +372,7 @@ function App() {
       setNotice("");
     };
     const onPrivateRoomState = (payload = {}) => {
+      setRetention(payload.retention ?? null);
       setPrivateRtmState({
         playerId: payload.rtmPlayerId || null,
         isHolder: Boolean(payload.isRtmHolder),
@@ -584,12 +587,12 @@ function App() {
   const hostAction = (event) => emitAction(event);
   const kickUser = (target) => {
     if (!isHost || !target || target.id === meId) return;
-    const purchased = Number(target.squadCount || 0);
+    const squadCount = Number(target.squadCount || 0);
     const offline = target.connected
       ? "They are currently connected."
       : "They are currently disconnected.";
-    const recovered = purchased
-      ? `\n\nTheir ${purchased} purchased player${purchased === 1 ? "" : "s"} will return to the unsold pool so the group can re-auction them.`
+    const recovered = squadCount
+      ? `\n\nTheir ${squadCount} squad player${squadCount === 1 ? "" : "s"} will return to the auction pool.`
       : "";
     const lineupWarning =
       room?.phase === "lineup"
@@ -666,6 +669,7 @@ function App() {
     appOnline &&
     isMyRtmHolder &&
     room?.settings?.rtmEnabled &&
+    (!room.previousSeasonId || identifiedSeat) &&
     !isMyOut &&
     myRtmRemaining > 0 &&
     me?.purse >= (currentLot?.currentBid || 0) &&
@@ -999,6 +1003,7 @@ function App() {
             appOnline,
             allReady,
             hostAction,
+            retention,
             identity: identity && identifiedSeat,
           }}
         />

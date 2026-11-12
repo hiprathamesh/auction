@@ -156,6 +156,7 @@ function indexSeason(database, id, season) {
       squadTeamName: team?.teamName || row.teamName || null,
       squadOwnerId: team?.identityId || null,
       squadOwnerName: team?.name || null,
+      retained: squadPlayer?.retained === true || undefined,
       champion: Boolean(team && season.champion?.id === team.id),
       leagueFinish: leagueFinish || null,
       finalFinish: team ? finalPlacement(season, team.id) : null,
@@ -279,6 +280,31 @@ function createSeasonStore(file) {
       .get(id);
     return row ? { id: Number(row.id), ...JSON.parse(row.data) } : null;
   }
+  function latestRoster() {
+    const rows = open()
+      .prepare(
+        `SELECT latest.id AS seasonId, p.player_id AS playerId,
+          json_extract(p.data, '$.squadOwnerId') AS identityId,
+          json_extract(p.data, '$.retained') AS retained
+        FROM (SELECT id FROM seasons ORDER BY id DESC LIMIT 1) AS latest
+        LEFT JOIN season_players p ON p.season_id = latest.id
+          AND json_extract(p.data, '$.squadOwnerId') IS NOT NULL
+        ORDER BY p.player_id`,
+      )
+      .all();
+    if (!rows.length) return null;
+    return {
+      id: Number(rows[0].seasonId),
+      players: Object.fromEntries(
+        rows
+          .filter((row) => row.identityId)
+          .map(({ playerId, identityId, retained }) => [
+            playerId,
+            { identityId, retained: retained === 1 },
+          ]),
+      ),
+    };
+  }
   function list(before = Number.MAX_SAFE_INTEGER, limit = 24) {
     return open()
       .prepare(
@@ -331,6 +357,7 @@ function createSeasonStore(file) {
             name: player.name,
             inXi: team.lineup?.includes(player.id) || false,
             price: player.purchasePrice,
+            retained: player.retained === true || undefined,
             runs: stats.get(player.id)?.runs || 0,
             wickets: stats.get(player.id)?.wickets || 0,
           })) || [];
@@ -519,6 +546,7 @@ function createSeasonStore(file) {
   return {
     save,
     get,
+    latestRoster,
     list,
     remove,
     listForUser,
@@ -558,6 +586,7 @@ function makeSeasonSnapshot(room) {
     bowling: p.bowling,
     fielding: p.fielding,
     purchasePrice: p.purchasePrice,
+    retained: p.retained === true || undefined,
     photo: p.photo,
     photoAttribution: p.photoAttribution,
     preferredBattingPositions: p.preferredBattingPositions,

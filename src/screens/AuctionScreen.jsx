@@ -179,7 +179,9 @@ export function AuctionScreen(props) {
                               </span>
                             </div>
                           </div>
-                          <b>{money(p.purchasePrice)}</b>
+                          <b>
+                            {p.retained ? "Retained" : money(p.purchasePrice)}
+                          </b>
                         </div>
                       ))}
                   </div>
@@ -407,17 +409,17 @@ export function AuctionScreen(props) {
                     <div className="rtm-public-status">
                       <strong>
                         {room.settings.rtmPublicStatus === false
-                          ? `RTM OPTION · ${rtmHolder?.teamShort || ""}`
+                          ? `RTM OPTION · ${rtmHolder?.name || ""}`
                           : rtmIsOnForMe
                             ? `RTM ARMED · ${rtmHolder?.name || rtmHolder?.teamShort}`
-                            : `RTM AVAILABLE · ${rtmHolder?.teamShort || ""}`}
+                            : `RTM AVAILABLE · ${rtmHolder?.name || ""}`}
                       </strong>
                       <small>
                         {room.settings.rtmPublicStatus === false
-                          ? `${rtmHolder?.teamName} holds the option. Activation is hidden until the lot closes.`
+                          ? `${rtmHolder?.name} holds the option. Activation is hidden until the lot closes.`
                           : rtmIsOnForMe
-                            ? `${rtmHolder?.teamName} can match the final bid.`
-                            : `${rtmHolder?.teamName} has the option to match the final bid.`}
+                            ? `${rtmHolder?.name} can match the final bid.`
+                            : `${rtmHolder?.name} has the option to match the final bid.`}
                       </small>
                     </div>
                   )}
@@ -584,13 +586,17 @@ export function AuctionScreen(props) {
                                   </span>
                                 </div>
                               </div>
-                              <b>{money(player.purchasePrice)}</b>
+                              <b>
+                                {player.retained
+                                  ? "Retained"
+                                  : money(player.purchasePrice)}
+                              </b>
                             </div>
                           ))}
                         </div>
                       ) : (
                         <div className="bidder-preview-empty">
-                          No players purchased yet.
+                          No players in the squad yet.
                         </div>
                       )}
                     </div>

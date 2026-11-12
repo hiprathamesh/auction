@@ -4,6 +4,7 @@ module.exports = function registerHandlers({
   io,
   game,
   getRoomAndUser,
+  hasSeatIdentity,
   verifyHost,
   emitError,
   setNotice,
@@ -160,15 +161,16 @@ module.exports = function registerHandlers({
     if (lot.id !== lotId)
       return emitError(socket, "The auction lot has changed.");
     if (
-      !lot.rtmHolderUserId ||
       lot.rtmHolderUserId !== user.id ||
-      user.teamId !== lot.player.rtmTeamId
+      !game.hasRtmRight(room, user, lot.player)
     ) {
       return emitError(
         socket,
-        "Your franchise does not hold the Right to Match for this player.",
+        "You do not hold the Right to Match for this player.",
       );
     }
+    if (room.previousSeason !== undefined && !hasSeatIdentity(socket, user))
+      return emitError(socket, "Identify yourself to use Right to Match.");
     const currentState = lot.rtmOptInUserId === user.id;
     const nextState = Boolean(enabled);
     const hasOptedOut =

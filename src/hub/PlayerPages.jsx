@@ -696,7 +696,10 @@ function Honours({ totals, seasons }) {
           label="Auction history"
           columns={[
             ["Completed", (row) => date(row.completedAt)],
-            ["Auction price", (row) => money(row.price)],
+            [
+              "Auction price",
+              (row) => (row.retained ? "Retained" : money(row.price)),
+            ],
           ]}
         />
       </Panel>

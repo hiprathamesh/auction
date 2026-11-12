@@ -88,7 +88,9 @@ The tests use isolated loopback servers, simulated seasons, and a headless brows
 ## Game rules
 
 - Up to ten people can manage unique franchises. There are no bot teams.
-- The database contains 288 active-pool players and 52 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, and trades.
+- The database contains 288 active-pool players and 52 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, Player Retain, and trades.
+- Right to Match follows the identified manager who held the player in the latest recorded season's final squad, even if the manager changes franchise. The option expires after one season and costs the final winning bid when exercised.
+- With Player Retain enabled, managers can select up to the host's limit of one to three eligible players in the lobby. Those players join their squads for free and skip the auction. Retaining a player makes them ineligible for retention in the next recorded season. They remain eligible for RTM.
 - On an opening bid, the base price counts as the first step: for example, ×2 bids the base plus one increment. After bidding begins, ×2 adds two increments to the current bid. Increments follow the price ladder and may change at its thresholds.
 - Squads hold at most 25 players, including at most eight overseas players. A starting XI has at most four overseas players and four legends. Each team chooses five bowlers, a batting order, and tactics.
 - Two or three teams play a league-only season; four or more teams also play the four-team IPL-style playoff bracket. Each league pairing meets twice.
@@ -98,7 +100,7 @@ The tests use isolated loopback servers, simulated seasons, and a headless brows
 
 ## Player data
 
-`data/auction_players_list.txt` defines the active pool and auction-set order. `data/players.json` is the runtime database. Ratings, base prices, roles, nationality flags, and RTM associations are game-balancing estimates, not official valuations or current-form predictions.
+`data/auction_players_list.txt` defines the active pool and auction-set order. `data/players.json` is the runtime database. Ratings, base prices, roles, and nationality flags are game-balancing estimates. Franchise RTM associations are used for in-progress auctions saved before season-based RTM.
 
 Manual changes belong in `data/player-overrides.json`, keyed by player ID. Existing custom ratings, prices, preferred positions, RTM assignments, and portrait metadata were migrated into that file. After updating the source list or overrides, regenerate the runtime database:
 
