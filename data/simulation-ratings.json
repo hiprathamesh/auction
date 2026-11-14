@@ -1,0 +1,3687 @@
+{
+  "ab-de-villiers": {
+    "batBalls": 944,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 99,
+    "id": "c4487b84",
+    "rotation": 85,
+    "survival": 90,
+    "years": [
+      2014,
+      2015,
+      2016
+    ]
+  },
+  "abdul-samad": {
+    "batBalls": 326,
+    "battingPhase": "death",
+    "bowlBalls": 2,
+    "hitting": 70,
+    "id": "8e514b4c",
+    "rotation": 67,
+    "survival": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "abhinav-manohar": {
+    "batBalls": 160,
+    "bowlBalls": 0,
+    "hitting": 66,
+    "id": "0890552f",
+    "rotation": 71,
+    "survival": 68,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "abhishek-sharma": {
+    "batBalls": 616,
+    "battingPhase": "middle",
+    "bowlBalls": 180,
+    "control": 88,
+    "hitting": 99,
+    "id": "f29185a1",
+    "prevention": 81,
+    "rotation": 82,
+    "survival": 79,
+    "wickets": 79,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "adam-gilchrist": {
+    "batBalls": 798,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 98,
+    "id": "2b6e6dec",
+    "rotation": 80,
+    "survival": 80,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "aiden-markram": {
+    "batBalls": 670,
+    "bowlBalls": 127,
+    "control": 65,
+    "hitting": 79,
+    "id": "6a26221c",
+    "prevention": 63,
+    "rotation": 94,
+    "survival": 84,
+    "wickets": 62,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ajinkya-rahane": {
+    "batBalls": 649,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 74,
+    "id": "29e95537",
+    "rotation": 80,
+    "survival": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "akash-deep": {
+    "batBalls": 12,
+    "bowlBalls": 165,
+    "control": 64,
+    "id": "0a67aec0",
+    "prevention": 57,
+    "wickets": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "akash-madhwal": {
+    "batBalls": 14,
+    "bowlBalls": 352,
+    "bowlingPhase": "powerplay",
+    "control": 68,
+    "id": "4bd09374",
+    "prevention": 68,
+    "wickets": 75,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "akash-singh": {
+    "batBalls": 0,
+    "bowlBalls": 181,
+    "control": 73,
+    "id": "b483905d",
+    "prevention": 65,
+    "wickets": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "akeal-hosein": {
+    "batBalls": 10,
+    "bowlBalls": 24,
+    "control": 73,
+    "id": "4d7f517e",
+    "prevention": 69,
+    "wickets": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ambati-rayudu": {
+    "batBalls": 244,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 90,
+    "id": "70d205c9",
+    "rotation": 86,
+    "survival": 86,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "amit-mishra": {
+    "batBalls": 26,
+    "bowlBalls": 522,
+    "bowlingPhase": "middle",
+    "control": 89,
+    "id": "6b19d823",
+    "prevention": 94,
+    "wickets": 88,
+    "years": [
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "andrew-symonds": {
+    "batBalls": 607,
+    "battingPhase": "middle",
+    "bowlBalls": 503,
+    "bowlingPhase": "powerplay",
+    "control": 88,
+    "hitting": 89,
+    "id": "bd77eb62",
+    "prevention": 86,
+    "rotation": 84,
+    "survival": 90,
+    "wickets": 83,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "angkrish-raghuvanshi": {
+    "batBalls": 319,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 84,
+    "id": "d7017798",
+    "rotation": 90,
+    "survival": 85,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "aniket-verma": {
+    "batBalls": 142,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 74,
+    "id": "a3b0600d",
+    "rotation": 68,
+    "survival": 70,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "anil-kumble": {
+    "batBalls": 30,
+    "bowlBalls": 735,
+    "bowlingPhase": "death",
+    "control": 90,
+    "hitting": 57,
+    "id": "0c2730df",
+    "prevention": 98,
+    "rotation": 59,
+    "survival": 62,
+    "wickets": 88,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "anmolpreet-singh": {
+    "batBalls": 88,
+    "bowlBalls": 0,
+    "hitting": 70,
+    "id": "1399b39c",
+    "rotation": 70,
+    "survival": 66,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "anrich-nortje": {
+    "batBalls": 37,
+    "bowlBalls": 414,
+    "control": 86,
+    "hitting": 57,
+    "id": "acdc62f5",
+    "prevention": 76,
+    "rotation": 58,
+    "survival": 56,
+    "wickets": 81,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "anshul-kamboj": {
+    "batBalls": 14,
+    "bowlBalls": 189,
+    "bowlingPhase": "powerplay",
+    "control": 69,
+    "id": "fcc21ace",
+    "prevention": 72,
+    "wickets": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "anuj-rawat": {
+    "batBalls": 148,
+    "bowlBalls": 0,
+    "hitting": 64,
+    "id": "c8f5f961",
+    "rotation": 68,
+    "survival": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "anukul-roy": {
+    "batBalls": 23,
+    "bowlBalls": 106,
+    "control": 62,
+    "id": "e4cdf230",
+    "prevention": 64,
+    "wickets": 60,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "arjun-tendulkar": {
+    "batBalls": 9,
+    "bowlBalls": 73,
+    "control": 15,
+    "id": "44aac2f0",
+    "prevention": 23,
+    "wickets": 24,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "arshdeep-singh": {
+    "batBalls": 11,
+    "bowlBalls": 957,
+    "bowlingPhase": "death",
+    "control": 82,
+    "id": "244048f6",
+    "prevention": 86,
+    "wickets": 88,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "arshin-kulkarni": {
+    "batBalls": 8,
+    "bowlBalls": 0,
+    "id": "2d140b79",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ashish-nehra": {
+    "batBalls": 20,
+    "bowlBalls": 390,
+    "bowlingPhase": "death",
+    "control": 84,
+    "id": "96fd40ae",
+    "prevention": 93,
+    "wickets": 90,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "ashutosh-sharma": {
+    "batBalls": 236,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 86,
+    "id": "84d9c311",
+    "rotation": 85,
+    "survival": 89,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ashwani-kumar": {
+    "batBalls": 0,
+    "bowlBalls": 123,
+    "control": 70,
+    "id": "d45c29b1",
+    "prevention": 66,
+    "wickets": 81,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "atharva-taide": {
+    "batBalls": 177,
+    "bowlBalls": 1,
+    "hitting": 71,
+    "id": "1ac746c8",
+    "rotation": 71,
+    "survival": 68,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "avesh-khan": {
+    "batBalls": 18,
+    "bowlBalls": 787,
+    "bowlingPhase": "death",
+    "control": 84,
+    "id": "eef2536f",
+    "prevention": 78,
+    "wickets": 78,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "axar-patel": {
+    "batBalls": 547,
+    "battingPhase": "middle",
+    "bowlBalls": 762,
+    "bowlingPhase": "middle",
+    "control": 93,
+    "hitting": 84,
+    "id": "2e171977",
+    "prevention": 95,
+    "rotation": 84,
+    "survival": 88,
+    "wickets": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ayush-badoni": {
+    "batBalls": 563,
+    "bowlBalls": 23,
+    "control": 28,
+    "hitting": 67,
+    "id": "872b03f7",
+    "prevention": 25,
+    "rotation": 78,
+    "survival": 78,
+    "wickets": 26,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ayush-mhatre": {
+    "batBalls": 127,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 94,
+    "id": "b2b4f545",
+    "rotation": 84,
+    "survival": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "azmatullah-omarzai": {
+    "batBalls": 74,
+    "bowlBalls": 288,
+    "control": 76,
+    "hitting": 75,
+    "id": "8f6dd463",
+    "prevention": 74,
+    "rotation": 74,
+    "survival": 69,
+    "wickets": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "bhuvneshwar-kumar": {
+    "batBalls": 101,
+    "bowlBalls": 960,
+    "bowlingPhase": "powerplay",
+    "control": 90,
+    "hitting": 56,
+    "id": "2e81a32d",
+    "prevention": 91,
+    "rotation": 60,
+    "survival": 61,
+    "wickets": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "brendon-mccullum": {
+    "batBalls": 755,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 95,
+    "id": "b8a55852",
+    "rotation": 80,
+    "survival": 80,
+    "years": [
+      2015,
+      2016,
+      2017
+    ]
+  },
+  "brett-lee": {
+    "batBalls": 41,
+    "bowlBalls": 572,
+    "control": 86,
+    "hitting": 67,
+    "id": "dd09ff8e",
+    "prevention": 87,
+    "rotation": 63,
+    "survival": 65,
+    "wickets": 78,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "cameron-green": {
+    "batBalls": 457,
+    "battingPhase": "powerplay",
+    "bowlBalls": 439,
+    "bowlingPhase": "middle",
+    "control": 84,
+    "hitting": 87,
+    "id": "eaa76d3c",
+    "prevention": 85,
+    "rotation": 90,
+    "survival": 90,
+    "wickets": 81,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "chetan-sakariya": {
+    "batBalls": 6,
+    "bowlBalls": 66,
+    "control": 61,
+    "id": "2cdce1be",
+    "prevention": 60,
+    "wickets": 67,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "chris-gayle": {
+    "batBalls": 1230,
+    "battingPhase": "middle",
+    "bowlBalls": 268,
+    "control": 64,
+    "hitting": 99,
+    "id": "db584dad",
+    "prevention": 65,
+    "rotation": 78,
+    "survival": 91,
+    "wickets": 64,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "corbin-bosch": {
+    "batBalls": 32,
+    "bowlBalls": 42,
+    "control": 62,
+    "hitting": 70,
+    "id": "172dff15",
+    "prevention": 68,
+    "rotation": 70,
+    "survival": 74,
+    "wickets": 61,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "dale-steyn": {
+    "batBalls": 92,
+    "bowlBalls": 960,
+    "bowlingPhase": "powerplay",
+    "control": 86,
+    "hitting": 55,
+    "id": "8fd1a8f5",
+    "prevention": 99,
+    "rotation": 58,
+    "survival": 55,
+    "wickets": 87,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "daniel-vettori": {
+    "batBalls": 54,
+    "bowlBalls": 520,
+    "bowlingPhase": "middle",
+    "control": 92,
+    "hitting": 63,
+    "id": "d7c6af50",
+    "prevention": 96,
+    "rotation": 64,
+    "survival": 65,
+    "wickets": 82,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "daryl-mitchell": {
+    "batBalls": 223,
+    "battingPhase": "middle",
+    "bowlBalls": 36,
+    "control": 62,
+    "hitting": 66,
+    "id": "eade4650",
+    "prevention": 57,
+    "rotation": 79,
+    "survival": 71,
+    "wickets": 61,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "david-miller": {
+    "batBalls": 436,
+    "bowlBalls": 0,
+    "hitting": 81,
+    "id": "d67d5f00",
+    "rotation": 89,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "david-warner": {
+    "batBalls": 1363,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 94,
+    "id": "dcce6f09",
+    "rotation": 87,
+    "survival": 90,
+    "years": [
+      2015,
+      2016,
+      2017
+    ]
+  },
+  "deepak-chahar": {
+    "batBalls": 27,
+    "bowlBalls": 591,
+    "bowlingPhase": "powerplay",
+    "control": 75,
+    "id": "23eeb873",
+    "prevention": 80,
+    "wickets": 80,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "deepak-hooda": {
+    "batBalls": 235,
+    "bowlBalls": 30,
+    "control": 67,
+    "hitting": 64,
+    "id": "73ad96ed",
+    "prevention": 68,
+    "rotation": 77,
+    "survival": 62,
+    "wickets": 66,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "devdutt-padikkal": {
+    "batBalls": 415,
+    "bowlBalls": 0,
+    "hitting": 70,
+    "id": "2c25d4f5",
+    "rotation": 71,
+    "survival": 67,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "devon-conway": {
+    "batBalls": 598,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 84,
+    "id": "df5a6881",
+    "rotation": 89,
+    "survival": 90,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "dewald-brevis": {
+    "batBalls": 184,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "844e79d1",
+    "rotation": 84,
+    "survival": 85,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "dhruv-jurel": {
+    "batBalls": 442,
+    "bowlBalls": 0,
+    "hitting": 78,
+    "id": "bcf325d2",
+    "rotation": 79,
+    "survival": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "digvesh-rathi": {
+    "batBalls": 3,
+    "bowlBalls": 312,
+    "bowlingPhase": "middle",
+    "control": 74,
+    "id": "13fc5c6d",
+    "prevention": 79,
+    "wickets": 69,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "dinesh-karthik": {
+    "batBalls": 455,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 93,
+    "id": "c03f1114",
+    "rotation": 83,
+    "survival": 89,
+    "years": [
+      2022,
+      2023,
+      2024
+    ]
+  },
+  "donovan-ferreira": {
+    "batBalls": 14,
+    "bowlBalls": 0,
+    "id": "f0af99a7",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "dwayne-bravo": {
+    "batBalls": 257,
+    "bowlBalls": 689,
+    "bowlingPhase": "death",
+    "control": 85,
+    "hitting": 84,
+    "id": "87e562a9",
+    "prevention": 93,
+    "rotation": 83,
+    "survival": 85,
+    "wickets": 94,
+    "years": [
+      2013,
+      2014,
+      2015
+    ]
+  },
+  "dwayne-smith": {
+    "batBalls": 122,
+    "bowlBalls": 101,
+    "control": 73,
+    "hitting": 91,
+    "id": "35205dfc",
+    "prevention": 69,
+    "rotation": 82,
+    "survival": 85,
+    "wickets": 68,
+    "years": [
+      2010,
+      2011,
+      2012
+    ]
+  },
+  "eshan-malinga": {
+    "batBalls": 0,
+    "bowlBalls": 160,
+    "bowlingPhase": "middle",
+    "control": 72,
+    "id": "5750bcb4",
+    "prevention": 73,
+    "wickets": 75,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "faf-du-plessis": {
+    "batBalls": 1295,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "3355b542",
+    "rotation": 92,
+    "survival": 90,
+    "years": [
+      2021,
+      2022,
+      2023
+    ]
+  },
+  "fazalhaq-farooqi": {
+    "batBalls": 7,
+    "bowlBalls": 182,
+    "control": 75,
+    "id": "e9c7f0d0",
+    "prevention": 65,
+    "wickets": 68,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "gautam-gambhir": {
+    "batBalls": 1067,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 89,
+    "id": "bb345e0b",
+    "rotation": 91,
+    "survival": 87,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "gerald-coetzee": {
+    "batBalls": 32,
+    "bowlBalls": 273,
+    "control": 69,
+    "hitting": 29,
+    "id": "3204c99f",
+    "prevention": 67,
+    "rotation": 30,
+    "survival": 24,
+    "wickets": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "glenn-phillips": {
+    "batBalls": 22,
+    "bowlBalls": 18,
+    "id": "9a46c4e5",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "gurnoor-brar": {
+    "batBalls": 0,
+    "bowlBalls": 18,
+    "id": "99258814",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "harbhajan-singh": {
+    "batBalls": 184,
+    "battingPhase": "death",
+    "bowlBalls": 903,
+    "bowlingPhase": "death",
+    "control": 87,
+    "hitting": 77,
+    "id": "8b5b6769",
+    "prevention": 93,
+    "rotation": 66,
+    "survival": 67,
+    "wickets": 87,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "hardik-pandya": {
+    "batBalls": 539,
+    "bowlBalls": 576,
+    "control": 81,
+    "hitting": 84,
+    "id": "dbe50b21",
+    "prevention": 78,
+    "rotation": 86,
+    "survival": 84,
+    "wickets": 86,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "harpreet-brar": {
+    "batBalls": 108,
+    "bowlBalls": 523,
+    "bowlingPhase": "middle",
+    "control": 74,
+    "hitting": 63,
+    "id": "c05edf8e",
+    "prevention": 73,
+    "rotation": 66,
+    "survival": 67,
+    "wickets": 67,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "harsh-dubey": {
+    "batBalls": 0,
+    "bowlBalls": 60,
+    "control": 58,
+    "id": "25228673",
+    "prevention": 54,
+    "wickets": 61,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "harshal-patel": {
+    "batBalls": 51,
+    "bowlBalls": 839,
+    "control": 67,
+    "hitting": 29,
+    "id": "f986ca1a",
+    "prevention": 72,
+    "rotation": 34,
+    "survival": 29,
+    "wickets": 77,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "harshit-rana": {
+    "batBalls": 53,
+    "bowlBalls": 619,
+    "bowlingPhase": "death",
+    "control": 78,
+    "hitting": 39,
+    "id": "77b1aa15",
+    "prevention": 77,
+    "rotation": 36,
+    "survival": 41,
+    "wickets": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "heinrich-klaasen": {
+    "batBalls": 807,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 91,
+    "id": "235c2bb6",
+    "rotation": 91,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "herschelle-gibbs": {
+    "batBalls": 564,
+    "bowlBalls": 0,
+    "hitting": 84,
+    "id": "e1d1b294",
+    "rotation": 86,
+    "survival": 88,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "imran-tahir": {
+    "batBalls": 10,
+    "bowlBalls": 476,
+    "bowlingPhase": "middle",
+    "control": 92,
+    "id": "acee4cc4",
+    "prevention": 98,
+    "wickets": 91,
+    "years": [
+      2019,
+      2020,
+      2021
+    ]
+  },
+  "irfan-pathan": {
+    "batBalls": 459,
+    "battingPhase": "death",
+    "bowlBalls": 898,
+    "bowlingPhase": "death",
+    "control": 85,
+    "hitting": 84,
+    "id": "5fa06777",
+    "prevention": 88,
+    "rotation": 87,
+    "survival": 89,
+    "wickets": 86,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "ishan-kishan": {
+    "batBalls": 763,
+    "bowlBalls": 1,
+    "hitting": 87,
+    "id": "752f7486",
+    "rotation": 86,
+    "survival": 84,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ishant-sharma": {
+    "batBalls": 8,
+    "bowlBalls": 422,
+    "control": 67,
+    "id": "5bb1a1c4",
+    "prevention": 73,
+    "wickets": 79,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jacob-bethell": {
+    "batBalls": 39,
+    "bowlBalls": 0,
+    "hitting": 81,
+    "id": "3c55c703",
+    "rotation": 78,
+    "survival": 78,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jacques-kallis": {
+    "batBalls": 1082,
+    "battingPhase": "death",
+    "bowlBalls": 786,
+    "bowlingPhase": "middle",
+    "control": 84,
+    "hitting": 81,
+    "id": "86dc8f2e",
+    "prevention": 88,
+    "rotation": 89,
+    "survival": 87,
+    "wickets": 86,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "jake-fraser-mcgurk": {
+    "batBalls": 191,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 99,
+    "id": "9b6e1b3f",
+    "rotation": 76,
+    "survival": 78,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jamie-overton": {
+    "batBalls": 7,
+    "bowlBalls": 36,
+    "control": 68,
+    "id": "59559bc2",
+    "prevention": 64,
+    "wickets": 70,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jason-holder": {
+    "batBalls": 11,
+    "bowlBalls": 171,
+    "control": 73,
+    "id": "0f721006",
+    "prevention": 66,
+    "wickets": 62,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jasprit-bumrah": {
+    "batBalls": 13,
+    "bowlBalls": 595,
+    "bowlingPhase": "death",
+    "control": 89,
+    "id": "462411b3",
+    "prevention": 99,
+    "wickets": 89,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jayant-yadav": {
+    "batBalls": 0,
+    "bowlBalls": 24,
+    "control": 72,
+    "id": "81049310",
+    "prevention": 74,
+    "wickets": 67,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jaydev-unadkat": {
+    "batBalls": 33,
+    "bowlBalls": 378,
+    "bowlingPhase": "powerplay",
+    "control": 72,
+    "hitting": 31,
+    "id": "1e66c162",
+    "prevention": 73,
+    "rotation": 33,
+    "survival": 32,
+    "wickets": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jitesh-sharma": {
+    "batBalls": 485,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 75,
+    "id": "800d2d97",
+    "rotation": 65,
+    "survival": 69,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jofra-archer": {
+    "batBalls": 54,
+    "bowlBalls": 393,
+    "bowlingPhase": "powerplay",
+    "control": 80,
+    "hitting": 59,
+    "id": "5574750c",
+    "prevention": 86,
+    "rotation": 63,
+    "survival": 60,
+    "wickets": 79,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jonny-bairstow": {
+    "batBalls": 241,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 88,
+    "id": "abb83e27",
+    "rotation": 85,
+    "survival": 85,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jos-buttler": {
+    "batBalls": 865,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 85,
+    "id": "99b75528",
+    "rotation": 88,
+    "survival": 90,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "josh-hazlewood": {
+    "batBalls": 3,
+    "bowlBalls": 318,
+    "bowlingPhase": "powerplay",
+    "control": 90,
+    "id": "03806cf8",
+    "prevention": 92,
+    "wickets": 94,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "josh-inglis": {
+    "batBalls": 171,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 76,
+    "id": "989889ff",
+    "rotation": 71,
+    "survival": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "jp-duminy": {
+    "batBalls": 456,
+    "bowlBalls": 138,
+    "bowlingPhase": "middle",
+    "control": 88,
+    "hitting": 82,
+    "id": "2e8994e7",
+    "prevention": 93,
+    "rotation": 90,
+    "survival": 93,
+    "wickets": 84,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "kagiso-rabada": {
+    "batBalls": 24,
+    "bowlBalls": 474,
+    "control": 85,
+    "id": "e62dd25d",
+    "prevention": 83,
+    "wickets": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kane-williamson": {
+    "batBalls": 812,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 86,
+    "id": "d027ba9f",
+    "rotation": 90,
+    "survival": 90,
+    "years": [
+      2017,
+      2018,
+      2019
+    ]
+  },
+  "kartik-tyagi": {
+    "batBalls": 0,
+    "bowlBalls": 61,
+    "control": 59,
+    "id": "5d2eea49",
+    "prevention": 53,
+    "wickets": 65,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "karun-nair": {
+    "batBalls": 114,
+    "bowlBalls": 0,
+    "hitting": 79,
+    "id": "944533a5",
+    "rotation": 70,
+    "survival": 70,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kevin-pietersen": {
+    "batBalls": 364,
+    "battingPhase": "middle",
+    "bowlBalls": 96,
+    "control": 54,
+    "hitting": 92,
+    "id": "39f01cdb",
+    "prevention": 52,
+    "rotation": 85,
+    "survival": 91,
+    "wickets": 53,
+    "years": [
+      2010,
+      2011,
+      2012
+    ]
+  },
+  "khaleel-ahmed": {
+    "batBalls": 2,
+    "bowlBalls": 778,
+    "bowlingPhase": "powerplay",
+    "control": 75,
+    "id": "a2f46292",
+    "prevention": 79,
+    "wickets": 80,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kieron-pollard": {
+    "batBalls": 146,
+    "battingPhase": "death",
+    "bowlBalls": 222,
+    "bowlingPhase": "middle",
+    "control": 83,
+    "hitting": 96,
+    "id": "a757b0d8",
+    "prevention": 88,
+    "rotation": 80,
+    "survival": 80,
+    "wickets": 92,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "kl-rahul": {
+    "batBalls": 981,
+    "bowlBalls": 0,
+    "hitting": 79,
+    "id": "b17e2f24",
+    "rotation": 93,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "krunal-pandya": {
+    "batBalls": 354,
+    "bowlBalls": 726,
+    "bowlingPhase": "middle",
+    "control": 88,
+    "hitting": 75,
+    "id": "5b8c830e",
+    "prevention": 92,
+    "rotation": 83,
+    "survival": 83,
+    "wickets": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kuldeep-sen": {
+    "batBalls": 0,
+    "bowlBalls": 90,
+    "control": 71,
+    "id": "2e78f685",
+    "prevention": 73,
+    "wickets": 79,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kuldeep-yadav": {
+    "batBalls": 105,
+    "bowlBalls": 870,
+    "bowlingPhase": "death",
+    "control": 91,
+    "hitting": 53,
+    "id": "8d2c70ad",
+    "prevention": 97,
+    "rotation": 61,
+    "survival": 69,
+    "wickets": 84,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kumar-kushagra": {
+    "batBalls": 7,
+    "bowlBalls": 0,
+    "id": "57ca01b3",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kumar-sangakkara": {
+    "batBalls": 775,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 90,
+    "id": "6b71e6cf",
+    "rotation": 88,
+    "survival": 87,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "kwena-maphaka": {
+    "batBalls": 2,
+    "bowlBalls": 66,
+    "control": 58,
+    "id": "107c26fb",
+    "prevention": 50,
+    "wickets": 59,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "kyle-jamieson": {
+    "batBalls": 5,
+    "bowlBalls": 90,
+    "control": 71,
+    "id": "68c56d09",
+    "prevention": 70,
+    "wickets": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "lendl-simmons": {
+    "batBalls": 290,
+    "battingPhase": "powerplay",
+    "bowlBalls": 18,
+    "hitting": 90,
+    "id": "89f64c19",
+    "rotation": 85,
+    "survival": 89,
+    "years": [
+      2012,
+      2013,
+      2014
+    ]
+  },
+  "liam-livingstone": {
+    "batBalls": 328,
+    "battingPhase": "death",
+    "bowlBalls": 168,
+    "control": 88,
+    "hitting": 87,
+    "id": "50c6bc2b",
+    "prevention": 83,
+    "rotation": 83,
+    "survival": 84,
+    "wickets": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "lockie-ferguson": {
+    "batBalls": 2,
+    "bowlBalls": 258,
+    "control": 84,
+    "id": "2f9d0389",
+    "prevention": 78,
+    "wickets": 87,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "lungisani-ngidi": {
+    "batBalls": 2,
+    "bowlBalls": 48,
+    "control": 82,
+    "id": "f834dcfc",
+    "prevention": 77,
+    "wickets": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "m-siddharth": {
+    "batBalls": 0,
+    "bowlBalls": 96,
+    "control": 70,
+    "id": "cf0ccafa",
+    "prevention": 73,
+    "wickets": 69,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "madhav-tiwari": {
+    "batBalls": 4,
+    "bowlBalls": 6,
+    "id": "fb5f69e4",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "maheesh-theekshana": {
+    "batBalls": 27,
+    "bowlBalls": 666,
+    "bowlingPhase": "middle",
+    "control": 79,
+    "id": "f24c6701",
+    "prevention": 82,
+    "wickets": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mahipal-lomror": {
+    "batBalls": 164,
+    "battingPhase": "middle",
+    "bowlBalls": 18,
+    "hitting": 70,
+    "id": "da934ee8",
+    "rotation": 67,
+    "survival": 60,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "manan-vohra": {
+    "batBalls": 11,
+    "bowlBalls": 0,
+    "id": "c03e2850",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "manav-suthar": {
+    "batBalls": 2,
+    "bowlBalls": 12,
+    "id": "025c4400",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "manish-pandey": {
+    "batBalls": 240,
+    "bowlBalls": 0,
+    "hitting": 68,
+    "id": "93b4fc78",
+    "rotation": 77,
+    "survival": 75,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "marco-jansen": {
+    "batBalls": 119,
+    "bowlBalls": 505,
+    "control": 76,
+    "hitting": 75,
+    "id": "81c36ee9",
+    "prevention": 80,
+    "rotation": 86,
+    "survival": 84,
+    "wickets": 88,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "marcus-stoinis": {
+    "batBalls": 617,
+    "battingPhase": "death",
+    "bowlBalls": 234,
+    "control": 81,
+    "hitting": 88,
+    "id": "d9273ee7",
+    "prevention": 76,
+    "rotation": 81,
+    "survival": 85,
+    "wickets": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "matheesha-pathirana": {
+    "batBalls": 0,
+    "bowlBalls": 661,
+    "bowlingPhase": "death",
+    "control": 69,
+    "id": "64839cb3",
+    "prevention": 95,
+    "wickets": 87,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "matt-henry": {
+    "batBalls": 0,
+    "bowlBalls": 72,
+    "control": 77,
+    "id": "e84ac20c",
+    "prevention": 76,
+    "wickets": 70,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "matthew-breetzke": {
+    "batBalls": 12,
+    "bowlBalls": 0,
+    "id": "35f173a0",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "matthew-hayden": {
+    "batBalls": 798,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 93,
+    "id": "d8699ab7",
+    "rotation": 85,
+    "survival": 88,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "matthew-short": {
+    "batBalls": 92,
+    "bowlBalls": 24,
+    "control": 70,
+    "hitting": 75,
+    "id": "a90e53ec",
+    "prevention": 73,
+    "rotation": 74,
+    "survival": 72,
+    "wickets": 67,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mayank-markande": {
+    "batBalls": 13,
+    "bowlBalls": 360,
+    "control": 71,
+    "id": "a9fd84fb",
+    "prevention": 65,
+    "wickets": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mayank-yadav": {
+    "batBalls": 0,
+    "bowlBalls": 121,
+    "bowlingPhase": "middle",
+    "control": 83,
+    "id": "b1ad996b",
+    "prevention": 86,
+    "wickets": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "michael-bracewell": {
+    "batBalls": 47,
+    "bowlBalls": 66,
+    "control": 66,
+    "hitting": 69,
+    "id": "e38bce7a",
+    "prevention": 62,
+    "rotation": 71,
+    "survival": 71,
+    "wickets": 69,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "michael-hussey": {
+    "batBalls": 983,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "48fd7349",
+    "rotation": 89,
+    "survival": 90,
+    "years": [
+      2012,
+      2013,
+      2014
+    ]
+  },
+  "mitchell-johnson": {
+    "batBalls": 36,
+    "bowlBalls": 384,
+    "bowlingPhase": "powerplay",
+    "control": 82,
+    "hitting": 63,
+    "id": "f5180fe6",
+    "prevention": 87,
+    "rotation": 66,
+    "survival": 63,
+    "wickets": 91,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "mitchell-marsh": {
+    "batBalls": 516,
+    "battingPhase": "middle",
+    "bowlBalls": 169,
+    "control": 74,
+    "hitting": 89,
+    "id": "3d8feaf8",
+    "prevention": 80,
+    "rotation": 83,
+    "survival": 83,
+    "wickets": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mitchell-owen": {
+    "batBalls": 2,
+    "bowlBalls": 0,
+    "id": "f2c936d7",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mitchell-santner": {
+    "batBalls": 54,
+    "bowlBalls": 363,
+    "bowlingPhase": "middle",
+    "control": 88,
+    "hitting": 53,
+    "id": "e4a0deae",
+    "prevention": 96,
+    "rotation": 57,
+    "survival": 55,
+    "wickets": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mitchell-starc": {
+    "batBalls": 21,
+    "bowlBalls": 479,
+    "control": 84,
+    "id": "3fb19989",
+    "prevention": 79,
+    "wickets": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mohammad-shami": {
+    "batBalls": 16,
+    "bowlBalls": 570,
+    "bowlingPhase": "powerplay",
+    "control": 88,
+    "id": "8cf9814c",
+    "prevention": 86,
+    "wickets": 90,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mohammad-siraj": {
+    "batBalls": 14,
+    "bowlBalls": 966,
+    "bowlingPhase": "powerplay",
+    "control": 76,
+    "id": "2f49c897",
+    "prevention": 93,
+    "wickets": 86,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mohsin-khan": {
+    "batBalls": 8,
+    "bowlBalls": 288,
+    "control": 73,
+    "id": "c33d8116",
+    "prevention": 67,
+    "wickets": 69,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "morne-morkel": {
+    "batBalls": 58,
+    "bowlBalls": 876,
+    "bowlingPhase": "death",
+    "control": 85,
+    "hitting": 63,
+    "id": "5bb5a915",
+    "prevention": 86,
+    "rotation": 59,
+    "survival": 53,
+    "wickets": 87,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "ms-dhoni": {
+    "batBalls": 271,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 86,
+    "id": "4a8a2e3b",
+    "rotation": 84,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mukesh-choudhary": {
+    "batBalls": 0,
+    "bowlBalls": 42,
+    "control": 63,
+    "id": "765a4731",
+    "prevention": 51,
+    "wickets": 58,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mukesh-kumar": {
+    "batBalls": 18,
+    "bowlBalls": 636,
+    "control": 73,
+    "id": "2cffab74",
+    "prevention": 69,
+    "wickets": 76,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "munaf-patel": {
+    "batBalls": 32,
+    "bowlBalls": 613,
+    "bowlingPhase": "powerplay",
+    "control": 91,
+    "hitting": 60,
+    "id": "f0f628c7",
+    "prevention": 90,
+    "rotation": 60,
+    "survival": 58,
+    "wickets": 93,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "murali-vijay": {
+    "batBalls": 896,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 89,
+    "id": "4b57e452",
+    "rotation": 87,
+    "survival": 85,
+    "years": [
+      2010,
+      2011,
+      2012
+    ]
+  },
+  "musheer-khan": {
+    "batBalls": 3,
+    "bowlBalls": 12,
+    "id": "d621b427",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "mustafizur-rahman": {
+    "batBalls": 2,
+    "bowlBalls": 314,
+    "bowlingPhase": "powerplay",
+    "control": 84,
+    "id": "0a8fce53",
+    "prevention": 89,
+    "wickets": 86,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "muttiah-muralitharan": {
+    "batBalls": 13,
+    "bowlBalls": 936,
+    "bowlingPhase": "death",
+    "control": 84,
+    "id": "4ba44e19",
+    "prevention": 98,
+    "wickets": 84,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "naman-dhir": {
+    "batBalls": 216,
+    "battingPhase": "death",
+    "bowlBalls": 52,
+    "control": 72,
+    "hitting": 91,
+    "id": "fffa744b",
+    "prevention": 72,
+    "rotation": 84,
+    "survival": 85,
+    "wickets": 64,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "nandre-burger": {
+    "batBalls": 0,
+    "bowlBalls": 102,
+    "control": 71,
+    "id": "465aa633",
+    "prevention": 73,
+    "wickets": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "nathan-ellis": {
+    "batBalls": 7,
+    "bowlBalls": 276,
+    "bowlingPhase": "powerplay",
+    "control": 83,
+    "id": "9eb1455b",
+    "prevention": 81,
+    "wickets": 77,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "nehal-wadhera": {
+    "batBalls": 500,
+    "battingPhase": "middle",
+    "bowlBalls": 17,
+    "hitting": 87,
+    "id": "d1a60072",
+    "rotation": 80,
+    "survival": 85,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "nicholas-pooran": {
+    "batBalls": 751,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 98,
+    "id": "3241e3fd",
+    "rotation": 78,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "nitish-kumar-reddy": {
+    "batBalls": 364,
+    "bowlBalls": 139,
+    "control": 78,
+    "hitting": 79,
+    "id": "aad0c365",
+    "prevention": 76,
+    "rotation": 88,
+    "survival": 86,
+    "wickets": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "nitish-rana": {
+    "batBalls": 459,
+    "battingPhase": "middle",
+    "bowlBalls": 65,
+    "control": 29,
+    "hitting": 79,
+    "id": "fb2d1dda",
+    "prevention": 27,
+    "rotation": 69,
+    "survival": 72,
+    "wickets": 25,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "noor-ahmad": {
+    "batBalls": 35,
+    "bowlBalls": 792,
+    "bowlingPhase": "death",
+    "control": 85,
+    "hitting": 54,
+    "id": "efc04be7",
+    "prevention": 94,
+    "rotation": 56,
+    "survival": 51,
+    "wickets": 90,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "nuwan-thushara": {
+    "batBalls": 0,
+    "bowlBalls": 180,
+    "bowlingPhase": "death",
+    "control": 69,
+    "id": "ee1b6c27",
+    "prevention": 80,
+    "wickets": 76,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "parthiv-patel": {
+    "batBalls": 374,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 89,
+    "id": "b5da6c24",
+    "rotation": 87,
+    "survival": 82,
+    "years": [
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "pat-cummins": {
+    "batBalls": 152,
+    "bowlBalls": 664,
+    "bowlingPhase": "middle",
+    "control": 90,
+    "hitting": 62,
+    "id": "ded9240e",
+    "prevention": 89,
+    "rotation": 62,
+    "survival": 65,
+    "wickets": 85,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "phil-salt": {
+    "batBalls": 595,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 98,
+    "id": "3d284ca3",
+    "rotation": 82,
+    "survival": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "pragyan-ojha": {
+    "batBalls": 15,
+    "bowlBalls": 895,
+    "bowlingPhase": "middle",
+    "control": 90,
+    "id": "6c6591ab",
+    "prevention": 89,
+    "wickets": 90,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "praveen-kumar": {
+    "batBalls": 69,
+    "bowlBalls": 788,
+    "bowlingPhase": "powerplay",
+    "control": 83,
+    "hitting": 56,
+    "id": "e938e1bc",
+    "prevention": 93,
+    "rotation": 58,
+    "survival": 59,
+    "wickets": 80,
+    "years": [
+      2012,
+      2013,
+      2014
+    ]
+  },
+  "prince-yadav": {
+    "batBalls": 10,
+    "bowlBalls": 137,
+    "control": 71,
+    "id": "80b2fb19",
+    "prevention": 70,
+    "wickets": 65,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "prithvi-shaw": {
+    "batBalls": 205,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 89,
+    "id": "8b3e9c7c",
+    "rotation": 85,
+    "survival": 78,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "priyansh-arya": {
+    "batBalls": 298,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 80,
+    "id": "b5797845",
+    "rotation": 67,
+    "survival": 65,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "quinton-de-kock": {
+    "batBalls": 403,
+    "bowlBalls": 0,
+    "hitting": 82,
+    "id": "372455c4",
+    "rotation": 87,
+    "survival": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "r-sai-kishore": {
+    "batBalls": 16,
+    "bowlBalls": 345,
+    "control": 76,
+    "id": "c7a995d3",
+    "prevention": 73,
+    "wickets": 80,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rachin-ravindra": {
+    "batBalls": 284,
+    "bowlBalls": 12,
+    "hitting": 80,
+    "id": "ba5e1069",
+    "rotation": 91,
+    "survival": 81,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rahmanullah-gurbaz": {
+    "batBalls": 268,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 74,
+    "id": "0bacade8",
+    "rotation": 69,
+    "survival": 69,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rahul-chahar": {
+    "batBalls": 24,
+    "bowlBalls": 490,
+    "bowlingPhase": "death",
+    "control": 84,
+    "id": "2ed569a0",
+    "prevention": 82,
+    "wickets": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rahul-dravid": {
+    "batBalls": 836,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "0184dc35",
+    "rotation": 83,
+    "survival": 86,
+    "years": [
+      2012,
+      2013,
+      2014
+    ]
+  },
+  "rahul-tewatia": {
+    "batBalls": 242,
+    "battingPhase": "death",
+    "bowlBalls": 13,
+    "hitting": 71,
+    "id": "39a2dfa8",
+    "rotation": 70,
+    "survival": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rahul-tripathi": {
+    "batBalls": 382,
+    "bowlBalls": 0,
+    "hitting": 72,
+    "id": "77255a9e",
+    "rotation": 73,
+    "survival": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "raj-angad-bawa": {
+    "batBalls": 4,
+    "bowlBalls": 0,
+    "id": "ba6b2f91",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rajat-patidar": {
+    "batBalls": 440,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 88,
+    "id": "c740ea83",
+    "rotation": 85,
+    "survival": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rajvardhan-hangargekar": {
+    "batBalls": 0,
+    "bowlBalls": 36,
+    "control": 47,
+    "id": "c3c92b42",
+    "prevention": 54,
+    "wickets": 59,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ramandeep-singh": {
+    "batBalls": 96,
+    "bowlBalls": 4,
+    "hitting": 72,
+    "id": "be24ead0",
+    "rotation": 69,
+    "survival": 65,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rashid-khan": {
+    "batBalls": 157,
+    "battingPhase": "death",
+    "bowlBalls": 994,
+    "bowlingPhase": "powerplay",
+    "control": 95,
+    "hitting": 70,
+    "id": "5f547c8b",
+    "prevention": 90,
+    "rotation": 59,
+    "survival": 62,
+    "wickets": 84,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rasikh-salam": {
+    "batBalls": 30,
+    "bowlBalls": 183,
+    "control": 73,
+    "hitting": 35,
+    "id": "b8527c3d",
+    "prevention": 65,
+    "rotation": 35,
+    "survival": 34,
+    "wickets": 75,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ravi-bishnoi": {
+    "batBalls": 49,
+    "bowlBalls": 787,
+    "control": 87,
+    "hitting": 58,
+    "id": "df064e1a",
+    "prevention": 85,
+    "rotation": 61,
+    "survival": 60,
+    "wickets": 84,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ravichandran-ashwin": {
+    "batBalls": 70,
+    "bowlBalls": 498,
+    "bowlingPhase": "middle",
+    "control": 84,
+    "hitting": 83,
+    "id": "495d42a5",
+    "prevention": 97,
+    "rotation": 86,
+    "survival": 83,
+    "wickets": 85,
+    "years": [
+      2015,
+      2016,
+      2017
+    ]
+  },
+  "ravindra-jadeja": {
+    "batBalls": 541,
+    "bowlBalls": 851,
+    "bowlingPhase": "middle",
+    "control": 91,
+    "hitting": 77,
+    "id": "fe93fd9d",
+    "prevention": 93,
+    "rotation": 94,
+    "survival": 93,
+    "wickets": 85,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rinku-singh": {
+    "batBalls": 557,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 86,
+    "id": "0a509d6b",
+    "rotation": 84,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rishabh-pant": {
+    "batBalls": 489,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 86,
+    "id": "919a3be2",
+    "rotation": 80,
+    "survival": 87,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "riyan-parag": {
+    "batBalls": 683,
+    "battingPhase": "death",
+    "bowlBalls": 138,
+    "bowlingPhase": "middle",
+    "control": 79,
+    "hitting": 84,
+    "id": "04a418e8",
+    "prevention": 85,
+    "rotation": 82,
+    "survival": 87,
+    "wickets": 78,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "robin-minz": {
+    "batBalls": 15,
+    "bowlBalls": 0,
+    "id": "bafd0398",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "robin-uthappa": {
+    "batBalls": 593,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 91,
+    "id": "1c17e270",
+    "rotation": 82,
+    "survival": 82,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "rohit-sharma": {
+    "batBalls": 803,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "740742ef",
+    "rotation": 82,
+    "survival": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "romario-shepherd": {
+    "batBalls": 45,
+    "bowlBalls": 156,
+    "control": 73,
+    "hitting": 86,
+    "id": "c5aef772",
+    "prevention": 61,
+    "rotation": 72,
+    "survival": 73,
+    "wickets": 74,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "rovman-powell": {
+    "batBalls": 82,
+    "bowlBalls": 12,
+    "hitting": 72,
+    "id": "650d5e49",
+    "rotation": 65,
+    "survival": 64,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ruturaj-gaikwad": {
+    "batBalls": 891,
+    "bowlBalls": 0,
+    "hitting": 83,
+    "id": "45a43fe2",
+    "rotation": 92,
+    "survival": 90,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "ryan-rickelton": {
+    "batBalls": 255,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "e66732f8",
+    "rotation": 82,
+    "survival": 82,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "s-badrinath": {
+    "batBalls": 595,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "3576e47e",
+    "rotation": 81,
+    "survival": 88,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "sachin-tendulkar": {
+    "batBalls": 231,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 90,
+    "id": "d2c2b2d5",
+    "rotation": 86,
+    "survival": 83,
+    "years": [
+      2013,
+      2014,
+      2015
+    ]
+  },
+  "sai-sudharsan": {
+    "batBalls": 1107,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 84,
+    "id": "d5130a30",
+    "rotation": 94,
+    "survival": 93,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sam-curran": {
+    "batBalls": 500,
+    "battingPhase": "death",
+    "bowlBalls": 605,
+    "control": 87,
+    "hitting": 78,
+    "id": "e94915e6",
+    "prevention": 76,
+    "rotation": 88,
+    "survival": 86,
+    "wickets": 81,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sameer-rizvi": {
+    "batBalls": 122,
+    "bowlBalls": 0,
+    "hitting": 85,
+    "id": "f89d3b11",
+    "rotation": 82,
+    "survival": 85,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sandeep-sharma": {
+    "batBalls": 11,
+    "bowlBalls": 723,
+    "bowlingPhase": "powerplay",
+    "control": 71,
+    "id": "ce820073",
+    "prevention": 79,
+    "wickets": 69,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sanju-samson": {
+    "batBalls": 780,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 87,
+    "id": "a4cc73aa",
+    "rotation": 88,
+    "survival": 88,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sanvir-singh": {
+    "batBalls": 21,
+    "bowlBalls": 0,
+    "id": "b0f2baf4",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sarfaraz-khan": {
+    "batBalls": 61,
+    "bowlBalls": 0,
+    "hitting": 80,
+    "id": "f088b960",
+    "rotation": 85,
+    "survival": 84,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sediqullah-atal": {
+    "batBalls": 16,
+    "bowlBalls": 0,
+    "id": "3c28853f",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shahbaz-ahmed": {
+    "batBalls": 213,
+    "bowlBalls": 258,
+    "control": 73,
+    "hitting": 59,
+    "id": "f9e6e7ef",
+    "prevention": 56,
+    "rotation": 75,
+    "survival": 68,
+    "wickets": 66,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shahrukh-khan": {
+    "batBalls": 268,
+    "battingPhase": "middle",
+    "bowlBalls": 18,
+    "hitting": 78,
+    "id": "7dcb9bc9",
+    "rotation": 72,
+    "survival": 74,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shai-hope": {
+    "batBalls": 122,
+    "bowlBalls": 0,
+    "hitting": 74,
+    "id": "1fc6ef83",
+    "rotation": 76,
+    "survival": 74,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shane-warne": {
+    "batBalls": 20,
+    "bowlBalls": 282,
+    "bowlingPhase": "middle",
+    "control": 89,
+    "id": "bb18be76",
+    "prevention": 94,
+    "wickets": 87,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "shane-watson": {
+    "batBalls": 798,
+    "battingPhase": "middle",
+    "bowlBalls": 604,
+    "bowlingPhase": "death",
+    "control": 85,
+    "hitting": 96,
+    "id": "4329fbb5",
+    "prevention": 92,
+    "rotation": 82,
+    "survival": 86,
+    "wickets": 83,
+    "years": [
+      2011,
+      2012,
+      2013
+    ]
+  },
+  "shardul-thakur": {
+    "batBalls": 99,
+    "bowlBalls": 520,
+    "control": 74,
+    "hitting": 45,
+    "id": "1abb78f8",
+    "prevention": 71,
+    "rotation": 41,
+    "survival": 37,
+    "wickets": 75,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shashank-singh": {
+    "batBalls": 443,
+    "battingPhase": "death",
+    "bowlBalls": 18,
+    "hitting": 85,
+    "id": "26989d80",
+    "rotation": 88,
+    "survival": 96,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shaun-marsh": {
+    "batBalls": 457,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 93,
+    "id": "508a1ea7",
+    "rotation": 86,
+    "survival": 90,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "sherfane-rutherford": {
+    "batBalls": 184,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 81,
+    "id": "d014d5ac",
+    "rotation": 78,
+    "survival": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shikhar-dhawan": {
+    "batBalls": 1169,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 89,
+    "id": "0a476045",
+    "rotation": 92,
+    "survival": 87,
+    "years": [
+      2018,
+      2019,
+      2020
+    ]
+  },
+  "shimron-hetmyer": {
+    "batBalls": 428,
+    "bowlBalls": 0,
+    "hitting": 80,
+    "id": "48a1d7b7",
+    "rotation": 84,
+    "survival": 87,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shivam-dube": {
+    "batBalls": 775,
+    "bowlBalls": 18,
+    "hitting": 84,
+    "id": "a4e37e47",
+    "rotation": 82,
+    "survival": 89,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shreyas-gopal": {
+    "batBalls": 0,
+    "bowlBalls": 42,
+    "control": 28,
+    "id": "7a8bd078",
+    "prevention": 23,
+    "wickets": 27,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shreyas-iyer": {
+    "batBalls": 582,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 89,
+    "id": "85ec8e33",
+    "rotation": 88,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shubham-dubey": {
+    "batBalls": 84,
+    "bowlBalls": 0,
+    "hitting": 72,
+    "id": "6b2ff18f",
+    "rotation": 70,
+    "survival": 70,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "shubman-gill": {
+    "batBalls": 1263,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 85,
+    "id": "b4b99816",
+    "rotation": 96,
+    "survival": 92,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "simarjeet-singh": {
+    "batBalls": 7,
+    "bowlBalls": 132,
+    "control": 67,
+    "id": "30df8c66",
+    "prevention": 60,
+    "wickets": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sourav-ganguly": {
+    "batBalls": 928,
+    "battingPhase": "death",
+    "bowlBalls": 216,
+    "control": 78,
+    "hitting": 84,
+    "id": "725529bc",
+    "prevention": 74,
+    "rotation": 81,
+    "survival": 87,
+    "wickets": 73,
+    "years": [
+      2008,
+      2009,
+      2010
+    ]
+  },
+  "spencer-johnson": {
+    "batBalls": 11,
+    "bowlBalls": 164,
+    "control": 76,
+    "id": "83c3e8e3",
+    "prevention": 71,
+    "wickets": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "sunil-narine": {
+    "batBalls": 438,
+    "battingPhase": "middle",
+    "bowlBalls": 888,
+    "bowlingPhase": "death",
+    "control": 92,
+    "hitting": 96,
+    "id": "9d430b40",
+    "prevention": 99,
+    "rotation": 75,
+    "survival": 78,
+    "wickets": 84,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "suresh-raina": {
+    "batBalls": 990,
+    "battingPhase": "powerplay",
+    "bowlBalls": 474,
+    "bowlingPhase": "middle",
+    "control": 67,
+    "hitting": 91,
+    "id": "1dc12ab9",
+    "prevention": 72,
+    "rotation": 89,
+    "survival": 88,
+    "wickets": 63,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "suryakumar-yadav": {
+    "batBalls": 964,
+    "battingPhase": "middle",
+    "bowlBalls": 0,
+    "hitting": 99,
+    "id": "271f83cd",
+    "rotation": 79,
+    "survival": 90,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "suryansh-shedge": {
+    "batBalls": 11,
+    "bowlBalls": 18,
+    "id": "970ddd24",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "suyash-sharma": {
+    "batBalls": 0,
+    "bowlBalls": 558,
+    "control": 76,
+    "id": "9440ef41",
+    "prevention": 73,
+    "wickets": 65,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "swapnil-singh": {
+    "batBalls": 25,
+    "bowlBalls": 102,
+    "control": 64,
+    "id": "983f2f61",
+    "prevention": 61,
+    "wickets": 64,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "t-natarajan": {
+    "batBalls": 0,
+    "bowlBalls": 603,
+    "bowlingPhase": "death",
+    "control": 75,
+    "id": "ce794613",
+    "prevention": 77,
+    "wickets": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "tanush-kotian": {
+    "batBalls": 31,
+    "bowlBalls": 0,
+    "hitting": 63,
+    "id": "5724e517",
+    "rotation": 66,
+    "survival": 68,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "tilak-varma": {
+    "batBalls": 730,
+    "battingPhase": "death",
+    "bowlBalls": 10,
+    "hitting": 86,
+    "id": "b0482a1d",
+    "rotation": 86,
+    "survival": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "tim-david": {
+    "batBalls": 394,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 86,
+    "id": "f1f99156",
+    "rotation": 85,
+    "survival": 92,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "travis-head": {
+    "batBalls": 520,
+    "battingPhase": "powerplay",
+    "bowlBalls": 10,
+    "hitting": 99,
+    "id": "12b610c2",
+    "rotation": 82,
+    "survival": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "trent-boult": {
+    "batBalls": 33,
+    "bowlBalls": 894,
+    "bowlingPhase": "powerplay",
+    "control": 89,
+    "hitting": 57,
+    "id": "a818c1be",
+    "prevention": 93,
+    "rotation": 58,
+    "survival": 61,
+    "wickets": 89,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "tristan-stubbs": {
+    "batBalls": 426,
+    "battingPhase": "death",
+    "bowlBalls": 36,
+    "control": 51,
+    "hitting": 86,
+    "id": "85b3fab2",
+    "prevention": 45,
+    "rotation": 92,
+    "survival": 94,
+    "wickets": 55,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "tushar-deshpande": {
+    "batBalls": 10,
+    "bowlBalls": 821,
+    "bowlingPhase": "powerplay",
+    "control": 63,
+    "id": "46a9bea1",
+    "prevention": 70,
+    "wickets": 74,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "umesh-yadav": {
+    "batBalls": 33,
+    "bowlBalls": 240,
+    "control": 81,
+    "hitting": 36,
+    "id": "cc1e8c68",
+    "prevention": 70,
+    "rotation": 42,
+    "survival": 40,
+    "wickets": 75,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "umran-malik": {
+    "batBalls": 7,
+    "bowlBalls": 126,
+    "control": 74,
+    "id": "81c08fa3",
+    "prevention": 63,
+    "wickets": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "urvil-patel": {
+    "batBalls": 32,
+    "bowlBalls": 0,
+    "hitting": 79,
+    "id": "cf59b3f0",
+    "rotation": 74,
+    "survival": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "vaibhav-arora": {
+    "batBalls": 11,
+    "bowlBalls": 531,
+    "bowlingPhase": "powerplay",
+    "control": 60,
+    "id": "7c3b3b78",
+    "prevention": 71,
+    "wickets": 76,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "vaibhav-suryavanshi": {
+    "batBalls": 121,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 96,
+    "id": "470f446b",
+    "rotation": 79,
+    "survival": 83,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "varun-chakravarthy": {
+    "batBalls": 10,
+    "bowlBalls": 916,
+    "bowlingPhase": "death",
+    "control": 91,
+    "id": "5b7ab5a9",
+    "prevention": 96,
+    "wickets": 91,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "venkatesh-iyer": {
+    "batBalls": 611,
+    "battingPhase": "powerplay",
+    "bowlBalls": 6,
+    "hitting": 87,
+    "id": "a24be938",
+    "rotation": 84,
+    "survival": 86,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "vignesh-puthur": {
+    "batBalls": 0,
+    "bowlBalls": 72,
+    "control": 70,
+    "id": "1e030637",
+    "prevention": 68,
+    "wickets": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "vijay-shankar": {
+    "batBalls": 349,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 69,
+    "id": "0994d0ae",
+    "rotation": 76,
+    "survival": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "vipraj-nigam": {
+    "batBalls": 78,
+    "bowlBalls": 234,
+    "control": 72,
+    "hitting": 37,
+    "id": "5ffc0565",
+    "prevention": 73,
+    "rotation": 27,
+    "survival": 31,
+    "wickets": 71,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "virat-kohli": {
+    "batBalls": 1390,
+    "battingPhase": "death",
+    "bowlBalls": 0,
+    "hitting": 82,
+    "id": "ba607b88",
+    "rotation": 96,
+    "survival": 93,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "virender-sehwag": {
+    "batBalls": 763,
+    "battingPhase": "middle",
+    "bowlBalls": 58,
+    "control": 58,
+    "hitting": 99,
+    "id": "8ba8195d",
+    "prevention": 57,
+    "rotation": 85,
+    "survival": 82,
+    "wickets": 56,
+    "years": [
+      2010,
+      2011,
+      2012
+    ]
+  },
+  "vishnu-vinod": {
+    "batBalls": 30,
+    "bowlBalls": 0,
+    "hitting": 68,
+    "id": "0494fa6e",
+    "rotation": 69,
+    "survival": 65,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "washington-sundar": {
+    "batBalls": 141,
+    "bowlBalls": 201,
+    "bowlingPhase": "middle",
+    "control": 88,
+    "hitting": 79,
+    "id": "f19ccfad",
+    "prevention": 76,
+    "rotation": 86,
+    "survival": 82,
+    "wickets": 77,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "will-jacks": {
+    "batBalls": 302,
+    "battingPhase": "middle",
+    "bowlBalls": 138,
+    "control": 82,
+    "hitting": 86,
+    "id": "9caf69a1",
+    "prevention": 82,
+    "rotation": 83,
+    "survival": 82,
+    "wickets": 87,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "william-orourke": {
+    "batBalls": 0,
+    "bowlBalls": 62,
+    "control": 75,
+    "id": "cb9b8664",
+    "prevention": 64,
+    "wickets": 80,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "xavier-bartlett": {
+    "batBalls": 15,
+    "bowlBalls": 60,
+    "control": 83,
+    "id": "3b53243a",
+    "prevention": 78,
+    "wickets": 78,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "yash-dayal": {
+    "batBalls": 8,
+    "bowlBalls": 679,
+    "bowlingPhase": "middle",
+    "control": 73,
+    "id": "7210d461",
+    "prevention": 74,
+    "wickets": 72,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "yash-dhull": {
+    "batBalls": 23,
+    "bowlBalls": 0,
+    "id": "dd7e9b3b",
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "yash-thakur": {
+    "batBalls": 0,
+    "bowlBalls": 443,
+    "control": 68,
+    "id": "4b31f3a3",
+    "prevention": 65,
+    "wickets": 73,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "yashasvi-jaiswal": {
+    "batBalls": 1009,
+    "battingPhase": "powerplay",
+    "bowlBalls": 0,
+    "hitting": 94,
+    "id": "6c19c6e5",
+    "rotation": 81,
+    "survival": 87,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "yusuf-pathan": {
+    "batBalls": 583,
+    "battingPhase": "death",
+    "bowlBalls": 648,
+    "bowlingPhase": "powerplay",
+    "control": 84,
+    "hitting": 96,
+    "id": "3c6ffae8",
+    "prevention": 91,
+    "rotation": 77,
+    "survival": 83,
+    "wickets": 84,
+    "years": [
+      2009,
+      2010,
+      2011
+    ]
+  },
+  "yuvraj-singh": {
+    "batBalls": 459,
+    "battingPhase": "death",
+    "bowlBalls": 312,
+    "bowlingPhase": "middle",
+    "control": 91,
+    "hitting": 88,
+    "id": "1c914163",
+    "prevention": 93,
+    "rotation": 79,
+    "survival": 86,
+    "wickets": 86,
+    "years": [
+      2010,
+      2011,
+      2012
+    ]
+  },
+  "yuzvendra-chahal": {
+    "batBalls": 0,
+    "bowlBalls": 935,
+    "bowlingPhase": "death",
+    "control": 89,
+    "id": "57ee1fde",
+    "prevention": 86,
+    "wickets": 88,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  },
+  "zaheer-khan": {
+    "batBalls": 7,
+    "bowlBalls": 315,
+    "bowlingPhase": "powerplay",
+    "control": 83,
+    "id": "91a4a398",
+    "prevention": 95,
+    "wickets": 88,
+    "years": [
+      2013,
+      2014,
+      2015
+    ]
+  },
+  "zeeshan-ansari": {
+    "batBalls": 0,
+    "bowlBalls": 203,
+    "control": 71,
+    "id": "36619795",
+    "prevention": 65,
+    "wickets": 64,
+    "years": [
+      2023,
+      2024,
+      2025
+    ]
+  }
+}

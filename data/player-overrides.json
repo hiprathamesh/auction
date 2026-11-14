@@ -289,10 +289,9 @@
     }
   },
   "ms-dhoni": {
-    "ovr": 99,
-    "batting": 99,
-    "bowling": 99,
-    "fielding": 99,
+    "batting": 94,
+    "bowling": 24,
+    "fielding": 95,
     "basePrice": 2.0,
     "preferredBattingPositions": [
       4,

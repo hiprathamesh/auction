@@ -1,3 +1,14 @@
+const {
+  minBowlingOptions,
+  maxBowlingOptions,
+} = require("../../shared/rules.json");
+const { rankBowlers, suggestMatchPlan } = require("../matchPlan");
+const planningOpen = (room, user) =>
+  room?.phase === "lineup" ||
+  (room?.phase === "leagueComplete" &&
+    room.standings.slice(0, 4).some((team) => team.userId === user.id)) ||
+  (room?.phase === "finalReady" && room.playoff.finalists.includes(user.id));
+
 module.exports = function registerHandlers({
   socket,
   onAction,
@@ -21,26 +32,7 @@ module.exports = function registerHandlers({
     room.tradeOffers = [];
     room.phase = "lineup";
     for (const u of room.users) {
-      const selected = game.findBestLegalXI(u.squad) || [];
-      // Begin with a sensible batting order, but let each user rearrange it.
-      u.lineup = [...selected]
-        .sort(
-          (a, b) =>
-            (b.batting || 0) - (a.batting || 0) || (b.ovr || 0) - (a.ovr || 0),
-        )
-        .map((p) => p.id);
-      // The best five bowling ratings among the selected XI are the default bowling unit.
-      const rolePriority = (player) =>
-        player.role === "Bowler" ? 2 : player.role === "All-rounder" ? 1 : 0;
-      u.bowlerIds = [...selected]
-        .sort(
-          (a, b) =>
-            (b.bowling || 0) - (a.bowling || 0) ||
-            (b.ovr || 0) - (a.ovr || 0) ||
-            rolePriority(b) - rolePriority(a),
-        )
-        .slice(0, 5)
-        .map((p) => p.id);
+      Object.assign(u, suggestMatchPlan(u.squad, game.findBestLegalXI));
       u.xiReady = false;
     }
     room.lastNotice = { kind: "lineup", text: "Select your starting XI." };
@@ -54,7 +46,7 @@ module.exports = function registerHandlers({
       if (typeof acknowledgement === "function")
         acknowledgement({ ok: false, message });
     };
-    if (!room || !user || room.phase !== "lineup")
+    if (!room || !user || !planningOpen(room, user))
       return reject("Playing XI selection is not open.");
 
     // Accept the old array payload during a rolling refresh, while the current UI
@@ -89,22 +81,59 @@ module.exports = function registerHandlers({
     const suppliedBowlerIds = Array.isArray(payload)
       ? null
       : payload?.bowlerIds;
-    const fallbackBowlerIds = [...user.squad]
-      .filter((p) => unique.includes(p.id))
-      .sort(
-        (a, b) =>
-          (b.bowling || 0) - (a.bowling || 0) || (b.ovr || 0) - (a.ovr || 0),
-      )
-      .slice(0, 5)
-      .map((p) => p.id);
+    const xi = user.squad.filter((player) => unique.includes(player.id));
+    const fallbackBowlerIds = rankBowlers(xi)
+      .slice(0, minBowlingOptions)
+      .map((player) => player.id);
     const bowlerIds = Array.isArray(suppliedBowlerIds)
       ? suppliedBowlerIds.map(String)
       : fallbackBowlerIds;
     const uniqueBowlers = [...new Set(bowlerIds)];
-    if (bowlerIds.length !== 5 || uniqueBowlers.length !== 5)
-      return reject("Choose exactly five bowlers.");
+    if (
+      bowlerIds.length < minBowlingOptions ||
+      bowlerIds.length > maxBowlingOptions ||
+      uniqueBowlers.length !== bowlerIds.length
+    )
+      return reject("Choose five to seven different bowlers.");
     if (uniqueBowlers.some((id) => !unique.includes(id)))
       return reject("Your bowling unit must be chosen from your playing XI.");
+
+    const bowlingPlan = {};
+    for (const role of ["powerplay", "death", "backup"]) {
+      const id = payload.bowlingPlan?.[role];
+      if (!id) continue;
+      if (!uniqueBowlers.includes(id))
+        return reject("Bowling priorities must be in your bowling unit.");
+      bowlingPlan[role] = id;
+    }
+    if (
+      bowlingPlan.backup &&
+      (uniqueBowlers.length === minBowlingOptions ||
+        [bowlingPlan.powerplay, bowlingPlan.death].includes(bowlingPlan.backup))
+    )
+      return reject(
+        "Choose a separate backup bowler in a unit of at least six.",
+      );
+
+    const superOverPlan = {};
+    const batters = payload.superOverPlan?.batters;
+    if (batters !== undefined) {
+      if (
+        !Array.isArray(batters) ||
+        batters.length > 3 ||
+        new Set(batters).size !== batters.length ||
+        batters.some((id) => !unique.includes(id))
+      )
+        return reject(
+          "Choose up to three different Super Over batters from your XI.",
+        );
+      superOverPlan.batters = batters;
+    }
+    if (payload.superOverPlan?.bowler) {
+      if (!unique.includes(payload.superOverPlan.bowler))
+        return reject("Your Super Over bowler must be in your XI.");
+      superOverPlan.bowler = payload.superOverPlan.bowler;
+    }
 
     const suppliedTactics =
       payload &&
@@ -117,6 +146,8 @@ module.exports = function registerHandlers({
       allowed.includes(suppliedTactics[key]) ? suppliedTactics[key] : fallback;
     user.lineup = unique;
     user.bowlerIds = uniqueBowlers;
+    user.bowlingPlan = bowlingPlan;
+    user.superOverPlan = superOverPlan;
     user.tactics = {
       fielding: choose(
         "fielding",
@@ -134,7 +165,7 @@ module.exports = function registerHandlers({
         game.DEFAULT_TACTICS.batting,
       ),
     };
-    user.xiReady = false;
+    user.xiReady = room.phase !== "lineup";
     game.broadcast(io, room, false);
     if (typeof acknowledgement === "function") acknowledgement({ ok: true });
   });
@@ -146,7 +177,7 @@ module.exports = function registerHandlers({
       if (typeof acknowledgement === "function")
         acknowledgement({ ok: false, message });
     };
-    if (!room || !user || room.phase !== "lineup")
+    if (!room || !user || !planningOpen(room, user))
       return reject("Playing XI selection is not open.");
     if (ready) {
       if (user.lineup.length !== 11 || new Set(user.lineup).size !== 11)
@@ -167,11 +198,12 @@ module.exports = function registerHandlers({
         );
       if (
         !Array.isArray(user.bowlerIds) ||
-        user.bowlerIds.length !== 5 ||
-        new Set(user.bowlerIds).size !== 5 ||
+        user.bowlerIds.length < minBowlingOptions ||
+        user.bowlerIds.length > maxBowlingOptions ||
+        new Set(user.bowlerIds).size !== user.bowlerIds.length ||
         user.bowlerIds.some((id) => !user.lineup.includes(id))
       )
-        return reject("Select exactly five bowlers from your playing XI.");
+        return reject("Select five to seven bowlers from your playing XI.");
       const tactics = user.tactics || game.DEFAULT_TACTICS;
       if (
         !["aggressive", "balanced", "conservative"].includes(

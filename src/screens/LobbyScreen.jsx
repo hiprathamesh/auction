@@ -312,6 +312,29 @@ export function LobbyScreen(props) {
               </div>
               <div className="setting-row">
                 <div>
+                  <strong>Auction pool</strong>
+                  <p>
+                    Compact scales to room size and brings depth players
+                    forward.
+                  </p>
+                </div>
+                <select
+                  className="arena-select"
+                  aria-label="Auction pool"
+                  value={room.settings.compactAuction ? "compact" : "full"}
+                  onChange={(event) =>
+                    setSetting(
+                      "compactAuction",
+                      event.target.value === "compact",
+                    )
+                  }
+                >
+                  <option value="compact">Compact</option>
+                  <option value="full">Full pool</option>
+                </select>
+              </div>
+              <div className="setting-row">
+                <div>
                   <strong>Legend purchase limit</strong>
                   <p>Maximum legends each team may buy</p>
                 </div>

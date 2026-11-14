@@ -775,6 +775,7 @@ io.on("connection", (socket) => {
     "auction:out",
     "trade:propose",
     "trade:respond",
+    "simulation:chooseToss",
   ]);
   const booleanEvents = new Set(["lobby:ready", "lineup:ready"]);
   let eventWindow = Date.now();
@@ -844,6 +845,8 @@ io.on("connection", (socket) => {
       (event === "auction:rtmToggle" &&
         (!stringField("lotId") || typeof payload.enabled !== "boolean")) ||
       (event === "auction:out" && !stringField("lotId")) ||
+      (event === "simulation:chooseToss" &&
+        (!stringField("matchId") || !stringField("decision", 4))) ||
       (event === "trade:propose" &&
         !["toUserId", "myPlayerId", "theirPlayerId"].every((key) =>
           stringField(key),
@@ -867,7 +870,7 @@ io.on("connection", (socket) => {
         ids.some((id) => typeof id !== "string" || id.length > 128) ||
         (bowlers !== undefined &&
           (!Array.isArray(bowlers) ||
-            bowlers.length > 5 ||
+            bowlers.length > 7 ||
             bowlers.some((id) => typeof id !== "string" || id.length > 128)))
       ) {
         emitError(socket, "Invalid playing XI.");
@@ -1282,6 +1285,7 @@ io.on("connection", (socket) => {
       bidSeconds: [5, 10, 15, 20, 30],
       startingPurse: [60, 80, 100, 120, 150, 200],
       includeLegends: [true, false],
+      compactAuction: [true, false],
       showRatings: [true, false],
       legendAuctionLimit: [4, 5, 6, 7, 8, "unlimited"],
       rtmEnabled: [true, false],

@@ -24,6 +24,9 @@ const roleShort = {
 };
 const DEFAULT_AUCTION_LEGEND_LIMIT = rules.defaultLegendAuctionLimit;
 const MAX_XI_LEGENDS = rules.maxPlayingXILegends;
+const { minBowlingOptions, maxBowlingOptions } = rules;
+const hasBowlingUnit = (ids = []) =>
+  ids.length >= minBowlingOptions && ids.length <= maxBowlingOptions;
 const isBattingCapable = (player) =>
   ["Batter", "Wicketkeeper", "All-rounder"].includes(player?.role);
 const preferredPositions = (player) =>
@@ -68,88 +71,69 @@ const canBuildLegalXI = (squad = []) => {
 };
 const TACTIC_OPTIONS = {
   fielding: {
-    title: "FIELDING STRATEGY",
-    question: "How do you set the field?",
+    title: "Fielding",
     options: [
       {
         id: "aggressive",
         label: "Aggressive",
-        pro: "PRO · Fewer easy singles",
-        con: "CON · More boundary risk",
-        description:
-          "Attack the batters with a tighter, more aggressive field.",
+        description: "A tighter field cuts off easy singles.",
+        tradeoff: "More boundary risk.",
       },
       {
         id: "balanced",
         label: "Balanced",
-        pro: "PRO · Reliable mix",
-        con: "CON · No phase-specific edge",
-        description: "A flexible field with no deliberate bias.",
+        description: "A flexible field with an even mix of coverage.",
       },
       {
         id: "conservative",
         label: "Conservative",
-        pro: "PRO · Better catching chances",
-        con: "CON · More singles and twos",
-        description: "Protect the rope and prioritize safe catching positions.",
+        description: "Protect the rope and favor safer catching positions.",
+        tradeoff: "Concedes more singles and twos.",
       },
     ],
   },
   bowling: {
-    title: "BOWLING PLAN",
-    question: "When do your best bowlers attack?",
+    title: "Bowling",
     options: [
       {
         id: "powerplay",
-        label: "Best in Powerplay",
-        pro: "PRO · Strong first six overs",
-        con: "CON · Less firepower saved for the end",
-        description:
-          "Your top two bowlers target two overs each in the first six when possible.",
+        label: "Powerplay",
+        description: "Favor your strongest bowlers in the first six overs.",
+        tradeoff: "Fewer of their overs left for the finish.",
       },
       {
         id: "balanced",
         label: "Balanced",
-        pro: "PRO · Even workload",
-        con: "CON · No phase-specific edge",
-        description: "Distribute the five-bowler unit across the innings.",
+        description: "Spread overs across the selected bowling unit.",
       },
       {
         id: "death",
-        label: "Best at Death",
-        pro: "PRO · Strong last five overs",
-        con: "CON · Supporting bowlers carry more early overs",
-        description:
-          "Your top two bowlers target two overs each in the final five when possible.",
+        label: "Death overs",
+        description: "Save your strongest bowlers for the final five overs.",
+        tradeoff: "Supporting bowlers carry more early overs.",
       },
     ],
   },
   batting: {
-    title: "BATTING STRATEGY",
-    question: "How do you build the innings?",
+    title: "Batting",
     options: [
       {
         id: "powerplay",
-        label: "Aggressive Powerplay",
-        pro: "PRO · More early boundaries",
-        con: "CON · Slightly more wicket risk",
-        description: "Take more attacking options in the first six overs.",
+        label: "Fast start",
+        description: "Look for more boundaries in the first six overs.",
+        tradeoff: "Slightly more wicket risk.",
       },
       {
         id: "buildup",
         label: "Build-up",
-        pro: "PRO · Safer start",
-        con: "CON · Fewer early boundaries",
-        description:
-          "Prioritize steady scoring early and let player ratings drive the contest.",
+        description: "Start steadily and keep wickets in hand.",
+        tradeoff: "Fewer early boundaries.",
       },
       {
         id: "finish",
-        label: "Strong Finish",
-        pro: "PRO · More late hitting",
-        con: "CON · May start slower",
-        description:
-          "Preserve a little more early and attack harder in the final five overs.",
+        label: "Strong finish",
+        description: "Save more of the attack for the final five overs.",
+        tradeoff: "May start slower.",
       },
     ],
   },
@@ -226,13 +210,16 @@ function App() {
   const [modalTab, setModalTab] = useState("orangeCap");
   const [lineupSelection, setLineupSelection] = useState([]);
   const [bowlerSelection, setBowlerSelection] = useState([]);
-  const [bowlerSelectionManual, setBowlerSelectionManual] = useState(false);
   const [tacticsSelection, setTacticsSelection] = useState(DEFAULT_TACTICS);
+  const [bowlingPlan, setBowlingPlan] = useState({});
+  const [superOverPlan, setSuperOverPlan] = useState({});
+  const [editingPlan, setEditingPlan] = useState(false);
   const [lineupHydrated, setLineupHydrated] = useState(false);
   const [activeFilter, setActiveFilter] = useState("All");
   const [currentBall, setCurrentBall] = useState(null);
   const [ballTrail, setBallTrail] = useState([]);
-  const [fx, setFx] = useState({ kind: "", token: 0 });
+  const [celebrations, setCelebrations] = useState([]);
+  const nextCelebrationId = useRef(0);
   const [matchBanner, setMatchBanner] = useState(null);
   const [appOnline, setAppOnline] = useState(false);
   const [shareCopied, setShareCopied] = useState(false);
@@ -252,7 +239,7 @@ function App() {
       (u) =>
         u.xiReady &&
         u.lineup?.length === 11 &&
-        u.bowlerIds?.length === 5 &&
+        hasBowlingUnit(u.bowlerIds) &&
         u.bowlerIds.every((id) => u.lineup.includes(id)) &&
         u.squad.filter((p) => u.lineup.includes(p.id) && p.legend).length <=
           MAX_XI_LEGENDS,
@@ -262,14 +249,23 @@ function App() {
     room?.users?.length && room.users.every((u) => canBuildLegalXI(u.squad)),
   );
   const currentMatch = room?.currentMatch;
+  const canEditBetweenStages = Boolean(
+    me &&
+    ((room?.phase === "leagueComplete" &&
+      room.standings.slice(0, 4).some((t) => t.userId === me.id)) ||
+      (room?.phase === "finalReady" && room.playoff.finalists.includes(me.id))),
+  );
+  const showTeamPlan =
+    room?.phase === "lineup" || (canEditBetweenStages && editingPlan);
   const currentLot = room?.currentLot;
 
   const flashFx = useCallback((kind) => {
-    setFx((old) => ({ kind, token: old.token + 1 }));
-    window.setTimeout(
-      () => setFx((old) => (old.kind === kind ? { ...old, kind: "" } : old)),
-      kind === "win" ? 2100 : 950,
-    );
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const id = ++nextCelebrationId.current;
+    setCelebrations((active) => [...active, { id, kind }]);
+  }, []);
+  const clearCelebration = useCallback((id) => {
+    setCelebrations((active) => active.filter((burst) => burst.id !== id));
   }, []);
 
   useEffect(() => {
@@ -332,6 +328,7 @@ function App() {
       if (next.currentMatch?.live && next.currentMatch.liveScore) {
         const score = next.currentMatch.liveScore;
         setCurrentBall({ ...score, score: score.runs });
+        setBallTrail(next.currentMatch.recentBalls || []);
       }
       if (next.phase === "complete")
         setMatchBanner({ championId: next.championId });
@@ -348,8 +345,10 @@ function App() {
           : previous,
       );
       const match = patch.changes?.currentMatch;
-      if (match?.live && match.liveScore)
+      if (match?.live && match.liveScore) {
         setCurrentBall({ ...match.liveScore, score: match.liveScore.runs });
+        setBallTrail(match.recentBalls || []);
+      }
       if (patch.changes?.phase === "complete")
         setMatchBanner({ championId: patch.changes.championId });
     };
@@ -426,24 +425,37 @@ function App() {
         battingTeamId: payload.teamId,
         target: payload.target || null,
         superOver: Boolean(payload.superOver),
+        superOverRound: payload.superOverRound,
+        maxBalls: payload.maxBalls,
       });
       setBallTrail([]);
       setMatchBanner(null);
     };
     const onBall = (ball) => {
-      setCurrentBall(ball);
+      const overEnd = ball.legal && ball.balls % 6 === 0;
+      setCurrentBall((previous) => ({
+        ...ball,
+        completedOver: overEnd
+          ? {
+              ...ball,
+              commentary: `End of over ${ball.overs} · ${ball.score}/${ball.wickets}`,
+            }
+          : previous?.completedOver,
+      }));
       setBallTrail((prev) => [
         ...prev.slice(-9),
         {
           outcome: ball.outcome,
           runs: ball.runs,
           wicket: ball.wicket,
+          extraType: ball.extraType,
+          overEnd,
           key: ball.key,
         },
       ]);
       if (ball.wicket) flashFx("wicket");
-      else if (ball.outcome === "SIX" || ball.outcome === "FOUR")
-        flashFx("boundary");
+      else if (ball.outcome === "SIX") flashFx("six");
+      else if (ball.outcome === "FOUR") flashFx("four");
       else if (
         ball.batter1 &&
         (ball.batter1.runs === 50 || ball.batter1.runs === 100)
@@ -541,22 +553,26 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (room?.phase === "lineup") {
+    if (showTeamPlan) {
       if (!lineupHydrated && me) {
         setLineupSelection(Array.isArray(me.lineup) ? me.lineup : []);
         setBowlerSelection(Array.isArray(me.bowlerIds) ? me.bowlerIds : []);
         setTacticsSelection({ ...DEFAULT_TACTICS, ...(me.tactics || {}) });
-        setBowlerSelectionManual(false);
+        setBowlingPlan(me.bowlingPlan || {});
+        setSuperOverPlan(me.superOverPlan || {});
         setLineupHydrated(true);
       }
     } else {
       setLineupSelection([]);
       setBowlerSelection([]);
       setTacticsSelection(DEFAULT_TACTICS);
-      setBowlerSelectionManual(false);
       setLineupHydrated(false);
     }
-  }, [room?.phase, me?.id, lineupHydrated]);
+  }, [showTeamPlan, me?.id, lineupHydrated]);
+
+  useEffect(() => {
+    if (!canEditBetweenStages) setEditingPlan(false);
+  }, [canEditBetweenStages]);
 
   const emitAction = (event, ...args) => {
     if (!socket.connected) {
@@ -584,7 +600,9 @@ function App() {
       recoveryToken: recoveryInput.trim(),
     });
   };
-  const hostAction = (event) => emitAction(event);
+  const hostAction = (event, ...args) => emitAction(event, ...args);
+  const chooseToss = (matchId, decision) =>
+    emitAction("simulation:chooseToss", { matchId, decision });
   const kickUser = (target) => {
     if (!isHost || !target || target.id === meId) return;
     const squadCount = Number(target.squadCount || 0);
@@ -777,24 +795,20 @@ function App() {
     }
     setLineupSelection(next);
     const recommended = bestFiveBowlers(next);
-    if (!bowlerSelectionManual) {
-      setBowlerSelection(recommended);
-    } else {
-      const preserved = bowlerSelection
-        .filter((bowlerId) => next.includes(bowlerId))
-        .slice(0, 5);
-      setBowlerSelection(
-        [
-          ...preserved,
-          ...recommended.filter((bowlerId) => !preserved.includes(bowlerId)),
-        ].slice(0, 5),
-      );
-    }
+    const preserved = bowlerSelection.filter((bowlerId) =>
+      next.includes(bowlerId),
+    );
+    setBowlerSelection(
+      [
+        ...preserved,
+        ...recommended.filter((bowlerId) => !preserved.includes(bowlerId)),
+      ].slice(0, Math.max(minBowlingOptions, preserved.length)),
+    );
     setError("");
   };
 
   const moveBattingOrder = (index, direction) => {
-    if (me?.xiReady) return;
+    if (me?.xiReady && !editingPlan) return;
     const targetIndex = index + direction;
     if (targetIndex < 0 || targetIndex >= lineupSelection.length) return;
     setLineupSelection((previous) => {
@@ -805,14 +819,14 @@ function App() {
   };
 
   const toggleBowler = (id) => {
-    if (me?.xiReady) return;
+    if (me?.xiReady && !editingPlan) return;
     const selected = bowlerSelection.includes(id);
     if (selected) {
       setBowlerSelection(bowlerSelection.filter((x) => x !== id));
     } else {
-      if (bowlerSelection.length >= 5) {
+      if (bowlerSelection.length >= maxBowlingOptions) {
         setError(
-          "Choose exactly five bowlers. Remove one before selecting another.",
+          "Choose up to seven bowlers. Remove one before selecting another.",
         );
         return;
       }
@@ -822,12 +836,11 @@ function App() {
       }
       setBowlerSelection([...bowlerSelection, id]);
     }
-    setBowlerSelectionManual(true);
     setError("");
   };
 
   const setTactic = (group, value) => {
-    if (!me?.xiReady)
+    if (!me?.xiReady || editingPlan)
       setTacticsSelection((previous) => ({ ...previous, [group]: value }));
   };
 
@@ -846,11 +859,11 @@ function App() {
       return;
     }
     if (
-      bowlerSelection.length !== 5 ||
-      new Set(bowlerSelection).size !== 5 ||
+      !hasBowlingUnit(bowlerSelection) ||
+      new Set(bowlerSelection).size !== bowlerSelection.length ||
       bowlerSelection.some((id) => !lineupSelection.includes(id))
     ) {
-      setError("Choose exactly five bowlers from your playing XI.");
+      setError("Choose five to seven bowlers from your playing XI.");
       return;
     }
     if (!socket.connected) {
@@ -864,10 +877,31 @@ function App() {
         playerIds: lineupSelection,
         bowlerIds: bowlerSelection,
         tactics: tacticsSelection,
+        bowlingPlan: Object.fromEntries(
+          Object.entries(bowlingPlan).filter(
+            ([role, id]) =>
+              bowlerSelection.includes(id) &&
+              (role !== "backup" ||
+                (bowlerSelection.length > minBowlingOptions &&
+                  ![bowlingPlan.powerplay, bowlingPlan.death].includes(id))),
+          ),
+        ),
+        superOverPlan: {
+          batters: (superOverPlan.batters || []).filter((id) =>
+            lineupSelection.includes(id),
+          ),
+          bowler: lineupSelection.includes(superOverPlan.bowler)
+            ? superOverPlan.bowler
+            : null,
+        },
       },
       (error, result) => {
         if (error || !result?.ok) {
           setError(result?.message || "Your match plan was not confirmed.");
+          return;
+        }
+        if (editingPlan) {
+          setEditingPlan(false);
           return;
         }
         if (!socket.connected) {
@@ -1077,12 +1111,28 @@ function App() {
         />
       )}
 
-      {room && room.phase === "lineup" && (
+      {room && showTeamPlan && (
         <LineupScreen
           {...{
             auctionLegendLimit,
             lineupSelection,
             bowlerSelection,
+            bowlingPlan,
+            setBowlingPlan,
+            superOverPlan,
+            setSuperOverPlan,
+            hasBowlingUnit,
+            maxBowlingOptions,
+            editingPlan,
+            closeTeamPlan: () => setEditingPlan(false),
+            suggestPlan: () => {
+              const plan = me.suggestedPlan;
+              if (!plan) return;
+              setLineupSelection(plan.lineup);
+              setBowlerSelection(plan.bowlerIds);
+              setBowlingPlan(plan.bowlingPlan);
+              setSuperOverPlan(plan.superOverPlan);
+            },
             me,
             MAX_XI_LEGENDS,
             activeFilter,
@@ -1111,6 +1161,7 @@ function App() {
       )}
 
       {room &&
+        !showTeamPlan &&
         [
           "league",
           "leagueComplete",
@@ -1126,9 +1177,14 @@ function App() {
               isHost,
               hostAction,
               currentMatch,
+              meId,
+              chooseToss,
               currentBall,
               ballTrail,
               matchBanner,
+              openTeamPlan: canEditBetweenStages
+                ? () => setEditingPlan(true)
+                : null,
               getTeam,
             }}
           />
@@ -1165,7 +1221,9 @@ function App() {
           <button onClick={() => setAuctionToast("")}>×</button>
         </div>
       )}
-      {fx.kind && <Confetti kind={fx.kind} token={fx.token} />}
+      {celebrations.map(({ id, kind }) => (
+        <Confetti key={id} id={id} kind={kind} onFinish={clearCelebration} />
+      ))}
       <footer className="site-footer">
         <span>
           AUCTION ARENA <b>·</b> LOCAL HOSTED IPL GAME

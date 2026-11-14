@@ -2,6 +2,7 @@ import json, re, hashlib, os, tempfile
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 text = (ROOT / 'data/auction_players_list.txt').read_text(encoding='utf-8')
+simulation_profiles = json.loads((ROOT / 'data/simulation-ratings.json').read_text(encoding='utf-8'))
 headers = {'Marquee Set 1','Set 1','Set 2','Set 3','Set 4','BA1','AL1','WK1','FA1','SP1','UBA1','UAL1','UWK1','UFA1','USP1','BA2','AL2','WK2','FA2','SP2','UBA2'}
 players=[]; group=''
 for line in text.splitlines():
@@ -462,9 +463,33 @@ for p in players:
             # Explicit null (or an empty/invalid value) is a persistent no-RTM choice.
             # Remove this key from the old record to re-apply the curated default mapping.
             output[-1]['rtmTeamId'] = None
+    player = output[-1]
+    profile = simulation_profiles.get(pid, {})
+    player['ratingPrior'] = {key: player[key] for key in ('batting', 'bowling')}
+    batting_prior = min(94, player['batting'])
+    bowling_prior = min(94, player['bowling'])
+    if role in (BAT, WK) and profile.get('bowlBalls', 0) < 30:
+        bowling_prior = min(44, bowling_prior)
+    if role == AR and profile.get('bowlBalls', 0) < 120:
+        bowling_prior = min(70, bowling_prior)
+    skills = {
+        key: profile.get(key, batting_prior if key in ('survival', 'rotation', 'hitting') else bowling_prior)
+        for key in ('survival', 'rotation', 'hitting', 'prevention', 'wickets', 'control')
+    }
+    for key in ('battingPhase', 'bowlingPhase'):
+        if key in profile:
+            skills[key] = profile[key]
+    player['skills'] = skills
+    player['batting'] = round(.40 * skills['hitting'] + .32 * skills['survival'] + .28 * skills['rotation'])
+    player['bowling'] = round(.48 * skills['prevention'] + .37 * skills['wickets'] + .15 * skills['control'])
+    bat, bowl, field = (player[key] for key in ('batting', 'bowling', 'fielding'))
+    if role == BAT: player['ovr'] = round(.90 * bat + .10 * field)
+    elif role == WK: player['ovr'] = round(.82 * bat + .18 * field)
+    elif role == BOWL: player['ovr'] = round(.91 * bowl + .09 * field)
+    else: player['ovr'] = round(.46 * bat + .46 * bowl + .08 * field)
 # Preserve set ordering based on the user's file and append legend set names as already present.
 output.sort(key=lambda p:(set_order.index(p['set']) if p['set'] in set_order else 999, p['legend'], p['name'].lower()))
-atomic_write_text(ROOT/'data/players.json', json.dumps({'schemaVersion':1,'source':'auction_players_list.txt','ratingNote':'Game-balance estimates, not official or predictive statistics.','setOrder':set_order,'players':output},ensure_ascii=False,indent=2))
+atomic_write_text(ROOT/'data/players.json', json.dumps({'schemaVersion':1,'ratingVersion':2,'source':'auction_players_list.txt','ratingNote':'Game estimates based on role priors and Cricsheet IPL deliveries where available.','setOrder':set_order,'players':output},ensure_ascii=False,indent=2))
 print(f'Wrote {len(output)} players across {len(set_order)} source sets; legends={sum(p["legend"] for p in output)}')
 unmapped_rtm = sorted(p['name'] for p in output if not p.get('rtmTeamId'))
 atomic_write_text(ROOT/'data/rtm_unmapped_players.txt', '\n'.join(unmapped_rtm) + ('\n' if unmapped_rtm else ''))

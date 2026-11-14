@@ -439,6 +439,7 @@ function MatchCard({ season, match, index, selected }) {
   const home = teamFor(season, match.homeId),
     away = teamFor(season, match.awayId),
     winner = teamFor(season, match.winnerId);
+  const tossWinner = teamFor(season, match.toss?.winnerId);
   const showDeliveries = async (next) => {
     if (view === next) {
       setView(null);
@@ -486,6 +487,13 @@ function MatchCard({ season, match, index, selected }) {
         {winner
           ? `${winner.teamName} won by ${match.margin}`
           : match.margin || "Match tied"}
+        {tossWinner && match.toss.decision && (
+          <small className="archive-toss">
+            {tossWinner.teamShort} won the toss ·{" "}
+            {match.toss.automatic ? "Auto-selected to" : "Chose to"}{" "}
+            {match.toss.decision} first
+          </small>
+        )}
       </div>
       <div className="archive-innings">
         {match.innings.map((inn, i) => (
@@ -497,14 +505,21 @@ function MatchCard({ season, match, index, selected }) {
         ))}
       </div>
       {Boolean(match.superOver?.length) && (
-        <div className="archive-super">
-          <small>SUPER OVER</small>
-          {match.superOver.map((inn, i) => (
-            <span key={i}>
-              {inn.battingTeamName} {score(inn)}
-            </span>
-          ))}
-        </div>
+        <dl className="archive-super">
+          {match.superOver.map((inn, i) =>
+            i % 2 === 0 ? (
+              <div key={i}>
+                <dt>Super Over {i / 2 + 1}</dt>
+                {match.superOver.slice(i, i + 2).map((entry, side) => (
+                  <dd key={side}>
+                    <span>{entry.battingTeamName}</span>
+                    <b>{score(entry)}</b>
+                  </dd>
+                ))}
+              </div>
+            ) : null,
+          )}
+        </dl>
       )}
       <div className="archive-match-actions">
         <button onClick={() => setExpanded(!expanded)} aria-expanded={expanded}>

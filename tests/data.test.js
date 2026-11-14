@@ -39,7 +39,11 @@ test("database regeneration preserves the current player values and rejects unkn
   });
   fs.mkdirSync(path.join(temporary, "data"));
   fs.mkdirSync(path.join(temporary, "scripts"));
-  for (const name of ["auction_players_list.txt", "player-overrides.json"])
+  for (const name of [
+    "auction_players_list.txt",
+    "player-overrides.json",
+    "simulation-ratings.json",
+  ])
     fs.copyFileSync(
       path.join(root, "data", name),
       path.join(temporary, "data", name),

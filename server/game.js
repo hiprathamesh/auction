@@ -2,6 +2,9 @@ const crypto = require("crypto");
 const zlib = require("node:zlib");
 const { shuffle, simulateMatch, createSeededRandom } = require("./cricket");
 const rules = require("../shared/rules.json");
+const { suggestMatchPlan, buildCompactAuction } = require("./matchPlan");
+const ENGINE_VERSION = 2;
+const TOSS_DECISION_MS = 3000;
 
 const FRANCHISES = rules.franchises;
 const DEFAULT_SETTINGS = {
@@ -10,6 +13,7 @@ const DEFAULT_SETTINGS = {
   showRatings: false,
   startingPurse: 120,
   ballIntervalMs: 95,
+  compactAuction: true,
   legendAuctionLimit: 6,
   rtmEnabled: false,
   rtmUses: 1,
@@ -67,6 +71,7 @@ function canUserAcquirePlayer(user, player, price, settings = {}) {
 function createRoom(code, owner, playerDB) {
   const room = {
     code,
+    ratingVersion: playerDB.ratingVersion ?? 1,
     seasonKey: crypto.randomUUID(),
     createdAt: Date.now(),
     hostId: owner.id,
@@ -209,7 +214,10 @@ function calculateTeamRatings(squad = []) {
 // Pick the strongest possible starting XI while respecting both IPL limits:
 // at most four overseas players and at most four legends. Dynamic programming
 // avoids a greedy selection that could consume both limits too early.
-function findBestLegalXI(squad = []) {
+function findBestLegalXI(
+  squad = [],
+  score = (player) => Number(player.ovr) || 0,
+) {
   const players = Array.isArray(squad) ? squad : [];
   const dp = Array.from({ length: 12 }, () =>
     Array.from({ length: 5 }, () => Array(5).fill(null)),
@@ -227,7 +235,7 @@ function findBestLegalXI(squad = []) {
           const nextOverseas = overseas + overseasCost;
           const nextLegends = legends + legendCost;
           if (nextOverseas > 4 || nextLegends > MAX_LEGENDS_XI) continue;
-          const nextRating = state.rating + (Number(player.ovr) || 0);
+          const nextRating = state.rating + score(player);
           const existing = dp[count + 1][nextOverseas][nextLegends];
           if (!existing || nextRating > existing.rating) {
             dp[count + 1][nextOverseas][nextLegends] = {
@@ -346,7 +354,7 @@ function publicUser(user, settings, includeBowlingRanks = false) {
           .map((player, index) => [player.id, index + 1]),
       )
     : null;
-  const squad = user.squad.map((p) => ({
+  const squad = user.squad.map(({ ratingPrior: _prior, ...p }) => ({
     ...p,
     ...(includeBowlingRanks ? { bowlingRank: bowlingRank.get(p.id) } : {}),
     // Purchased squad ratings are visible in squad panels/previews. The host's
@@ -366,6 +374,11 @@ function publicUser(user, settings, includeBowlingRanks = false) {
     squad,
     lineup: user.lineup,
     bowlerIds: user.bowlerIds || [],
+    bowlingPlan: user.bowlingPlan,
+    superOverPlan: user.superOverPlan,
+    ...(includeBowlingRanks
+      ? { suggestedPlan: suggestMatchPlan(user.squad, findBestLegalXI) }
+      : {}),
     tactics: { ...DEFAULT_TACTICS, ...(user.tactics || {}) },
     teamRatings: calculateTeamRatings(user.squad),
     xiReady: user.xiReady,
@@ -390,6 +403,8 @@ function publicRoom(room, viewerId) {
               batting: undefined,
               bowling: undefined,
               fielding: undefined,
+              skills: undefined,
+              ratingPrior: undefined,
             },
         set: room.currentLot.set,
         basePrice: room.currentLot.basePrice,
@@ -434,7 +449,11 @@ function publicRoom(room, viewerId) {
     settings: room.settings,
     previousSeasonId: room.previousSeason?.id ?? null,
     users: room.users.map((u) =>
-      publicUser(u, room.settings, room.phase === "lineup"),
+      publicUser(
+        u,
+        room.settings,
+        ["lineup", "leagueComplete", "finalReady"].includes(room.phase),
+      ),
     ),
     tradeOffers:
       room.phase === "auctionResults"
@@ -454,6 +473,19 @@ function publicRoom(room, viewerId) {
         room.lotHistory.length +
         (room.currentLot ? 1 : 0),
     lotsRemaining: room.auctionQueue.length,
+    reserveLots: room.auctionReserve?.length || 0,
+    upcomingLots:
+      room.phase === "auction"
+        ? room.auctionQueue
+            .slice(0, 6)
+            .map(({ id, name, role, overseas, basePrice }) => ({
+              id,
+              name,
+              role,
+              overseas,
+              basePrice,
+            }))
+        : [],
     auctionLotsDone: room.lotHistory.length,
     auctionPaused: room.auctionPaused,
     simulationPaused: Boolean(room.simulationPaused),
@@ -517,6 +549,7 @@ function publicRoom(room, viewerId) {
 }
 
 function publicMatch(match, room) {
+  const { toss } = match;
   return {
     id: match.id,
     type: match.type,
@@ -533,9 +566,19 @@ function publicMatch(match, room) {
     ),
     inningsIndex: match.inningsIndex || 0,
     live: Boolean(match.live),
+    toss:
+      !toss || toss.decision
+        ? toss
+        : {
+            winnerId: toss.winnerId,
+            remainingMs: room.simulationPaused
+              ? TOSS_DECISION_MS
+              : Math.max(0, toss.endsAt - Date.now()),
+          },
     target: match.target || null,
     liveScore: match.liveScore || null,
-    result: match.result ? publicMatchResult(match) : null,
+    recentBalls: match.recentBalls || [],
+    result: match.innings ? publicMatchResult(match) : null,
   };
 }
 function publicMatchResult(match) {
@@ -562,39 +605,49 @@ function publicMatchResult(match) {
     margin: match.margin,
     tied: match.tied,
     simulationSeed: match.simulationSeed,
-    innings: match.innings.map((inn) => ({
-      battingTeamId: inn.battingTeamId,
-      battingTeamName: inn.battingTeamName,
-      battingUserName: inn.battingUserName,
-      bowlingTeamId: inn.bowlingTeamId,
-      bowlingTeamName: inn.bowlingTeamName,
-      runs: inn.runs,
-      wickets: inn.wickets,
-      legalBalls: inn.legalBalls,
-      overs: inn.overs,
-      allOut: inn.allOut,
-      nrrOvers: inn.nrrOvers,
-      batters: inn.batters.map((b) => ({
-        playerId: b.player.id,
-        name: b.player.name,
-        runs: b.runs,
-        balls: b.balls,
-        fours: b.fours,
-        sixes: b.sixes,
-        out: b.out,
-        dismissal: b.dismissal,
-        strikeRate: b.strikeRate,
-      })),
-      bowlers: inn.bowlers.map((b) => ({
-        playerId: b.player.id,
-        name: b.player.name,
-        runs: b.runs,
-        wickets: b.wickets,
-        balls: b.legalBalls,
-        overs: b.overs,
-        economy: b.economy,
-        maidens: b.maidens,
-      })),
+    engineVersion: match.engineVersion,
+    ratingVersion: match.ratingVersion,
+    innings: match.innings.map(summarizeInnings),
+    superOver: (match.superOver || []).map(summarizeInnings),
+  };
+}
+
+function summarizeInnings(inn) {
+  return {
+    battingTeamId: inn.battingTeamId,
+    battingTeamName: inn.battingTeamName,
+    battingUserName: inn.battingUserName,
+    bowlingTeamId: inn.bowlingTeamId,
+    bowlingTeamName: inn.bowlingTeamName,
+    runs: inn.runs,
+    wickets: inn.wickets,
+    legalBalls: inn.legalBalls,
+    overs: inn.overs,
+    allOut: inn.allOut,
+    nrrOvers: inn.nrrOvers,
+    maxBalls: inn.maxBalls,
+    target: inn.target,
+    extras: inn.extras,
+    batters: inn.batters.map((b) => ({
+      playerId: b.player.id,
+      name: b.player.name,
+      runs: b.runs,
+      balls: b.balls,
+      fours: b.fours,
+      sixes: b.sixes,
+      out: b.out,
+      dismissal: b.dismissal,
+      strikeRate: b.strikeRate,
+    })),
+    bowlers: inn.bowlers.map((b) => ({
+      playerId: b.player.id,
+      name: b.player.name,
+      runs: b.runs,
+      wickets: b.wickets,
+      balls: b.legalBalls,
+      overs: b.overs,
+      economy: b.economy,
+      maidens: b.maidens,
     })),
   };
 }
@@ -832,6 +885,7 @@ function startAuction(io, room, playerDB, latestRoster) {
     };
   if (room.users.some((u) => !u.ready))
     return { error: "Everyone must be ready before the auction starts." };
+  room.ratingVersion = playerDB.ratingVersion ?? 1;
   const previousSeason =
     room.settings.rtmEnabled || room.settings.retentionEnabled
       ? (latestRoster?.() ?? null)
@@ -870,6 +924,8 @@ function startAuction(io, room, playerDB, latestRoster) {
     delete u.retentionPlayerIds;
     u.lineup = [];
     u.bowlerIds = [];
+    delete u.bowlingPlan;
+    delete u.superOverPlan;
     u.tactics = { ...DEFAULT_TACTICS };
     u.xiReady = false;
     u.rtmUsesUsed = 0;
@@ -882,7 +938,12 @@ function startAuction(io, room, playerDB, latestRoster) {
     if (!bySet.has(p.set)) bySet.set(p.set, []);
     bySet.get(p.set).push(p);
   }
-  room.auctionQueue = room.setOrder.flatMap((s) => shuffle(bySet.get(s) || []));
+  const fullQueue = room.setOrder.flatMap((s) => shuffle(bySet.get(s) || []));
+  const compact = room.settings.compactAuction
+    ? buildCompactAuction(fullQueue, room.users.length, room.users)
+    : { queue: fullQueue, reserve: [] };
+  room.auctionQueue = compact.queue;
+  room.auctionReserve = compact.reserve;
   room.totalLots = room.auctionQueue.length;
   room.nextLotNumber = 0;
   openNextLot(io, room);
@@ -991,7 +1052,9 @@ function openNextLot(io, room) {
       text:
         skippedLegendCount > 0
           ? `The auction is complete. ${skippedLegendCount} remaining legend lot${skippedLegendCount === 1 ? " was" : "s were"} skipped because every team reached the ${getLegendAuctionLimit(room.settings)}-legend purchase limit.`
-          : "The auction is complete.",
+          : room.auctionReserve?.length
+            ? "The main auction is complete. The host can open a supplementary round."
+            : "The auction is complete.",
     };
     broadcast(io, room);
     return;
@@ -1206,28 +1269,34 @@ function createLiveEvents(
   const result = simulateMatch(home, away, { random });
   result.simulationSeed = seed;
   const events = [];
-  result.innings.forEach((inn, idx) => {
+  const appendInnings = (inn, inningsIndex, superOverRound = 0) => {
+    const meta = {
+      inningsIndex,
+      superOver: superOverRound > 0,
+      superOverRound,
+      maxBalls: inn.maxBalls,
+    };
     events.push({
+      ...meta,
       type: "inningsStart",
-      inningsIndex: idx,
       teamId: inn.battingTeamId,
       teamName: inn.battingTeamName,
       target: inn.target,
     });
-    inn.events.forEach((ball) =>
+    for (const ball of inn.events) {
       events.push({
+        ...meta,
         type: "ball",
-        inningsIndex: idx,
         battingTeamId: inn.battingTeamId,
         battingTeamName: inn.battingTeamName,
         bowlingTeamId: inn.bowlingTeamId,
         bowlingTeamName: inn.bowlingTeamName,
         ...ball,
-      }),
-    );
+      });
+    }
     events.push({
+      ...meta,
       type: "inningsEnd",
-      inningsIndex: idx,
       teamId: inn.battingTeamId,
       teamName: inn.battingTeamName,
       runs: inn.runs,
@@ -1235,78 +1304,84 @@ function createLiveEvents(
       overs: inn.overs,
       target: inn.target,
     });
-  });
+  };
+  result.engineVersion = ENGINE_VERSION;
+  result.innings.forEach((inn, index) => appendInnings(inn, index));
+
   if (result.tied) {
-    // A tied match gets a one-over eliminator with the same player ratings and bowling constraints.
-    const first = simulateMatch(home, away, {
-      maxOvers: 1,
-      superOver: true,
-      random,
-    });
-    result.superOver = first.innings;
-    const superEvents = [];
-    first.innings.forEach((inn, idx) => {
-      superEvents.push({
-        type: "inningsStart",
-        inningsIndex: idx + 2,
-        teamId: inn.battingTeamId,
-        teamName: inn.battingTeamName,
-        target: inn.target,
+    result.superOver = [];
+    let first = away;
+    let second = home;
+    const dismissed = new Map([
+      [home.userId, new Set()],
+      [away.userId, new Set()],
+    ]);
+    const previousBowler = new Map();
+    const optionsFor = (team) => {
+      const eligibleBatters = team.lineup.filter(
+        (id) => !dismissed.get(team.userId).has(id),
+      );
+      // Keep an XI usable in an exceptionally long series of tied overs.
+      if (eligibleBatters.length < 3) {
+        eligibleBatters.push(
+          ...team.lineup.filter((id) => !eligibleBatters.includes(id)),
+        );
+      }
+      const byRating = (key) =>
+        [...team.squad]
+          .filter((player) => team.lineup.includes(player.id))
+          .sort((a, b) => (b[key] || 0) - (a[key] || 0))
+          .map((player) => player.id);
+      const battingRanking = [
+        ...new Set([
+          ...(team.superOverPlan?.batters || []),
+          ...byRating("batting"),
+        ]),
+      ];
+      const eligible = battingRanking.filter(
+        (id) => !dismissed.get(team.userId).has(id),
+      );
+      const batters = [...new Set([...eligible, ...battingRanking])]
+        .filter((id) => eligibleBatters.includes(id))
+        .slice(0, 3);
+      const bowler = [team.superOverPlan?.bowler, ...byRating("bowling")].find(
+        (id) =>
+          team.lineup.includes(id) && id !== previousBowler.get(team.userId),
+      );
+      return { batters, bowler };
+    };
+    for (let round = 1; result.tied; round++) {
+      const firstPlan = optionsFor(first);
+      const secondPlan = optionsFor(second);
+      const next = simulateMatch(first, second, {
+        maxOvers: 1,
         superOver: true,
+        conditions: result.conditions,
+        homeBatters: firstPlan.batters,
+        awayBatters: secondPlan.batters,
+        homeBowler: firstPlan.bowler,
+        awayBowler: secondPlan.bowler,
+        random,
       });
-      inn.events.forEach((ball) =>
-        superEvents.push({
-          type: "ball",
-          inningsIndex: idx + 2,
-          superOver: true,
-          battingTeamId: inn.battingTeamId,
-          battingTeamName: inn.battingTeamName,
-          bowlingTeamId: inn.bowlingTeamId,
-          bowlingTeamName: inn.bowlingTeamName,
-          ...ball,
-        }),
-      );
-      superEvents.push({
-        type: "inningsEnd",
-        inningsIndex: idx + 2,
-        teamId: inn.battingTeamId,
-        teamName: inn.battingTeamName,
-        runs: inn.runs,
-        wickets: inn.wickets,
-        overs: inn.overs,
-        target: inn.target,
-        superOver: true,
+      events.push({ type: "superOverStart", superOverRound: round });
+      next.innings.forEach((inn, index) => {
+        result.superOver.push(inn);
+        appendInnings(inn, round * 2 + index, round);
+        for (const batter of inn.batters) {
+          if (batter.out)
+            dismissed.get(inn.battingTeamId).add(batter.player.id);
+        }
       });
-    });
-    events.push({ type: "superOverStart" }, ...superEvents, {
-      type: "superOverEnd",
-      innings: first.innings.map((i) => ({
-        battingTeamId: i.battingTeamId,
-        runs: i.runs,
-        wickets: i.wickets,
-      })),
-    });
-    if (!first.tied) {
-      result.winnerId = first.winnerId;
-      result.margin = `Super over (${first.innings[0].runs}–${first.innings[1].runs})`;
-      result.tied = false;
-      result.superOver = first.innings;
-    } else {
-      // Extremely rare second tie: decide with an attribute-weighted random draw, keep tied scoring recorded.
-      const homePower = home.lineup.reduce(
-        (s, id) => s + (home.squad.find((p) => p.id === id)?.ovr || 60),
-        0,
-      );
-      const awayPower = away.lineup.reduce(
-        (s, id) => s + (away.squad.find((p) => p.id === id)?.ovr || 60),
-        0,
-      );
-      result.winnerId =
-        random() * (homePower + awayPower) < homePower
-          ? home.userId
-          : away.userId;
-      result.margin = "Super over";
-      result.tied = false;
+      previousBowler.set(first.userId, firstPlan.bowler);
+      previousBowler.set(second.userId, secondPlan.bowler);
+      events.push({ type: "superOverEnd", superOverRound: round });
+      result.winnerId = next.winnerId;
+      result.tied = next.tied;
+      if (!next.tied) {
+        const scores = next.innings.map((inn) => inn.runs).join("–");
+        result.margin = `Super over${round > 1 ? ` ${round}` : ""} (${scores})`;
+      }
+      [first, second] = [second, first];
     }
   }
   return { result, events };
@@ -1315,9 +1390,9 @@ function createLiveEvents(
 function startLiveMatch(io, room, match) {
   if (!room.fixtures.some((f) => f.id === match.id))
     room.fixtures.push({ ...match, played: false });
-  const storedHome = room.users.find((u) => u.id === match.homeId);
-  const storedAway = room.users.find((u) => u.id === match.awayId);
-  if (!storedHome || !storedAway) {
+  const home = room.users.find((u) => u.id === match.homeId);
+  const away = room.users.find((u) => u.id === match.awayId);
+  if (!home || !away) {
     // Never fail silently into the endless “Preparing the next match” screen.
     room.currentMatch = null;
     room.lastNotice = {
@@ -1327,34 +1402,93 @@ function startLiveMatch(io, room, match) {
     broadcast(io, room);
     return;
   }
-  // Cricket simulation routines use `userId`; room/lobby records use `id`.
-  // Add the alias to simulation-only copies so event and winner IDs stay valid.
-  const home = { ...storedHome, userId: storedHome.id };
-  const away = { ...storedAway, userId: storedAway.id };
-  const built = createLiveEvents(home, away);
   room.currentMatch = {
     ...match,
-    live: true,
-    inningsIndex: 0,
-    target: null,
-    liveScore: null,
+    live: false,
+    toss: { winnerId: crypto.randomInt(2) === 0 ? match.homeId : match.awayId },
   };
   room.simulationPaused = false;
-  room.liveResult = built.result;
-  room.liveEvents = built.events;
-  room.liveEventIndex = 0;
   room.liveTimeouts.forEach(clearTimeout);
   room.liveTimeouts = [];
-  broadcast(io, room);
   io.to(room.code).emit("simulation:matchStart", {
     match: {
       id: match.id,
       type: match.type,
       round: match.round,
-      home: publicUser(storedHome, room.settings),
-      away: publicUser(storedAway, room.settings),
+      home: publicUser(home, room.settings),
+      away: publicUser(away, room.settings),
     },
   });
+  openMatchToss(io, room);
+}
+
+function openMatchToss(io, room) {
+  const match = room.currentMatch;
+  match.toss.endsAt = Date.now() + TOSS_DECISION_MS;
+  room.liveTimeouts.push(
+    setTimeout(() => {
+      if (
+        room.currentMatch === match &&
+        !room.simulationPaused &&
+        !match.toss.decision
+      )
+        resolveMatchToss(
+          io,
+          room,
+          crypto.randomInt(2) === 0 ? "bat" : "bowl",
+          true,
+        );
+    }, TOSS_DECISION_MS),
+  );
+  broadcast(io, room, false);
+}
+
+function chooseMatchToss(io, room, userId, matchId, decision) {
+  const match = room?.currentMatch;
+  if (
+    room?.simulationPaused ||
+    !match?.toss ||
+    match.id !== matchId ||
+    match.toss.decision
+  )
+    return "This toss is no longer open.";
+  if (match.toss.winnerId !== userId) return "Only the toss winner can choose.";
+  if (Date.now() >= match.toss.endsAt) return "The toss timer has expired.";
+  if (decision !== "bat" && decision !== "bowl")
+    return "Choose to bat or bowl.";
+  resolveMatchToss(io, room, decision, false);
+}
+
+function resolveMatchToss(io, room, decision, automatic) {
+  const match = room.currentMatch;
+  const { winnerId } = match.toss;
+  const storedHome = room.users.find((u) => u.id === match.homeId);
+  const storedAway = room.users.find((u) => u.id === match.awayId);
+  // Cricket simulation routines use `userId`; room/lobby records use `id`.
+  // Add the alias to simulation-only copies so event and winner IDs stay valid.
+  const home = { ...storedHome, userId: storedHome.id };
+  const away = { ...storedAway, userId: storedAway.id };
+  const homeBatsFirst = (winnerId === home.userId) === (decision === "bat");
+  const built = homeBatsFirst
+    ? createLiveEvents(home, away)
+    : createLiveEvents(away, home);
+  built.result.ratingVersion = room.ratingVersion ?? 1;
+  built.result.teamPlans = [home, away].map((team) => ({
+    userId: team.userId,
+    lineup: [...team.lineup],
+    bowlerIds: [...(team.bowlerIds || [])],
+    tactics: team.tactics,
+    bowlingPlan: team.bowlingPlan,
+    superOverPlan: team.superOverPlan,
+  }));
+  match.toss = { winnerId, decision, automatic };
+  match.live = true;
+  room.liveResult = built.result;
+  room.liveEvents = built.events;
+  room.liveEventIndex = 0;
+  room.liveTimeouts.forEach(clearTimeout);
+  room.liveTimeouts = [];
+  broadcast(io, room, false);
   playNextEvent(io, room);
 }
 
@@ -1385,7 +1519,10 @@ function playNextEvent(io, room) {
       battingTeamName: event.teamName,
       target: event.target,
       superOver: Boolean(event.superOver),
+      superOverRound: event.superOverRound,
+      maxBalls: event.maxBalls ?? (event.superOver ? 6 : 120),
     };
+    room.currentMatch.recentBalls = [];
     io.to(room.code).emit("simulation:inningsStart", event);
     broadcast(io, room, false);
     const timer = setTimeout(
@@ -1396,6 +1533,8 @@ function playNextEvent(io, room) {
     return;
   }
   if (event.type === "inningsEnd") {
+    if (room.currentMatch.liveScore)
+      room.currentMatch.liveScore.inningsEnded = true;
     io.to(room.code).emit("simulation:inningsEnd", event);
     const timer = setTimeout(() => playNextEvent(io, room), 350);
     room.liveTimeouts.push(timer);
@@ -1420,12 +1559,38 @@ function playNextEvent(io, room) {
       battingTeamName: event.battingTeamName,
       target: event.target || room.currentMatch.target,
       superOver: Boolean(event.superOver),
+      superOverRound: event.superOverRound,
+      maxBalls: event.maxBalls ?? (event.superOver ? 6 : 120),
       batter1: event.batter1,
       batter2: event.batter2,
       bowler: event.bowler,
       outcome: event.outcome,
       commentary: event.commentary,
+      freeHit: event.freeHit,
+      inningsEnded: false,
+      completedOver: room.currentMatch.liveScore?.completedOver,
     };
+    const overEnd = event.legal && event.balls % 6 === 0;
+    if (overEnd) {
+      const { completedOver: _previous, ...score } =
+        room.currentMatch.liveScore;
+      room.currentMatch.liveScore.completedOver = {
+        ...score,
+        score: score.runs,
+        commentary: `End of over ${event.overs} · ${event.score}/${event.wickets}`,
+      };
+    }
+    room.currentMatch.recentBalls = [
+      ...(room.currentMatch.recentBalls || []).slice(-9),
+      {
+        key: event.key,
+        outcome: event.outcome,
+        runs: event.runs,
+        wicket: event.wicket,
+        extraType: event.extraType,
+        overEnd,
+      },
+    ];
     if (room.liveEventIndex % 20 === 0) room.saveCheckpoint?.(room);
     io.to(room.code).emit("simulation:ball", event);
     if (event.wicket) {
@@ -1512,6 +1677,7 @@ function finishLiveMatch(io, room, delay = 1700) {
   const result = room.liveResult;
   const match = { ...room.currentMatch, ...result, played: true, live: false };
   delete match.liveScore;
+  delete match.recentBalls;
   delete match.inningsIndex;
   delete match.target;
   updateStandingsAndStats(room, match);
@@ -1542,6 +1708,10 @@ function resumeSimulation(io, room) {
     kind: "resume",
     text: "The tournament simulation resumed.",
   };
+  if (room.currentMatch?.toss && !room.currentMatch.toss.decision) {
+    openMatchToss(io, room);
+    return true;
+  }
   broadcast(io, room);
   if (room.currentMatch && room.liveResult) playNextEvent(io, room);
   else if (room.currentMatch) advanceAfterMatch(io, room, room.currentMatch);
@@ -1785,6 +1955,7 @@ module.exports = {
   hostCheck,
   createLiveEvents,
   startLiveMatch,
+  chooseMatchToss,
   finishLiveMatch,
   resumeSimulation,
   startPlayoffs,

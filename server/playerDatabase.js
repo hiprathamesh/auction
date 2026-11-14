@@ -58,6 +58,28 @@ function validatePlayerDatabase(
       )
         errors.push(`${prefix}invalid ${field} rating`);
     }
+    if (database.ratingVersion >= 2) {
+      for (const skill of [
+        "survival",
+        "rotation",
+        "hitting",
+        "prevention",
+        "wickets",
+        "control",
+      ]) {
+        const value = player.skills?.[skill];
+        if (!Number.isInteger(value) || value < 1 || value > 99)
+          errors.push(`${prefix}invalid ${skill} skill`);
+      }
+      for (const key of ["battingPhase", "bowlingPhase"]) {
+        const phase = player.skills?.[key];
+        if (
+          phase !== undefined &&
+          !["powerplay", "middle", "death"].includes(phase)
+        )
+          errors.push(`${prefix}invalid ${key}`);
+      }
+    }
     if (!Number.isFinite(player.basePrice) || player.basePrice <= 0)
       errors.push(`${prefix}invalid base price`);
     if (

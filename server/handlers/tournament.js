@@ -1,3 +1,7 @@
+const {
+  minBowlingOptions,
+  maxBowlingOptions,
+} = require("../../shared/rules.json");
 const { makeDoubleRoundRobin } = require("../cricket");
 
 module.exports = function registerHandlers({
@@ -27,8 +31,9 @@ module.exports = function registerHandlers({
         u.squad.filter((p) => u.lineup.includes(p.id) && p.legend).length >
           game.MAX_LEGENDS_XI ||
         !Array.isArray(u.bowlerIds) ||
-        u.bowlerIds.length !== 5 ||
-        new Set(u.bowlerIds).size !== 5 ||
+        u.bowlerIds.length < minBowlingOptions ||
+        u.bowlerIds.length > maxBowlingOptions ||
+        new Set(u.bowlerIds).size !== u.bowlerIds.length ||
         u.bowlerIds.some((id) => !u.lineup.includes(id)) ||
         !u.tactics ||
         !["aggressive", "balanced", "conservative"].includes(
@@ -91,6 +96,15 @@ module.exports = function registerHandlers({
     });
   });
 
+  onAction("simulation:chooseToss", ({ matchId, decision }, acknowledge) => {
+    const { room, user } = getRoomAndUser(socket);
+    const message = user
+      ? game.chooseMatchToss(io, room, user.id, matchId, decision)
+      : "Join the match room to choose.";
+    if (typeof acknowledge === "function")
+      acknowledge(message ? { ok: false, message } : { ok: true });
+  });
+
   onAction("host:skipMatch", () => {
     const { room, user } = getRoomAndUser(socket);
     if (
@@ -102,6 +116,16 @@ module.exports = function registerHandlers({
       return;
     room.liveEventIndex = room.liveEvents.length;
     game.finishLiveMatch(io, room, 700);
+  });
+
+  onAction("host:replaySpeed", (speed) => {
+    const { room, user } = getRoomAndUser(socket);
+    if (!verifyHost(socket, room, user)) return;
+    if (!room.currentMatch?.live) return;
+    if (![45, 95, 220].includes(speed))
+      return emitError(socket, "Choose a supported replay speed.");
+    room.settings.ballIntervalMs = speed;
+    game.broadcast(io, room, false);
   });
 
   onAction("host:resumeSimulation", () => {

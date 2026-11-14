@@ -1,4 +1,9 @@
 const crypto = require("crypto");
+const { buildBowlingPlan } = require("../shared/bowling-plan.mjs");
+const {
+  minBowlingOptions,
+  maxBowlingOptions,
+} = require("../shared/rules.json");
 
 const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
 const rng = (min, max) => Math.floor(Math.random() * (max - min + 1)) + min;
@@ -33,6 +38,7 @@ function playerShape(player) {
     batting: player.batting,
     bowling: player.bowling,
     fielding: player.fielding,
+    skills: player.skills,
     legend: Boolean(player.legend),
     preferredBattingPositions: Array.isArray(player.preferredBattingPositions)
       ? [...player.preferredBattingPositions]
@@ -49,12 +55,13 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
     maxOvers = 20,
     superOver = false,
     random = Math.random,
+    battingIds = battingTeam.lineup,
+    selectedBowlerId = null,
+    conditions = 0,
   } = options;
   // `lineup` is an ordered list: its first two players open, and later entries
   // come in next when a wicket falls. Never reorder this list inside the engine.
-  const battingXI = (
-    Array.isArray(battingTeam.lineup) ? battingTeam.lineup : []
-  )
+  const battingXI = (Array.isArray(battingIds) ? battingIds : [])
     .map((id) => battingTeam.squad.find((p) => p.id === id))
     .filter(Boolean);
   const fieldingXI = (
@@ -66,12 +73,13 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
     ? bowlingTeam.bowlerIds
     : [];
   let bowlingOrder = bowlingIds
-    .map((id) => bowlingTeam.squad.find((p) => p.id === id))
+    .map((id) => fieldingXI.find((p) => p.id === id))
     .filter(Boolean);
   // Compatibility fallback for old saved/in-memory rooms without a bowling unit.
   if (
-    bowlingOrder.length !== 5 ||
-    new Set(bowlingOrder.map((p) => p.id)).size !== 5
+    bowlingOrder.length < minBowlingOptions ||
+    bowlingOrder.length > maxBowlingOptions ||
+    new Set(bowlingOrder.map((p) => p.id)).size !== bowlingOrder.length
   ) {
     bowlingOrder = [...fieldingXI]
       .sort(
@@ -80,7 +88,12 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
       )
       .slice(0, Math.min(5, fieldingXI.length));
   }
-  if (!bowlingOrder.length) bowlingOrder = [...fieldingXI];
+  if (superOver) {
+    const chosen =
+      fieldingXI.find((player) => player.id === selectedBowlerId) ||
+      bowlingOrder[0];
+    bowlingOrder = chosen ? [chosen] : [];
+  }
   const batting = battingXI.map((player, index) => ({
     player: playerShape({ ...player, battingPosition: index + 1 }),
     runs: 0,
@@ -106,22 +119,14 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
   );
   const avgFielding = fieldingXI.length
     ? fieldingXI.reduce(
-        (sum, player) =>
-          sum + (Number(player.fielding) || 65) + (player.legend ? 3 : 0),
+        (sum, player) => sum + (Number(player.fielding) || 65),
         0,
       ) / fieldingXI.length
     : 65;
-  // Legends receive a small, explicit performance premium in addition to their boosted ratings.
-  // This keeps a 99-rated legend better than a 99-rated regular player without making outcomes certain.
-  const battingAbility = (player) =>
-    (Number(player.batting) || 65) * 0.8 +
-    (Number(player.ovr) || 65) * 0.2 +
-    (player.legend ? 4.5 : 0);
-  const bowlingAbility = (player) =>
-    (Number(player.bowling) || 50) * 0.82 +
-    (Number(player.ovr) || 65) * 0.18 +
-    (player.role === "Bowler" ? 2 : player.role === "All-rounder" ? 0.5 : 0) +
-    (player.legend ? 4.5 : 0);
+  const keeper = fieldingXI.find((player) => player.role === "Wicketkeeper");
+  const keeping = keeper ? keeper.fielding || 65 : 55;
+  const skill = (player, key, fallback) =>
+    player.skills?.[key] ?? (Number(player[fallback]) || 65);
   const battingTactic = ["powerplay", "buildup", "finish"].includes(
     battingTeam.tactics?.batting,
   )
@@ -146,97 +151,23 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
   const events = [];
   const overCount = Math.max(1, maxOvers);
   let currentBowlerId = null;
-  let previousBowlerId = null;
   let startedOver = -1;
   let overRuns = 0;
-  const oversByBowler = new Map(bowlingOrder.map((p) => [p.id, 0]));
-  const powerplayOversByBowler = new Map(bowlingOrder.map((p) => [p.id, 0]));
-  const deathOversByBowler = new Map(bowlingOrder.map((p) => [p.id, 0]));
-  const bestTwoBowlerIds = new Set(
-    [...bowlingOrder]
-      .sort(
-        (a, b) =>
-          bowlingAbility(b) - bowlingAbility(a) || (b.ovr || 0) - (a.ovr || 0),
-      )
-      .slice(0, 2)
-      .map((p) => p.id),
-  );
-
+  let freeHit = false;
+  const plan = superOver
+    ? bowlingOrder.map((player) => player.id)
+    : buildBowlingPlan(bowlingOrder, {
+        overs: overCount,
+        tactic: bowlingTactic,
+        priorities: bowlingTeam.bowlingPlan,
+        random,
+      });
   const batterNow = () => batting[strikerIndex] || null;
   const nonStrikerNow = () => batting[nonStrikerIndex] || null;
-  const weightedPick = (candidates) => {
-    if (!candidates.length) return null;
-    if (candidates.length === 1) return candidates[0];
-    const weights = candidates.map((p) =>
-      Math.exp((bowlingAbility(p) - 75) / 35),
-    );
-    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-    let ticket = random() * totalWeight;
-    for (let i = 0; i < candidates.length; i += 1) {
-      ticket -= weights[i];
-      if (ticket <= 0) return candidates[i];
-    }
-    return candidates[candidates.length - 1];
-  };
-  const chooseBowler = (overNo) => {
-    const cap = superOver ? 6 : 24;
-    let allowed = bowlingOrder.filter((p) => {
-      const stats = bowlers.get(p.id);
-      return stats && stats.legalBalls < cap && p.id !== previousBowlerId;
-    });
-    if (!allowed.length) {
-      allowed = bowlingOrder.filter(
-        (p) => (bowlers.get(p.id)?.legalBalls ?? cap) < cap,
-      );
-    }
-    if (!allowed.length) return bowlingOrder[0];
-
-    // Phase-aware strategies gently move the two strongest selected bowlers into
-    // the chosen phase, while preserving the four-over cap and no consecutive overs.
-    if (!superOver && bowlingTactic === "powerplay" && overNo < 6) {
-      const quota = allowed.filter(
-        (p) =>
-          bestTwoBowlerIds.has(p.id) &&
-          (powerplayOversByBowler.get(p.id) || 0) < 2,
-      );
-      if (quota.length) return weightedPick(quota);
-    }
-    if (!superOver && bowlingTactic === "death") {
-      if (overNo < 15) {
-        // Keep the top two fresh where possible; the three supporting options bowl early.
-        const supporting = allowed.filter((p) => !bestTwoBowlerIds.has(p.id));
-        if (supporting.length) {
-          const leastUsed = Math.min(
-            ...supporting.map((p) => oversByBowler.get(p.id) || 0),
-          );
-          return weightedPick(
-            supporting.filter(
-              (p) => (oversByBowler.get(p.id) || 0) === leastUsed,
-            ),
-          );
-        }
-      } else {
-        const quota = allowed.filter(
-          (p) =>
-            bestTwoBowlerIds.has(p.id) &&
-            (deathOversByBowler.get(p.id) || 0) < 2,
-        );
-        if (quota.length) return weightedPick(quota);
-      }
-    }
-
-    // Balanced allocation: use the least-used legal bowler, then rating and luck as tie-breakers.
-    const leastUsedOvers = Math.min(
-      ...allowed.map((p) => oversByBowler.get(p.id) || 0),
-    );
-    const leastUsed = allowed.filter(
-      (p) => (oversByBowler.get(p.id) || 0) === leastUsedOvers,
-    );
-    return weightedPick(leastUsed) || allowed[0];
-  };
 
   const maxWickets = superOver ? 2 : 10;
   while (
+    plan &&
     legalBalls < overCount * 6 &&
     wickets < maxWickets &&
     (target === null || runs < target)
@@ -249,24 +180,8 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
       if (currentBowlerId && bowlers.get(currentBowlerId) && overRuns === 0)
         bowlers.get(currentBowlerId).maidens += 1;
       if (overNo >= overCount) break;
-      const selected = chooseBowler(overNo);
       startedOver = overNo;
-      currentBowlerId = selected.id;
-      previousBowlerId = currentBowlerId;
-      oversByBowler.set(
-        currentBowlerId,
-        (oversByBowler.get(currentBowlerId) || 0) + 1,
-      );
-      if (overNo < 6)
-        powerplayOversByBowler.set(
-          currentBowlerId,
-          (powerplayOversByBowler.get(currentBowlerId) || 0) + 1,
-        );
-      if (overNo >= 15)
-        deathOversByBowler.set(
-          currentBowlerId,
-          (deathOversByBowler.get(currentBowlerId) || 0) + 1,
-        );
+      currentBowlerId = plan[overNo];
       overRuns = 0;
       bowlers.get(currentBowlerId).currentOverRuns = 0;
     }
@@ -278,35 +193,84 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
     const bowlerStats = bowlers.get(bowler.id) || bowlers.values().next().value;
     if (!bowlerStats) break;
 
-    const batSkill = battingAbility(striker.player);
-    const bowlSkill = bowlingAbility(bowler);
-    // Temper the raw gap so rating advantages matter across a match without
-    // making large gaps nearly deterministic.
-    const skillGap = (batSkill - bowlSkill) * 0.55;
+    const batter = striker.player;
+    const hitting = skill(batter, "hitting", "batting");
+    const rotation = skill(batter, "rotation", "batting");
+    const survival = skill(batter, "survival", "batting");
+    const prevention = skill(bowler, "prevention", "bowling");
+    const takingWickets = skill(bowler, "wickets", "bowling");
+    const control = skill(bowler, "control", "bowling");
     const fieldingEdge = avgFielding - 75;
-    // Ratings provide a real edge, but their effects are deliberately bounded.
-    // A 10-point mismatch changes ball outcomes noticeably without deciding a
-    // whole match on its own; each delivery still rolls an independent random outcome.
+    const death = superOver || overNo >= 15;
+    const powerplay = !superOver && overNo < 6;
+    const ballsLeft = overCount * 6 - legalBalls;
+    const resources = clamp((maxWickets - wickets - 1) / (death ? 4 : 6), 0, 1);
+    const chasePressure =
+      target === null
+        ? 0
+        : clamp(
+            (((target - runs) * 6) / ballsLeft - (death ? 10.5 : 8.5)) / 7,
+            -0.65,
+            0.9,
+          );
+    const intent = clamp(
+      chasePressure * (0.18 + resources * (death ? 0.52 : 0.27)) -
+        (!death ? (1 - resources) * 0.65 : 0),
+      -0.9,
+      0.9,
+    );
+    const power = hitting - 75 - (prevention - 75) * 0.58;
+    const phaseFit =
+      (batter.skills?.battingPhase ===
+      (death ? "death" : powerplay ? "powerplay" : "middle")
+        ? 0.004
+        : 0) -
+      (bowler.skills?.bowlingPhase ===
+      (death ? "death" : powerplay ? "powerplay" : "middle")
+        ? 0.004
+        : 0);
     let wicketP =
-      0.054 -
-      skillGap * 0.0007 +
-      (bowler.role === "Bowler" ? 0.004 : 0) +
-      fieldingEdge * 0.00015;
+      (death ? 0.086 : powerplay ? 0.042 : 0.044) -
+      (survival - 75) * 0.00058 +
+      (takingWickets - 75) * 0.00062 +
+      fieldingEdge * 0.00012 +
+      intent * 0.019 -
+      conditions * 0.003;
     let sixP =
-      0.05 +
-      (batSkill - 75) * 0.00065 -
-      (bowlSkill - 75) * 0.00028 -
-      fieldingEdge * 0.00014;
+      (death ? 0.092 : powerplay ? 0.048 : 0.044) +
+      power * 0.00085 +
+      phaseFit +
+      intent * 0.024 +
+      conditions * 0.012 -
+      fieldingEdge * 0.0001;
     let fourP =
-      0.145 +
-      (batSkill - 75) * 0.00055 -
-      (bowlSkill - 75) * 0.0003 -
-      fieldingEdge * 0.0002;
-    let dotP = 0.29 - skillGap * 0.0007 + fieldingEdge * 0.00015;
-    let oneP = 0.3;
-    let twoP = 0.105;
+      (death ? 0.174 : powerplay ? 0.171 : 0.117) +
+      power * 0.00067 +
+      phaseFit +
+      intent * 0.016 +
+      conditions * 0.018 -
+      fieldingEdge * 0.00016;
+    let dotP =
+      (death ? 0.235 : powerplay ? 0.316 : 0.261) -
+      (rotation - 75) * 0.00105 +
+      (prevention - 75) * 0.00052 -
+      intent * 0.012 -
+      conditions * 0.018 +
+      fieldingEdge * 0.00014;
+    let oneP =
+      (death ? 0.287 : powerplay ? 0.28 : 0.364) +
+      (rotation - 75) * 0.0006 -
+      intent * 0.023;
+    let twoP = (death ? 0.113 : powerplay ? 0.083 : 0.109) - intent * 0.009;
     const threeP = 0.009;
-    const extraP = 0.027;
+    const wideP = clamp(
+      (death ? 0.064 : powerplay ? 0.052 : 0.042) - (control - 75) * 0.00048,
+      0.012,
+      0.09,
+    );
+    const noBallP = clamp(0.0045 - (control - 75) * 0.00008, 0.0015, 0.012);
+    const byeP = clamp(0.0045 - (keeping - 75) * 0.00014, 0.001, 0.008);
+    const legByeP = death ? 0.024 : 0.014;
 
     // Tactical modifiers are intentionally small compared with the player-skill ratings.
     // They bias probabilities by fractions of a percentage point to a few points, not outcomes.
@@ -365,30 +329,41 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
         striker.player.battingPosition,
       );
     if (preferredBattingSlot) {
-      // Multiply batter-scored outcome weights by 1.17. Since the weights are
-      // normalized below, this is a +17% relative-odds bonus versus dots/dismissals.
-      const preferredOddsMultiplier = 1.17;
+      // A familiar slot gives a small edge alongside the player’s phase strengths.
+      const preferredOddsMultiplier = 1.08;
       sixP *= preferredOddsMultiplier;
       fourP *= preferredOddsMultiplier;
       oneP *= preferredOddsMultiplier;
       twoP *= preferredOddsMultiplier;
     }
-    const adjustedThreeP = threeP * (preferredBattingSlot ? 1.17 : 1);
-    wicketP = clamp(wicketP, 0.03, 0.092);
-    sixP = clamp(sixP, 0.025, 0.09);
-    fourP = clamp(fourP, 0.09, 0.21);
-    dotP = clamp(dotP, 0.21, 0.38);
-    oneP = clamp(oneP, 0.2, 0.4);
+    const adjustedThreeP = threeP * (preferredBattingSlot ? 1.08 : 1);
+    wicketP = clamp(wicketP, 0.022, 0.14);
+    sixP = clamp(sixP, 0.012, 0.16);
+    fourP = clamp(fourP, 0.055, 0.24);
+    dotP = clamp(dotP, 0.12, 0.44);
+    oneP = clamp(oneP, 0.18, 0.44);
     twoP = clamp(twoP, 0.07, 0.16);
     const r =
       random() *
-      (wicketP + sixP + fourP + dotP + oneP + twoP + adjustedThreeP + extraP);
+      (wicketP +
+        sixP +
+        fourP +
+        dotP +
+        oneP +
+        twoP +
+        adjustedThreeP +
+        wideP +
+        noBallP +
+        byeP +
+        legByeP);
     let outcome = "DOT";
     let batterRuns = 0;
     let teamRuns = 0;
     let legal = true;
     let wicket = false;
     let dismissal = "";
+    let extraType = null;
+    const wasFreeHit = freeHit;
 
     if (r < wicketP) {
       wicket = true;
@@ -406,23 +381,35 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
         0.16,
       );
       const lbwChance = 0.15;
+      const stumpedChance = keeper && !powerplay ? 0.025 : 0;
       const dismissalRoll = random();
       if (dismissalRoll < caughtChance) dismissal = "caught";
       else if (dismissalRoll < caughtChance + runOutChance)
         dismissal = "run out";
       else if (dismissalRoll < caughtChance + runOutChance + lbwChance)
         dismissal = "lbw";
+      else if (
+        dismissalRoll <
+        caughtChance + runOutChance + lbwChance + stumpedChance
+      )
+        dismissal = "stumped";
       else dismissal = "bowled";
-      outcome = `WICKET · ${dismissal.toUpperCase()}`;
-      striker.out = true;
-      striker.dismissal = dismissal;
-      wickets += 1;
-      if (dismissal !== "run out") bowlerStats.wickets += 1;
-      if (nextBatterIndex < batting.length) {
-        strikerIndex = nextBatterIndex;
-        nextBatterIndex += 1;
-      } else {
-        strikerIndex = -1;
+      if (wasFreeHit && dismissal !== "run out") {
+        wicket = false;
+        dismissal = "";
+      }
+      if (wicket) {
+        outcome = `WICKET Â· ${dismissal.toUpperCase()}`;
+        striker.out = true;
+        striker.dismissal = dismissal;
+        wickets += 1;
+        if (dismissal !== "run out") bowlerStats.wickets += 1;
+        if (nextBatterIndex < batting.length) {
+          strikerIndex = nextBatterIndex;
+          nextBatterIndex += 1;
+        } else {
+          strikerIndex = -1;
+        }
       }
     } else if (r < wicketP + sixP) {
       batterRuns = 6;
@@ -451,31 +438,46 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
       batterRuns = 3;
       teamRuns = 3;
       outcome = "3 RUNS";
-    } else if (
-      r <
-      wicketP + sixP + fourP + dotP + oneP + twoP + adjustedThreeP + extraP
-    ) {
-      teamRuns = 1;
-      legal = false;
-      outcome = random() < 0.55 ? "WIDE · +1" : "NO-BALL · +1";
     } else {
-      outcome = "DOT";
+      const extraRoll =
+        r - (wicketP + sixP + fourP + dotP + oneP + twoP + adjustedThreeP);
+      extraType =
+        extraRoll < wideP
+          ? "wide"
+          : extraRoll < wideP + noBallP
+            ? "noBall"
+            : extraRoll < wideP + noBallP + byeP
+              ? "bye"
+              : "legBye";
+      legal = extraType === "bye" || extraType === "legBye";
+      const label = {
+        wide: "Wide",
+        noBall: "No-ball",
+        bye: "Bye",
+        legBye: "Leg-bye",
+      }[extraType];
+      teamRuns = 1;
+      outcome = `${label.toUpperCase()} · +1`;
     }
+    if (extraType === "noBall") freeHit = true;
+    else if (legal) freeHit = false;
+    const chargedRuns =
+      extraType === "bye" || extraType === "legBye" ? 0 : teamRuns;
 
     if (legal) {
       legalBalls += 1;
-      striker.balls += 1;
       bowlerStats.balls += 1;
       bowlerStats.legalBalls += 1;
     }
+    if (extraType !== "wide") striker.balls += 1;
     striker.runs += batterRuns;
     runs += teamRuns;
-    bowlerStats.runs += teamRuns;
-    overRuns += teamRuns;
-    bowlerStats.currentOverRuns += teamRuns;
+    bowlerStats.runs += chargedRuns;
+    overRuns += chargedRuns;
+    bowlerStats.currentOverRuns += chargedRuns;
 
     // Rotate the strike on odd runs; after the sixth legal ball the ends swap again.
-    if (!wicket && (batterRuns === 1 || batterRuns === 3 || batterRuns === 5)) {
+    if (!wicket && legal && teamRuns % 2 === 1) {
       [strikerIndex, nonStrikerIndex] = [nonStrikerIndex, strikerIndex];
     }
     if (
@@ -507,6 +509,11 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
       legal,
       runs: teamRuns,
       batterRuns,
+      extraType,
+      extraRuns: teamRuns - batterRuns,
+      bowlerRuns: chargedRuns,
+      freeHit: wasFreeHit,
+      maxBalls: overCount * 6,
       score: runs,
       wickets,
       balls: legalBalls,
@@ -534,6 +541,7 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
           }
         : null,
       bowler: {
+        playerId: bowlerStats.player.id,
         name: bowlerStats.player.name,
         runs: bowlerStats.runs,
         wickets: bowlerStats.wickets,
@@ -544,15 +552,22 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
       ballNumber: ball,
       commentary: wicket
         ? `${striker.player.name} is out! ${dismissal}.`
-        : outcome === "SIX"
-          ? `${striker.player.name} launches it for six.`
-          : outcome === "FOUR"
-            ? `${striker.player.name} finds the boundary.`
-            : teamRuns > 0
-              ? `${striker.player.name} takes ${teamRuns} run${teamRuns > 1 ? "s" : ""}.`
-              : `${bowler.name} beats the bat.`,
+        : extraType
+          ? `${outcome} to ${battingTeam.teamName}.`
+          : outcome === "SIX"
+            ? `${striker.player.name} launches it for six.`
+            : outcome === "FOUR"
+              ? `${striker.player.name} finds the boundary.`
+              : teamRuns > 0
+                ? `${striker.player.name} takes ${teamRuns} run${teamRuns > 1 ? "s" : ""}.`
+                : `${bowler.name} beats the bat.`,
       target,
     };
+    if (ballNo === 0 && legal && !superOver) {
+      const priority = overNo < 6 ? "powerplay" : overNo >= 15 ? "death" : null;
+      if (priority && bowlingTeam.bowlingPlan?.[priority] === bowler.id)
+        event.commentary = `${bowler.name} bowls a planned ${priority} over. ${event.commentary}`;
+    }
     events.push(event);
   }
 
@@ -560,6 +575,7 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
     currentBowlerId &&
     bowlers.get(currentBowlerId) &&
     overRuns === 0 &&
+    legalBalls > startedOver * 6 &&
     legalBalls % 6 === 0
   )
     bowlers.get(currentBowlerId).maidens += 1;
@@ -575,6 +591,8 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
     runs,
     wickets,
     legalBalls,
+    maxBalls: overCount * 6,
+    extras: events.reduce((sum, event) => sum + event.extraRuns, 0),
     overs: fmtOvers(legalBalls),
     allOut,
     target,
@@ -597,28 +615,39 @@ function generateInnings(battingTeam, bowlingTeam, options = {}) {
 }
 
 function simulateMatch(home, away, options = {}) {
+  const random = options.random || Math.random;
+  // Both sides share the same scoring conditions, including any Super Over.
+  const conditions = options.conditions ?? (random() + random() - 1) * 2.2;
   const innings1 = generateInnings(home, away, {
+    battingIds: options.homeBatters,
+    selectedBowlerId: options.awayBowler,
     maxOvers: options.maxOvers || 20,
     superOver: options.superOver || false,
-    random: options.random,
+    random,
+    conditions,
   });
   const innings2 = generateInnings(away, home, {
+    battingIds: options.awayBatters,
+    selectedBowlerId: options.homeBowler,
     target: innings1.runs + 1,
     maxOvers: options.maxOvers || 20,
     superOver: options.superOver || false,
-    random: options.random,
+    random,
+    conditions,
   });
   let winnerId = null;
   let margin = "Match tied";
   if (innings2.runs > innings1.runs) {
     winnerId = away.userId;
-    margin = `${10 - innings2.wickets} wicket${10 - innings2.wickets === 1 ? "" : "s"}`;
+    const wicketsLeft = (options.superOver ? 2 : 10) - innings2.wickets;
+    margin = `${wicketsLeft} wicket${wicketsLeft === 1 ? "" : "s"}`;
   } else if (innings1.runs > innings2.runs) {
     winnerId = home.userId;
     margin = `${innings1.runs - innings2.runs} run${innings1.runs - innings2.runs === 1 ? "" : "s"}`;
   }
   return {
     innings: [innings1, innings2],
+    conditions,
     winnerId,
     margin,
     tied: winnerId === null,

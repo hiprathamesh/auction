@@ -1,27 +1,39 @@
-import { useMemo } from "react";
+import { memo, useEffect, useMemo } from "react";
+import { createPortal } from "react-dom";
 
-export function Confetti({ kind, token }) {
-  const pieces = useMemo(
-    () =>
-      Array.from(
-        { length: kind === "win" ? 90 : kind === "wicket" ? 28 : 36 },
-        (_, i) => ({
-          id: `${token}-${i}`,
-          x: `${Math.random() * 100}%`,
-          delay: `${Math.random() * 0.3}s`,
-          duration: `${0.75 + Math.random() * 1.5}s`,
-          rotate: `${Math.random() * 720 - 360}deg`,
-          size: `${4 + Math.random() * 7}px`,
-          hue:
-            kind === "wicket"
-              ? Math.round(Math.random() * 12)
-              : Math.round(Math.random() * 360),
-        }),
-      ),
-    [kind, token],
-  );
-  return (
-    <div className={`confetti-layer ${kind}`} key={token} aria-hidden="true">
+const PIECE_COUNTS = { four: 24, six: 36, wicket: 28, milestone: 36, win: 90 };
+const PALETTES = {
+  four: [29, 46, 173],
+  six: [36, 190, 272],
+  wicket: [0, 12, 345],
+};
+
+export const Confetti = memo(function Confetti({ id, kind, onFinish }) {
+  const pieces = useMemo(() => {
+    const palette = PALETTES[kind];
+    return Array.from({ length: PIECE_COUNTS[kind] }, (_, index) => ({
+      id: index,
+      x: `${Math.random() * 100}%`,
+      delay: `${index % 8 === 0 ? 0 : Math.random() * 0.14}s`,
+      duration: `${(kind === "win" ? 1.15 : 0.58) + Math.random() * 0.55}s`,
+      rotate: `${Math.random() * 720 - 360}deg`,
+      size: `${4 + Math.random() * 6}px`,
+      hue: palette
+        ? palette[index % palette.length]
+        : Math.floor(Math.random() * 360),
+    }));
+  }, [kind]);
+
+  useEffect(() => {
+    const timer = window.setTimeout(
+      () => onFinish(id),
+      kind === "win" ? 1900 : 1300,
+    );
+    return () => window.clearTimeout(timer);
+  }, [id, kind, onFinish]);
+
+  return createPortal(
+    <div className={`confetti-layer ${kind}`} aria-hidden="true">
       {pieces.map((p) => (
         <i
           key={p.id}
@@ -35,6 +47,7 @@ export function Confetti({ kind, token }) {
           }}
         />
       ))}
-    </div>
+    </div>,
+    document.body,
   );
-}
+});

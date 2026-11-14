@@ -16,6 +16,8 @@
   "defaultLegendAuctionLimit": 6,
   "maxPlayingXILegends": 4,
   "maxPlayingXIOverseas": 4,
+  "minBowlingOptions": 5,
+  "maxBowlingOptions": 7,
   "availableBidMultipliers": [2, 3, 5, 8, 10],
   "bidLadder": [
     { "below": 1, "increment": 0.05 },

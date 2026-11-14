@@ -104,7 +104,7 @@ export function LeagueTable({ room }) {
   );
 }
 
-export function FinalistsScreen({ room, isHost, onStart }) {
+export function FinalistsScreen({ room, isHost, onStart, openTeamPlan }) {
   const finalists = (room.playoff?.finalists || [])
     .map((id) => getTeam(room, id))
     .filter(Boolean);
@@ -138,11 +138,26 @@ export function FinalistsScreen({ room, isHost, onStart }) {
           </React.Fragment>
         ))}
       </div>
-      {isHost ? (
-        <button className="button primary final-start-button" onClick={onStart}>
-          Start the final <span>↗</span>
-        </button>
-      ) : (
+      <div className="stage-actions">
+        {openTeamPlan && (
+          <button
+            type="button"
+            className="button secondary small"
+            onClick={openTeamPlan}
+          >
+            Edit team plan
+          </button>
+        )}
+        {isHost && (
+          <button
+            className="button primary final-start-button"
+            onClick={onStart}
+          >
+            Start the final <span>↗</span>
+          </button>
+        )}
+      </div>
+      {!isHost && (
         <div className="awaiting-host large">
           The host will start the final.
         </div>

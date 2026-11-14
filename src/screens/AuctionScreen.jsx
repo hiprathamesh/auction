@@ -1,6 +1,6 @@
 import { TeamLogo } from "../components/Brand";
 import { AuctionTimer } from "../components/AuctionTimer";
-import { playerPath } from "../lib/format";
+import { playerPath, playerStrengths } from "../lib/format";
 
 export function AuctionScreen(props) {
   const {
@@ -43,6 +43,21 @@ export function AuctionScreen(props) {
     hostAction,
   } = props;
   const profileHref = currentLot ? playerPath(currentLot.player.id) : null;
+  const strengths =
+    room.settings.showRatings && currentLot
+      ? playerStrengths(currentLot.player)
+      : [];
+  const xiSpots = Math.max(0, 11 - (me?.squadCount || 0));
+  const bowlingSpots = Math.max(
+    0,
+    5 - (me?.squad || []).filter((player) => player.bowling >= 60).length,
+  );
+  const squadNeeds = [
+    xiSpots > 0 && `${xiSpots} to reach XI`,
+    !myKeepers && "Keeper needed",
+    bowlingSpots > 0 &&
+      `${bowlingSpots} bowling option${bowlingSpots === 1 ? "" : "s"} to review`,
+  ].filter(Boolean);
   const profileLabel = currentLot
     ? `View ${currentLot.player.name}'s profile`
     : "";
@@ -123,6 +138,31 @@ export function AuctionScreen(props) {
               <span>LEGENDS</span>
             </div>
           </div>
+          {squadNeeds.length > 0 && (
+            <p className="squad-needs">{squadNeeds.join(" · ")}</p>
+          )}
+          {!!room.upcomingLots?.length && (
+            <details className="upcoming-auction">
+              <summary className="arena-disclosure">
+                <span>Next lots</span>
+              </summary>
+              <div className="upcoming-auction-label">Base price</div>
+              <ol className="upcoming-auction-list">
+                {room.upcomingLots.map((player) => (
+                  <li className="mini-player" key={player.id}>
+                    <span className="role-chip" title={player.role}>
+                      {roleShort[player.role]}
+                    </span>
+                    <div>
+                      <strong title={player.name}>{player.name}</strong>
+                      <span>{player.overseas ? "Overseas" : "Indian"}</span>
+                    </div>
+                    <b>{money(player.basePrice)}</b>
+                  </li>
+                ))}
+              </ol>
+            </details>
+          )}
           <div className="squad-mini-list">
             <div className="mini-list-title squad-list-header">
               YOUR SIGNINGS <span>{me?.squadCount || 0}</span>
@@ -289,6 +329,11 @@ export function AuctionScreen(props) {
                     <strong>{currentLot.player.fielding}</strong>
                   </div>
                 </div>
+              )}
+              {strengths.length > 0 && (
+                <p className="auction-player-strengths">
+                  {strengths.join(" · ")}
+                </p>
               )}
               <div className="base-price-line">
                 <span>BASE PRICE</span>

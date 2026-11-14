@@ -42,14 +42,20 @@ export function ResultsScreen(props) {
           </p>
         </div>
         <div className="result-actions">
-          {isHost && (room.lotsRemaining > 0 || room.unsold.length > 0) && (
-            <button
-              className="button secondary"
-              onClick={() => hostAction("host:continueAuction")}
-            >
-              Continue auction ↗
-            </button>
-          )}
+          {isHost &&
+            (room.lotsRemaining > 0 ||
+              room.reserveLots > 0 ||
+              room.unsold.length > 0) && (
+              <button
+                className="button secondary"
+                onClick={() => hostAction("host:continueAuction")}
+              >
+                {room.lotsRemaining === 0 && room.reserveLots > 0
+                  ? "Open supplementary round"
+                  : "Continue auction"}{" "}
+                ↗
+              </button>
+            )}
           {isHost && (
             <button
               className="button primary"

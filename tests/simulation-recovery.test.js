@@ -67,6 +67,17 @@ test(
       room.fixtures[0],
     );
     const firstId = room.currentMatch.id;
+    const firstTossWinner = room.currentMatch.toss.winnerId;
+    assert.equal(
+      game.chooseMatchToss(
+        { to: () => ({ emit: () => {} }) },
+        room,
+        firstTossWinner,
+        firstId,
+        "bowl",
+      ),
+      undefined,
+    );
     const firstSeed = room.liveResult.simulationSeed;
     assert.equal(
       createCheckpointStore({ enabled: true, directory }).save(room),
@@ -89,17 +100,28 @@ test(
     const restored = await snapshot;
     assert.equal(restored.simulationPaused, true);
     assert.equal(restored.currentMatch.id, firstId);
+    assert.equal(restored.currentMatch.toss.decision, "bowl");
+    assert.notEqual(
+      restored.currentMatch.liveScore.battingTeamId,
+      firstTossWinner,
+    );
     let update = nextRoom(host, (state) => !state.simulationPaused);
     host.emit("host:resumeSimulation");
     await update;
     update = nextRoom(
       host,
-      (state) => state.currentMatch?.live && state.currentMatch.id !== firstId,
+      (state) => state.currentMatch?.toss && state.currentMatch.id !== firstId,
     );
     host.emit("host:skipMatch");
     const second = await update;
     assert.equal(second.matchCount, 1);
     assert.equal(second.matchResults[0].simulationSeed, firstSeed);
+    const secondToss = nextRoom(
+      host,
+      (state) => state.currentMatch?.live,
+      5000,
+    );
+    assert.equal((await secondToss).currentMatch.toss.automatic, true);
     update = nextRoom(host, (state) => state.phase === "complete");
     host.emit("host:skipMatch");
     const complete = await update;

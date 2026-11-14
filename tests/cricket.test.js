@@ -7,6 +7,8 @@ const {
   createSeededRandom,
 } = require("../server/cricket");
 const { getLeaders, createLiveEvents } = require("../server/game");
+const { buildBowlingPlan } = require("../shared/bowling-plan.mjs");
+const { buildCompactAuction } = require("../server/matchPlan");
 const database = require("../data/players.json");
 
 function team(id, players) {
@@ -140,9 +142,20 @@ test("seeded matches preserve scorekeeping and bowling invariants", () => {
       );
       assert.equal(
         innings.batters.reduce((sum, batter) => sum + batter.runs, 0) +
-          innings.events.filter((event) => !event.legal).length,
+          innings.events.reduce((sum, event) => sum + event.extraRuns, 0),
         innings.runs,
       );
+      assert.equal(
+        innings.bowlers.reduce((sum, bowler) => sum + bowler.runs, 0),
+        innings.events.reduce((sum, event) => sum + event.bowlerRuns, 0),
+      );
+      let freeHit = false;
+      for (const event of innings.events) {
+        assert.equal(event.freeHit, freeHit);
+        if (freeHit && event.wicket) assert.equal(event.dismissal, "run out");
+        if (event.extraType === "noBall") freeHit = true;
+        else if (event.legal) freeHit = false;
+      }
       const bowlersByOver = new Map();
       for (const event of innings.events) {
         const over = Math.floor((event.balls - (event.legal ? 1 : 0)) / 6);
@@ -161,6 +174,127 @@ test("seeded matches preserve scorekeeping and bowling invariants", () => {
           ordered[over - 1],
           `consecutive overs at seed ${seed}`,
         );
+    }
+  }
+});
+
+test("five to seven bowlers can cover 20 overs and honor both phase reservations", () => {
+  const players = database.players
+    .filter((player) => player.bowling >= 75)
+    .slice(0, 7);
+  for (const count of [5, 6, 7]) {
+    const unit = players.slice(0, count);
+    for (let seed = 1; seed <= 100; seed++) {
+      const opening = unit[seed % count].id;
+      const death = unit[Math.floor(seed / count) % count].id;
+      const plan = buildBowlingPlan(unit, {
+        random: createSeededRandom(seed),
+        tactic: ["balanced", "powerplay", "death"][seed % 3],
+        priorities: { powerplay: opening, death },
+      });
+      assert.equal(plan.length, 20);
+      assert.deepEqual(
+        [plan[0], plan[2], plan[16], plan[18]],
+        [opening, opening, death, death],
+      );
+      assert.ok(plan.every((id, index) => id !== plan[index - 1]));
+      assert.ok(
+        unit.every(
+          (player) => plan.filter((id) => id === player.id).length <= 4,
+        ),
+      );
+    }
+  }
+});
+
+test("tied Super Overs replay with alternate batting order and eligible players", () => {
+  const players = database.players
+    .filter((player) => !player.legend)
+    .slice(0, 11);
+  const home = team("home", players);
+  const away = team(
+    "away",
+    players.map((player) => ({ ...player, id: `away-${player.id}` })),
+  );
+  home.superOverPlan = {
+    batters: home.lineup.slice(3, 6),
+    bowler: home.lineup[8],
+  };
+  away.superOverPlan = {
+    batters: away.lineup.slice(3, 6),
+    bowler: away.lineup[8],
+  };
+  let result;
+  for (let seed = 1; seed <= 4000; seed++) {
+    const generated = createLiveEvents(home, away, seed).result;
+    if (generated.superOver?.length > 2) {
+      result = generated;
+      break;
+    }
+  }
+  assert.ok(result);
+  assert.equal(result.superOver[0].battingTeamId, away.userId);
+  assert.equal(result.superOver[2].battingTeamId, home.userId);
+  assert.equal(result.superOver[0].runs, result.superOver[1].runs);
+  for (const side of [home, away]) {
+    const batting = result.superOver.filter(
+      (innings) => innings.battingTeamId === side.userId,
+    );
+    const bowling = result.superOver.filter(
+      (innings) => innings.bowlingTeamId === side.userId,
+    );
+    assert.deepEqual(
+      batting[0].batters.map((entry) => entry.player.id),
+      side.superOverPlan.batters,
+    );
+    assert.equal(bowling[0].bowlers[0].player.id, side.superOverPlan.bowler);
+    assert.notEqual(bowling[1].bowlers[0].player.id, side.superOverPlan.bowler);
+    assert.ok(
+      batting[1].batters.every(
+        (entry) =>
+          !batting[0].batters.some(
+            (first) => first.out && first.player.id === entry.player.id,
+          ),
+      ),
+    );
+  }
+  assert.ok(result.winnerId);
+});
+
+test("compact auctions preserve player IDs and domestic role coverage across room sizes", () => {
+  for (const teamCount of [6, 7, 10]) {
+    for (const legends of [true, false]) {
+      const players = database.players.filter(
+        (player) => legends || !player.legend,
+      );
+      const retained = players.find(
+        (player) => !player.overseas && !player.legend,
+      );
+      const available = players.filter((player) => player.id !== retained.id);
+      const { queue, reserve } = buildCompactAuction(
+        available,
+        teamCount,
+        [{ squad: [retained] }],
+        () => 0.5,
+      );
+      assert.equal(queue.length + 1, teamCount * 19);
+      assert.deepEqual(
+        new Set([...queue, ...reserve].map((player) => player.id)),
+        new Set(available.map((player) => player.id)),
+      );
+      assert.equal(queue.length + reserve.length, available.length);
+      const domestic = [...queue, retained].filter(
+        (player) => !player.overseas && !player.legend,
+      );
+      assert.ok(domestic.length >= teamCount * 10);
+      assert.ok(
+        domestic.filter((player) => player.role === "Wicketkeeper").length >=
+          teamCount,
+      );
+      assert.ok(
+        domestic.filter((player) => player.bowling >= 60).length >=
+          teamCount * 5,
+      );
     }
   }
 });

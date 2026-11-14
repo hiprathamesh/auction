@@ -803,6 +803,12 @@ select:focus-visible {
   font-size: 11px;
   color: #cbd8d7;
 }
+.archive-toss {
+  display: block;
+  margin-top: 4px;
+  color: #a5b4b9;
+  font-size: 10px;
+}
 .archive-innings {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -830,8 +836,7 @@ select:focus-visible {
 .innings-heading b {
   white-space: nowrap;
 }
-.scorecard-columns > div > small,
-.archive-super small {
+.scorecard-columns > div > small {
   display: block;
   color: #879ba8;
   font-size: 9px;
@@ -877,14 +882,33 @@ select:focus-visible {
   padding: 4px 0;
 }
 .archive-super {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr));
+  gap: 8px;
+  margin: 10px 0 0;
   font-size: 10px;
 }
-.archive-super small {
-  margin: 10px 0;
+.archive-super > div {
+  padding: 9px 13px;
+  background: #18242e;
+}
+.archive-super dt {
+  margin-bottom: 4px;
+  color: #879ba8;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.archive-super dd {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 0;
+  padding: 4px 0;
+}
+.archive-super dd b {
+  white-space: nowrap;
 }
 .archive-deliveries {
   margin-top: 14px;

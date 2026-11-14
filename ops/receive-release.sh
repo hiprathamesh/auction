@@ -3,11 +3,11 @@
 set -euo pipefail
 umask 077
 
-root=/home/ubuntu
-releases="$root/auction-releases"
-data="$root/auction-data"
-current="$root/auction-current"
-node="$root/auction-runtime/bin/node"
+root=/home/ubuntu/projects/auction-arena
+releases="$root/releases"
+data="$root/data"
+current="$root/current"
+node="$root/runtime/bin/node"
 commit="${SSH_ORIGINAL_COMMAND:-}"
 [[ "$commit" =~ ^[0-9a-f]{40}$ ]] || { echo 'Invalid release identifier.' >&2; exit 1; }
 mkdir -p "$releases" "$data/backups"

@@ -340,6 +340,11 @@ module.exports = function registerHandlers({
     const { room, user } = getRoomAndUser(socket);
     if (!verifyHost(socket, room, user) || room.phase !== "auctionResults")
       return;
+    if (!room.auctionQueue.length && room.auctionReserve?.length) {
+      const batch = room.auctionReserve.splice(0, room.users.length * 4);
+      room.auctionQueue = batch;
+      room.totalLots += batch.length;
+    }
     if (!room.auctionQueue.length && room.unsold.length) {
       room.auctionQueue = require("../cricket").shuffle(
         room.unsold.map((x) => x.player),

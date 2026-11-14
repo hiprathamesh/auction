@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { TeamLogo } from "../components/Brand";
 import {
   LeaderCard,
@@ -6,6 +7,74 @@ import {
   ChampionScreen,
 } from "../components/Tournament";
 
+function TossPanel({ toss, team, isWinner, paused, onChoose }) {
+  const [remaining, setRemaining] = useState(toss.remainingMs);
+  const panel = useRef(null);
+  useEffect(() => {
+    if (isWinner && !paused)
+      panel.current?.scrollIntoView({ block: "nearest" });
+  }, [isWinner, paused]);
+  useEffect(() => {
+    if (paused) return;
+    const deadline = performance.now() + toss.remainingMs;
+    const update = () =>
+      setRemaining(Math.max(0, deadline - performance.now()));
+    update();
+    const timer = window.setInterval(update, 50);
+    return () => window.clearInterval(timer);
+  }, [toss.remainingMs, paused]);
+
+  return (
+    <section className="toss-panel" aria-label="Match toss" ref={panel}>
+      <div className="live-score-header">
+        <span>MATCH TOSS</span>
+        {!paused && (
+          <span className="toss-clock" aria-hidden="true">
+            {Math.ceil(remaining / 1000)}s
+          </span>
+        )}
+      </div>
+      <div className="toss-row">
+        <TeamLogo
+          teamKey={team?.teamShort}
+          short={team?.teamShort}
+          className="toss-crest"
+        />
+        <div className="toss-copy" role="status">
+          <strong>{team?.teamName} won the toss</strong>
+          <small>
+            {paused
+              ? "Waiting for the host to resume."
+              : isWinner
+                ? "Choose within 3 seconds."
+                : "Waiting for the toss winner to choose."}
+          </small>
+        </div>
+        {isWinner && !paused && (
+          <div className="toss-actions">
+            <button
+              type="button"
+              className="button secondary small"
+              disabled={remaining <= 0}
+              onClick={() => onChoose("bat")}
+            >
+              Bat first
+            </button>
+            <button
+              type="button"
+              className="button secondary small"
+              disabled={remaining <= 0}
+              onClick={() => onChoose("bowl")}
+            >
+              Bowl first
+            </button>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
 export function SimulationScreen(props) {
   const {
     room,
@@ -13,11 +82,43 @@ export function SimulationScreen(props) {
     isHost,
     hostAction,
     currentMatch,
+    meId,
+    chooseToss,
     currentBall,
     ballTrail,
     matchBanner,
     getTeam,
+    openTeamPlan,
   } = props;
+  const [overSummary, setOverSummary] = useState(false);
+  const result =
+    currentMatch?.result ||
+    (matchBanner?.result?.id === currentMatch?.id ? matchBanner?.result : null);
+  const toss = currentMatch?.toss;
+  const waitingForToss = toss && !toss.decision;
+  const tossWinner = toss && getTeam(room, toss.winnerId);
+  const tossSummary =
+    toss?.decision &&
+    `${tossWinner?.teamShort} won the toss · ${toss.automatic ? "Auto-selected to" : "Chose to"} ${toss.decision} first`;
+  const runsNeeded = Math.max(
+    0,
+    (currentBall?.target || 0) - (currentBall?.score || 0),
+  );
+  const ballsLeft = Math.max(
+    0,
+    (currentBall?.maxBalls || (currentBall?.superOver ? 6 : 120)) -
+      (currentBall?.balls || 0),
+  );
+  const displayBall =
+    overSummary && currentBall && !currentBall.inningsEnded
+      ? currentBall.completedOver || {
+          ...currentBall,
+          score: 0,
+          wickets: 0,
+          overs: "0.0",
+          commentary: "Waiting for the first completed over.",
+        }
+      : currentBall;
   return (
     <main className="wrap page-content sim-page">
       {room.phase === "complete" ? (
@@ -27,6 +128,7 @@ export function SimulationScreen(props) {
           room={room}
           isHost={isHost}
           onStart={() => hostAction("host:startFinal")}
+          openTeamPlan={openTeamPlan}
         />
       ) : (
         <>
@@ -95,7 +197,9 @@ export function SimulationScreen(props) {
               <div className="versus">
                 <span>{currentMatch?.round || "LEAGUE MATCH"}</span>
                 <b>VS</b>
-                <i>LIVE</i>
+                <i>
+                  {result ? "FINAL SCORE" : waitingForToss ? "TOSS" : "LIVE"}
+                </i>
               </div>
               <div
                 className="match-team away"
@@ -133,169 +237,274 @@ export function SimulationScreen(props) {
             <section className="sim-main-col">
               {room.currentMatch ? (
                 <div className="glass-card live-score-card">
-                  <div className="live-score-header">
-                    <span className="live-pulse">
-                      <i /> IN PLAY
-                    </span>
-                    <span>
-                      {currentBall?.superOver
-                        ? "SUPER OVER"
-                        : currentBall?.inningsIndex === 1
-                          ? "2ND INNINGS"
-                          : "1ST INNINGS"}
-                      {currentBall?.target
-                        ? ` · TARGET ${currentBall.target}`
-                        : ""}
-                    </span>
-                    <span>{currentBall?.overs || "0.0"} OVERS</span>
-                  </div>
-                  <div className="scoreline">
-                    <span className="score-team-label">
-                      {currentBall?.battingTeamId ||
-                      currentBall?.battingTeamName
-                        ? room.users.find(
-                            (u) => u.id === currentBall?.battingTeamId,
-                          )?.teamShort ||
-                          currentBall?.battingTeamName
-                            ?.slice(0, 3)
-                            .toUpperCase()
-                        : "—"}
-                    </span>
-                    <strong>
-                      {currentBall?.score ?? 0}
-                      <small>/</small>
-                      {currentBall?.wickets ?? 0}
-                    </strong>
-                    <span className="score-overs">
-                      {currentBall?.overs || "0.0"} <i>overs</i>
-                    </span>
-                    <span className="score-opponent-label">
-                      {currentMatch?.homeId === currentBall?.battingTeamId
-                        ? currentMatch?.away?.teamShort
-                        : currentMatch?.home?.teamShort}
-                    </span>
-                  </div>
-                  {currentBall?.target && (
-                    <div className="target-line">
-                      <span>TARGET {currentBall.target}</span>
-                      <b>
-                        {Math.max(
-                          0,
-                          currentBall.target - (currentBall.score || 0),
-                        )}{" "}
-                        runs needed
-                      </b>
-                      <span>
-                        Required RR{" "}
-                        {currentBall?.balls
-                          ? (
-                              Math.max(
-                                0,
-                                currentBall.target - (currentBall.score || 0),
-                              ) / Math.max(0.1, (120 - currentBall.balls) / 6)
-                            ).toFixed(2)
-                          : "0.00"}
-                      </span>
-                    </div>
+                  {waitingForToss && (
+                    <TossPanel
+                      key={currentMatch.id}
+                      toss={toss}
+                      team={tossWinner}
+                      isWinner={meId === toss.winnerId}
+                      paused={room.simulationPaused}
+                      onChoose={(decision) =>
+                        chooseToss(currentMatch.id, decision)
+                      }
+                    />
                   )}
-                  <div className="live-score-separator" />
-                  <div className="live-batters">
-                    <div className="player-score-row">
-                      <div className="batter-mark">✦</div>
-                      <div className="player-score-name">
-                        <strong>
-                          {currentBall?.batter1?.name || "Awaiting first ball"}
-                        </strong>
-                        <span>
-                          {currentBall?.batter1
-                            ? `${currentBall.batter1.balls} balls faced`
-                            : "Opening batter"}
-                        </span>
-                      </div>
-                      <strong className="batter-runs">
-                        {currentBall?.batter1?.runs ?? 0}
-                        <small> ({currentBall?.batter1?.balls ?? 0})</small>
-                        {currentBall?.batter1 && !currentBall.batter1.out
-                          ? "*"
-                          : ""}
-                      </strong>
-                    </div>
-                    <div className="player-score-row">
-                      <div className="batter-mark muted-mark">◇</div>
-                      <div className="player-score-name">
-                        <strong>{currentBall?.batter2?.name || "—"}</strong>
-                        <span>
-                          {currentBall?.batter2
-                            ? `${currentBall.batter2.balls} balls faced`
-                            : "Non-striker"}
-                        </span>
-                      </div>
-                      <strong className="batter-runs">
-                        {currentBall?.batter2?.runs ?? 0}
-                        <small> ({currentBall?.batter2?.balls ?? 0})</small>
-                        {currentBall?.batter2 && !currentBall.batter2.out
-                          ? "*"
-                          : ""}
-                      </strong>
-                    </div>
-                    <div className="player-score-row bowler-row">
-                      <div className="bowler-mark">↘</div>
-                      <div className="player-score-name">
-                        <strong>{currentBall?.bowler?.name || "Bowler"}</strong>
-                        <span>BOWLING</span>
-                      </div>
-                      <strong className="bowler-figures">
-                        {currentBall?.bowler?.wickets ?? 0}/
-                        {currentBall?.bowler?.runs ?? 0}
-                        <small> ({currentBall?.bowler?.overs || "0.0"})</small>
-                      </strong>
-                    </div>
-                  </div>
-                  <div className="scorecard-bottom">
-                    <div className="last-ball-strip">
-                      <span>RECENT BALLS</span>
-                      <div>
-                        {ballTrail.map((b, i) => (
-                          <i
-                            key={b.key || i}
-                            className={`${b.wicket ? "wicket-ball" : b.runs === 6 ? "six-ball" : b.runs === 4 ? "four-ball" : ""}`}
+                  {!result && !waitingForToss && (
+                    <div className="replay-controls">
+                      <label className="replay-mode">
+                        <span>Replay</span>
+                        <select
+                          className="arena-select"
+                          aria-label="Replay view"
+                          value={overSummary ? "overs" : "balls"}
+                          onChange={(event) =>
+                            setOverSummary(event.target.value === "overs")
+                          }
+                        >
+                          <option value="balls">Ball by ball</option>
+                          <option value="overs">Over summary</option>
+                        </select>
+                      </label>
+                      {isHost && (
+                        <label className="replay-mode">
+                          <span>Speed</span>
+                          <select
+                            className="arena-select"
+                            aria-label="Playback speed"
+                            value={room.settings.ballIntervalMs}
+                            onChange={(event) =>
+                              hostAction(
+                                "host:replaySpeed",
+                                Number(event.target.value),
+                              )
+                            }
                           >
-                            {b.wicket ? "W" : b.runs > 0 ? b.runs : "·"}
-                          </i>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="commentary-line">
-                      <i />
-                      {currentBall?.commentary ||
-                        "The bowler is marking the run-up…"}
-                    </div>
-                  </div>
-                  {matchBanner?.result && (
-                    <div className="match-result-flash">
-                      <span>MATCH RESULT</span>
-                      <strong>
-                        {matchBanner.result.winnerId
-                          ? `${getTeam(room, matchBanner.result.winnerId)?.teamName} WIN`
-                          : "MATCH TIED"}
-                      </strong>
-                      <small>{matchBanner.result.margin}</small>
+                            <option value={220}>Relaxed</option>
+                            <option value={95}>Standard</option>
+                            <option value={45}>Fast</option>
+                          </select>
+                        </label>
+                      )}
+                      {isHost &&
+                        currentMatch?.live &&
+                        !room.simulationPaused && (
+                          <button
+                            type="button"
+                            className="skip-match"
+                            onClick={() => {
+                              if (
+                                window.confirm(
+                                  "Skip the live animation and move to the result?",
+                                )
+                              )
+                                hostAction("host:skipMatch");
+                            }}
+                          >
+                            Skip animation ↗
+                          </button>
+                        )}
                     </div>
                   )}
-                  {isHost && !room.simulationPaused && (
-                    <button
-                      className="skip-match"
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            "Skip the live animation and move to the result?",
-                          )
-                        )
-                          hostAction("host:skipMatch");
-                      }}
-                    >
-                      Skip animation ↗
-                    </button>
+                  {!result && !waitingForToss && (
+                    <>
+                      {tossSummary && (
+                        <p className="toss-summary">{tossSummary}</p>
+                      )}
+                      <div className="live-score-header">
+                        <span className="live-pulse">
+                          <i /> IN PLAY
+                        </span>
+                        <span>
+                          {displayBall?.superOver
+                            ? `SUPER OVER ${displayBall.superOverRound || 1}`
+                            : displayBall?.inningsIndex === 1
+                              ? "2ND INNINGS"
+                              : "1ST INNINGS"}
+                          {displayBall?.target
+                            ? ` · TARGET ${displayBall.target}`
+                            : ""}
+                        </span>
+                        <span>
+                          {result?.innings?.[1]?.overs ||
+                            displayBall?.overs ||
+                            "0.0"}{" "}
+                          OVERS
+                        </span>
+                      </div>
+                      <div className="scoreline">
+                        <span className="score-team-label">
+                          {displayBall?.battingTeamId ||
+                          displayBall?.battingTeamName
+                            ? room.users.find(
+                                (u) => u.id === displayBall?.battingTeamId,
+                              )?.teamShort ||
+                              displayBall?.battingTeamName
+                                ?.slice(0, 3)
+                                .toUpperCase()
+                            : "—"}
+                        </span>
+                        <strong>
+                          {result?.innings?.[1]?.runs ??
+                            displayBall?.score ??
+                            0}
+                          <small>/</small>
+                          {result?.innings?.[1]?.wickets ??
+                            displayBall?.wickets ??
+                            0}
+                        </strong>
+                        <span className="score-overs">
+                          {result?.innings?.[1]?.overs ||
+                            displayBall?.overs ||
+                            "0.0"}{" "}
+                          <i>overs</i>
+                        </span>
+                        <span className="score-opponent-label">
+                          {currentMatch?.homeId === displayBall?.battingTeamId
+                            ? currentMatch?.away?.teamShort
+                            : currentMatch?.home?.teamShort}
+                        </span>
+                      </div>
+                      {!result && !overSummary && displayBall?.target && (
+                        <div className="target-line">
+                          <span>TARGET {displayBall.target}</span>
+                          <b>
+                            {runsNeeded} needed off {ballsLeft}
+                          </b>
+                          <span>
+                            Required RR{" "}
+                            {ballsLeft
+                              ? ((runsNeeded * 6) / ballsLeft).toFixed(2)
+                              : "—"}
+                          </span>
+                        </div>
+                      )}
+                      <div className="live-score-separator" />
+                      <div className="live-batters">
+                        <div className="player-score-row">
+                          <div className="batter-mark">✦</div>
+                          <div className="player-score-name">
+                            <strong>
+                              {displayBall?.batter1?.name ||
+                                "Awaiting first ball"}
+                            </strong>
+                            <span>
+                              {displayBall?.batter1
+                                ? `${displayBall.batter1.balls} balls faced`
+                                : "Opening batter"}
+                            </span>
+                          </div>
+                          <strong className="batter-runs">
+                            {displayBall?.batter1?.runs ?? 0}
+                            <small> ({displayBall?.batter1?.balls ?? 0})</small>
+                            {displayBall?.batter1 && !displayBall.batter1.out
+                              ? "*"
+                              : ""}
+                          </strong>
+                        </div>
+                        <div className="player-score-row">
+                          <div className="batter-mark muted-mark">◇</div>
+                          <div className="player-score-name">
+                            <strong>{displayBall?.batter2?.name || "—"}</strong>
+                            <span>
+                              {displayBall?.batter2
+                                ? `${displayBall.batter2.balls} balls faced`
+                                : "Non-striker"}
+                            </span>
+                          </div>
+                          <strong className="batter-runs">
+                            {displayBall?.batter2?.runs ?? 0}
+                            <small> ({displayBall?.batter2?.balls ?? 0})</small>
+                            {displayBall?.batter2 && !displayBall.batter2.out
+                              ? "*"
+                              : ""}
+                          </strong>
+                        </div>
+                        <div className="player-score-row bowler-row">
+                          <div className="bowler-mark">↘</div>
+                          <div className="player-score-name">
+                            <strong>
+                              {displayBall?.bowler?.name || "Bowler"}
+                            </strong>
+                            <span>BOWLING</span>
+                          </div>
+                          <strong className="bowler-figures">
+                            {displayBall?.bowler?.wickets ?? 0}/
+                            {displayBall?.bowler?.runs ?? 0}
+                            <small>
+                              {" "}
+                              ({displayBall?.bowler?.overs || "0.0"})
+                            </small>
+                          </strong>
+                        </div>
+                      </div>
+                      <div className="scorecard-bottom">
+                        <div className="last-ball-strip">
+                          <span>
+                            {overSummary ? "OVER END BALLS" : "RECENT BALLS"}
+                          </span>
+                          <div>
+                            {(overSummary
+                              ? ballTrail.filter((ball) => ball.overEnd)
+                              : ballTrail
+                            ).map((b, i) => (
+                              <i
+                                key={b.key || i}
+                                className={`${b.wicket ? "wicket-ball" : b.runs === 6 ? "six-ball" : b.runs === 4 ? "four-ball" : ""}`}
+                              >
+                                {b.wicket
+                                  ? "W"
+                                  : {
+                                      wide: "Wd",
+                                      noBall: "Nb",
+                                      bye: "B",
+                                      legBye: "Lb",
+                                    }[b.extraType] ||
+                                    (b.runs > 0 ? b.runs : "·")}
+                              </i>
+                            ))}
+                          </div>
+                        </div>
+                        <div className="commentary-line">
+                          <i />
+                          {displayBall?.freeHit && "Free hit · "}
+                          {displayBall?.commentary ||
+                            "The bowler is marking the run-up…"}
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  {result && (
+                    <section className="match-result">
+                      <div className="live-score-header">MATCH RESULT</div>
+                      <h3>
+                        {result.winnerId
+                          ? `${getTeam(room, result.winnerId)?.teamName} win`
+                          : "Match tied"}
+                      </h3>
+                      <small>{result.margin}</small>
+                      {tossSummary && (
+                        <p className="toss-summary">{tossSummary}</p>
+                      )}
+                      <ul className="match-final-scores">
+                        {[
+                          ...(result.innings || []),
+                          ...(result.superOver || []),
+                        ].map((innings, index) => (
+                          <li key={index}>
+                            {index >= 2 && index % 2 === 0 && (
+                              <span className="match-score-phase">
+                                Super Over {Math.floor(index / 2)}
+                              </span>
+                            )}
+                            <span>{innings.battingTeamName}</span>
+                            <b>
+                              {innings.runs}/{innings.wickets}
+                            </b>
+                            <small>{innings.overs} ov</small>
+                          </li>
+                        ))}
+                      </ul>
+                    </section>
                   )}
                 </div>
               ) : room.phase === "leagueComplete" ? (
@@ -307,14 +516,25 @@ export function SimulationScreen(props) {
                     The top four teams qualify for the IPL-style playoffs:
                     Qualifier 1, Eliminator, and Qualifier 2.
                   </p>
-                  {isHost && (
-                    <button
-                      className="button primary"
-                      onClick={() => hostAction("host:startPlayoffs")}
-                    >
-                      Start playoff simulation <span>↗</span>
-                    </button>
-                  )}
+                  <div className="stage-actions">
+                    {openTeamPlan && (
+                      <button
+                        type="button"
+                        className="button secondary small"
+                        onClick={openTeamPlan}
+                      >
+                        Edit team plan
+                      </button>
+                    )}
+                    {isHost && (
+                      <button
+                        className="button primary"
+                        onClick={() => hostAction("host:startPlayoffs")}
+                      >
+                        Start playoff simulation <span>↗</span>
+                      </button>
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div className="glass-card phase-complete-card">

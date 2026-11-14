@@ -122,15 +122,40 @@ test(
       let state = host.testRoom;
       while (state.phase !== endPhase) {
         assert.ok(
-          state.currentMatch?.live,
-          `expected a live match before ${endPhase}`,
+          state.currentMatch?.toss,
+          `expected a match before ${endPhase}`,
         );
         const matchId = state.currentMatch.id;
+        const winnerId = state.currentMatch.toss.winnerId;
+        const winner = sockets[Number(winnerId.slice("user-".length))];
+        const choose = (socket, id, decision) =>
+          socket
+            .timeout(2000)
+            .emitWithAck("simulation:chooseToss", { matchId: id, decision });
+        if (state.matchCount === 0) {
+          const loser = winner === host ? sockets[2] : host;
+          assert.equal((await choose(loser, matchId, "bowl")).ok, false);
+          assert.equal(
+            (await choose(winner, "previous-match", "bowl")).ok,
+            false,
+          );
+        }
+        const opening = nextRoom(
+          host,
+          (snapshot) => snapshot.currentMatch?.liveScore?.balls === 0,
+        );
+        assert.equal((await choose(winner, matchId, "bat")).ok, true);
+        assert.equal(
+          (await opening).currentMatch.liveScore.battingTeamId,
+          winnerId,
+        );
+        if (state.matchCount === 0)
+          assert.equal((await choose(winner, matchId, "bowl")).ok, false);
         const next = nextRoom(
           host,
           (snapshot) =>
             snapshot.phase === endPhase ||
-            (snapshot.currentMatch?.live &&
+            (snapshot.currentMatch?.toss &&
               snapshot.currentMatch.id !== matchId),
           4000,
         );
@@ -141,22 +166,54 @@ test(
     }
     changed = nextRoom(
       host,
-      (state) => state.phase === "league" && state.currentMatch?.live,
+      (state) => state.phase === "league" && state.currentMatch?.toss,
     );
     host.emit("host:startLeague");
     await changed;
     const league = await skipUntil("leagueComplete");
     assert.equal(league.matchCount, 12);
+    const manager = league.users.find((user) => user.isHost);
+    const updatedOrder = [...manager.lineup];
+    [updatedOrder[0], updatedOrder[1]] = [updatedOrder[1], updatedOrder[0]];
+    const bowlerIds = updatedOrder.slice(0, 6);
+    const plan = {
+      playerIds: updatedOrder,
+      bowlerIds,
+      bowlingPlan: {
+        powerplay: bowlerIds[0],
+        death: bowlerIds[0],
+        backup: bowlerIds[5],
+      },
+      superOverPlan: {
+        batters: updatedOrder.slice(1, 4),
+        bowler: bowlerIds[1],
+      },
+      tactics: manager.tactics,
+    };
+    const savedPlan = nextRoom(host, (state) =>
+      state.users.some(
+        (user) =>
+          user.id === manager.id && user.bowlingPlan?.death === bowlerIds[0],
+      ),
+    );
+    const reply = await host.timeout(2000).emitWithAck("lineup:set", plan);
+    assert.equal(reply.ok, true);
+    const savedManager = (await savedPlan).users.find(
+      (user) => user.id === manager.id,
+    );
+    assert.deepEqual(savedManager.lineup, updatedOrder);
+    assert.deepEqual(savedManager.bowlerIds, bowlerIds);
+    assert.deepEqual(savedManager.superOverPlan, plan.superOverPlan);
     changed = nextRoom(
       host,
-      (state) => state.phase === "playoffs" && state.currentMatch?.live,
+      (state) => state.phase === "playoffs" && state.currentMatch?.toss,
     );
     host.emit("host:startPlayoffs");
     await changed;
     await skipUntil("finalReady");
     changed = nextRoom(
       host,
-      (state) => state.phase === "final" && state.currentMatch?.live,
+      (state) => state.phase === "final" && state.currentMatch?.toss,
     );
     host.emit("host:startFinal");
     await changed;

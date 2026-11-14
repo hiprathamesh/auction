@@ -91,7 +91,8 @@ function indexSeason(database, id, season) {
   for (const match of season.matches || []) {
     for (const team of season.teams || []) {
       if (![match.homeId, match.awayId].includes(team.id)) continue;
-      for (const playerId of team.lineup || []) {
+      const plan = match.teamPlans?.find((entry) => entry.userId === team.id);
+      for (const playerId of plan?.lineup || team.lineup || []) {
         if (!stats.has(playerId)) continue;
         const data = appearanceFor(playerId);
         data.matchIds.add(match.id);
@@ -464,7 +465,10 @@ function createSeasonStore(file) {
         if (
           !batting.length &&
           !bowling.length &&
-          !team.lineup?.includes(playerId)
+          !(
+            match.teamPlans?.find((plan) => plan.userId === team.id)?.lineup ||
+            team.lineup
+          )?.includes(playerId)
         )
           return [];
         const opponent = teams.get(
@@ -585,6 +589,7 @@ function makeSeasonSnapshot(room) {
     batting: p.batting,
     bowling: p.bowling,
     fielding: p.fielding,
+    skills: p.skills,
     purchasePrice: p.purchasePrice,
     retained: p.retained === true || undefined,
     photo: p.photo,
@@ -601,6 +606,8 @@ function makeSeasonSnapshot(room) {
     legalBalls: inn.legalBalls,
     overs: inn.overs,
     target: inn.target,
+    maxBalls: inn.maxBalls,
+    extras: inn.extras,
     allOut: inn.allOut,
     nrrOvers: inn.nrrOvers,
     batters: (inn.batters || []).map((b) => ({
@@ -625,6 +632,8 @@ function makeSeasonSnapshot(room) {
     lineup: [...u.lineup],
     bowlerIds: [...u.bowlerIds],
     tactics: { ...u.tactics },
+    bowlingPlan: u.bowlingPlan,
+    superOverPlan: u.superOverPlan,
     rtmUsesUsed: u.rtmUsesUsed,
     tradesUsed: u.tradesUsed,
   }));
@@ -637,7 +646,12 @@ function makeSeasonSnapshot(room) {
     winnerId: m.winnerId,
     margin: m.margin,
     tied: m.tied,
+    toss: m.toss,
     simulationSeed: m.simulationSeed,
+    engineVersion: m.engineVersion,
+    ratingVersion: m.ratingVersion,
+    conditions: m.conditions,
+    teamPlans: m.teamPlans,
     innings: (m.innings || []).map(innings),
     superOver: (m.superOver || []).map(innings),
     ballByBall: m.ballByBall || null,
