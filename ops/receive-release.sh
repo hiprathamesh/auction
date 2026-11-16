@@ -74,4 +74,8 @@ done
 (( ready == 1 )) || { echo 'New release did not become healthy.' >&2; exit 1; }
 SEASONS_DB_PATH="$data/seasons.sqlite" "$node" -e 'const {createSeasonStore}=require(process.argv[1]);const store=createSeasonStore(process.env.SEASONS_DB_PATH);store.list();store.close()' \
   "$release/server/seasons.js"
+if [[ -x /usr/local/libexec/underworld-release-report ]] &&
+  ! /usr/local/libexec/underworld-release-report "$commit"; then
+  echo 'Warning: Underworld could not record this release.' >&2
+fi
 echo "Deployed $commit"
