@@ -4,6 +4,7 @@ const fs = require("node:fs");
 const path = require("node:path");
 const os = require("node:os");
 const crypto = require("node:crypto");
+const { once } = require("node:events");
 const { chromium, expect } = require("@playwright/test");
 const { startServer } = require("./helpers/server");
 const game = require("../server/game");
@@ -12,9 +13,19 @@ const { createCheckpointStore } = require("../server/checkpoints");
 
 test(
   "two browsers can create a room, bid, and reconnect",
-  { timeout: 30000 },
+  { timeout: 45000 },
   async (t) => {
-    const backend = await startServer(t);
+    const dataDir = fs.mkdtempSync(
+      path.join(os.tmpdir(), "auction-seat-browser-"),
+    );
+    const backend = await startServer(t, {
+      SEASONS_DB_PATH: path.join(dataDir, "seasons.sqlite"),
+    });
+    t.after(async () => {
+      if (backend.child.exitCode === null && backend.child.signalCode === null)
+        await once(backend.child, "exit");
+      fs.rmSync(dataDir, { recursive: true, force: true });
+    });
     const { createServer } = await import("vite");
     const react = (await import("@vitejs/plugin-react")).default;
     const vite = await createServer({
@@ -53,7 +64,10 @@ test(
     host.on("pageerror", (error) => errors.push(error.message));
     friend.on("pageerror", (error) => errors.push(error.message));
     const url = `http://127.0.0.1:${vite.httpServer.address().port}`;
-    await host.goto(url);
+    await host.goto(`${url}/?room=STALE`);
+    await host
+      .getByRole("button", { name: "Create room", exact: true })
+      .click();
     await host.getByLabel("YOUR DISPLAY NAME").fill("Audit Host");
     await host.getByRole("button", { name: "Chennai Super Kings" }).click();
     await host.getByRole("button", { name: "Create private room" }).click();
@@ -65,6 +79,14 @@ test(
       localStorage.getItem("iplRoomCode"),
     );
     assert.equal(roomCode.length, 5);
+    await expect(host).toHaveURL(`${url}/?room=${roomCode}`);
+    const identifyFriend = async (context) => {
+      const response = await context.request.post(`${url}/api/identity`, {
+        data: { id: "auditfriend", pin: "8642" },
+      });
+      assert.equal(response.status(), 200);
+    };
+    await identifyFriend(friendContext);
     await friend.goto(`${url}/?room=${roomCode}`);
     await friend.getByLabel("YOUR DISPLAY NAME").fill("Audit Friend");
     await friend.getByRole("button", { name: "Join auction room" }).click();
@@ -155,6 +177,7 @@ test(
         fullPage: true,
       });
     }
+    await host.routeWebSocket(/\/socket\.io\//, (ws) => ws.close());
     await host.reload();
     await expect(host.locator(".auction-player-name")).toBeVisible();
     await expect(friend.locator(".bid-button")).toContainText("HIGHEST BIDDER");
@@ -203,6 +226,36 @@ test(
         seatId,
       );
     }
+    const freshContext = await browser.newContext({
+      viewport: { width: 390, height: 844 },
+    });
+    await identifyFriend(freshContext);
+    const returning = await freshContext.newPage();
+    await returning.goto(`${url}/?room=${roomCode}`);
+    await expect(
+      returning.getByRole("heading", {
+        name: "Continue with your saved seat?",
+      }),
+    ).toBeVisible();
+    await expect(friend.locator(".bid-button")).toContainText("HIGHEST BIDDER");
+    await returning
+      .getByRole("button", { name: "Continue with my seat" })
+      .click();
+    await expect(returning.locator(".bid-button")).toContainText(
+      "HIGHEST BIDDER",
+    );
+    assert.equal(
+      await returning.evaluate(() => localStorage.getItem("iplUserId")),
+      seatId,
+    );
+    await expect(
+      friend.getByText(/This seat was opened in another tab/),
+    ).toBeVisible();
+    await friend.reload();
+    await expect(returning.locator(".bid-button")).toContainText(
+      "HIGHEST BIDDER",
+    );
+    await freshContext.close();
     assert.deepEqual(errors, []);
     await hostContext.close();
     await friendContext.close();

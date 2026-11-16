@@ -142,16 +142,71 @@ test("restricted rooms require a verified identity for new and saved seats", asy
       "ROOM_IDENTITY_REQUIRED",
     );
 
+    const currentLot = host.testRoom.currentLot;
+    const bid = await returning.timeout(2000).emitWithAck("auction:bid", {
+      lotId: currentLot.id,
+      actionId: "recovery-test-purchase",
+      expectedBid: currentLot.basePrice,
+    });
+    assert.equal(bid.ok, true);
+    const sold = nextRoom(host, (room) => room.phase === "auctionResults");
+    host.emit("host:endAuction");
+    const original = (await sold).users.find((user) => user.id === seat.userId);
+    assert.equal(original.squadCount, 1);
+
+    const replacement = await server.connect(friendCookie);
+    const lookup = (socket) =>
+      socket.timeout(2000).emitWithAck("room:findSeat", { code });
+    const reclaim = (socket, recoveryId) =>
+      socket
+        .timeout(2000)
+        .emitWithAck("room:recoverSeat", { code, recoveryId });
+    assert.equal((await lookup(guest)).seat, null);
+    const found = await replacement
+      .timeout(2000)
+      .emitWithAck("room:join", { code });
+    assert.equal(found.seat.name, original.name);
+    assert.equal(returning.connected, true);
+    assert.equal(
+      (await reclaim(wrongIdentity, found.seat.recoveryId)).ok,
+      false,
+    );
+    const replaced = nextEvent(returning, "room:replaced");
+    const recovered = nextEvent(replacement, "room:joined");
+    assert.equal((await reclaim(replacement, found.seat.recoveryId)).ok, true);
+    await replaced;
+    const recoveredSeat = await recovered;
+    assert.equal(recoveredSeat.userId, seat.userId);
+    assert.notEqual(recoveredSeat.reconnectToken, seat.reconnectToken);
+    const restored = replacement.testRoom.users.find(
+      (user) => user.id === seat.userId,
+    );
+    assert.deepEqual(restored.squad, original.squad);
+    assert.equal(restored.purse, original.purse);
+    assert.equal((await reclaim(replacement, found.seat.recoveryId)).ok, false);
+    assert.equal(
+      (
+        await rejected(
+          await server.connect(friendCookie),
+          "room:rejoin",
+          rejoin,
+        )
+      ).code,
+      "ROOM_SEAT_INVALID",
+    );
+
     await fetch(server.url + "/api/identity", {
       method: "DELETE",
       headers: { Cookie: friendCookie },
     });
-    const identityError = nextEvent(returning, "app:error");
-    const response = await returning.timeout(2000).emitWithAck("auction:bid", {
-      lotId: host.testRoom.currentLot.id,
-      actionId: "signed-out-bid",
-      expectedBid: host.testRoom.currentLot.basePrice,
-    });
+    const identityError = nextEvent(replacement, "app:error");
+    const response = await replacement
+      .timeout(2000)
+      .emitWithAck("auction:bid", {
+        lotId: currentLot.id,
+        actionId: "signed-out-bid",
+        expectedBid: currentLot.basePrice,
+      });
     const error = await identityError;
     assert.equal(error.code, "ROOM_IDENTITY_REQUIRED");
     assert.deepEqual(response, { ok: false, message: error.message });

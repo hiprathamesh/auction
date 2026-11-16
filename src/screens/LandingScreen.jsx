@@ -25,6 +25,12 @@ export function LandingScreen(props) {
     identity,
     setIdentity,
     clearError,
+    onSignedOut,
+    seatStatus,
+    seatOffer,
+    retrySeat,
+    recoverSeat,
+    dismissSeatRecovery,
   } = props;
   const [identityInput, setIdentityInput] = useState("");
   const [pin, setPin] = useState("");
@@ -106,6 +112,7 @@ export function LandingScreen(props) {
       setIdentity(null);
       closePinForm();
       setPinChanged(false);
+      onSignedOut();
       socket.disconnect().connect();
     } catch (failure) {
       setIdentityError(failure.message);
@@ -178,7 +185,53 @@ export function LandingScreen(props) {
             Identity
           </button>
         </div>
-        {view === "identity" ? (
+        {seatOffer || seatStatus ? (
+          <div className="identity-panel room-seat-panel">
+            <div role="status">
+              <h2>
+                {seatOffer
+                  ? "Continue with your saved seat?"
+                  : seatStatus === "checking"
+                    ? "Restoring your seat…"
+                    : "Return to your room"}
+              </h2>
+              {seatOffer ? (
+                <p>
+                  {seatOffer.name} · {seatOffer.teamName} · Room{" "}
+                  {seatOffer.code}. Your squad, purse, and progress will carry
+                  over. Any other tab using this seat will close its connection.
+                </p>
+              ) : (
+                <p>
+                  {error || `Checking room ${roomCode} for your saved seat.`}
+                </p>
+              )}
+            </div>
+            <div className="identity-actions">
+              {seatOffer && (
+                <button
+                  className="button primary"
+                  disabled={seatStatus === "checking" || !appOnline}
+                  onClick={recoverSeat}
+                >
+                  Continue with my seat
+                </button>
+              )}
+              {!seatOffer && seatStatus === "retry" && (
+                <button className="button primary" onClick={retrySeat}>
+                  Retry connection
+                </button>
+              )}
+              <button
+                className="button secondary"
+                disabled={Boolean(seatOffer && seatStatus === "checking")}
+                onClick={dismissSeatRecovery}
+              >
+                {seatOffer ? "Cancel" : "Room options"}
+              </button>
+            </div>
+          </div>
+        ) : view === "identity" ? (
           <div className="identity-panel">
             {identity ? (
               <>
@@ -338,6 +391,16 @@ export function LandingScreen(props) {
                 />
               </>
             )}
+            {view === "join" && roomCode.trim().length === 5 && (
+              <button
+                type="button"
+                className="seat-retry-link"
+                disabled={!appOnline}
+                onClick={retrySeat}
+              >
+                Return to a saved seat
+              </button>
+            )}
             {view === "recover" ? (
               <>
                 <label className="field-label" htmlFor="recovery-code-input">
@@ -390,8 +453,10 @@ export function LandingScreen(props) {
                 !appOnline ||
                 (view === "recover"
                   ? !recoveryInput.trim() || roomCode.trim().length < 5
-                  : !displayName.trim() ||
-                    (view === "join" && roomCode.trim().length < 5))
+                  : view === "join"
+                    ? roomCode.trim().length < 5 ||
+                      (!identity && !displayName.trim())
+                    : !displayName.trim())
               }
               onClick={
                 view === "create"

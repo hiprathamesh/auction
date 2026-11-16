@@ -2,6 +2,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createRoot } from "react-dom/client";
 import { socket } from "./socket";
 import { money, getTeam } from "./lib/format";
+import {
+  initialRoomCode,
+  readRoomSession,
+  saveRoomSession,
+  forgetRoomSession,
+  markSeatReplaced,
+  wasSeatReplaced,
+  setRoomUrl,
+} from "./lib/roomSession";
 import { ArenaBrand } from "./components/Brand";
 import { HostControls } from "./components/HostControls";
 import { StatsModal } from "./components/StatsModal";
@@ -161,27 +170,35 @@ const nextBid = (lot) => bidAmount(lot, 1);
 
 function App() {
   const [room, setRoom] = useState(null);
-  const [meId, setMeId] = useState(localStorage.getItem("iplUserId") || null);
-  const [roomCode, setRoomCode] = useState(
-    new URLSearchParams(window.location.search).get("room") ||
-      localStorage.getItem("iplRoomCode") ||
-      "",
-  );
+  const [meId, setMeId] = useState(null);
+  const [roomCode, setRoomCode] = useState(initialRoomCode);
+  const desiredRoom = useRef(roomCode);
+  const attachedSeat = useRef(null);
+  const restoreSeat = useRef(() => {});
+  const cancelRestore = useRef(() => {});
+  const resumeRequested = useRef(false);
+  const replacedRoom = useRef(null);
   const [displayName, setDisplayName] = useState("");
   const [identity, setIdentity] = useState(null);
   const [identifiedSeat, setIdentifiedSeat] = useState(false);
   const [teamId, setTeamId] = useState("MI");
   const [playerCount, setPlayerCount] = useState(null);
-  const [hostRecoveryToken, setHostRecoveryToken] = useState(
-    localStorage.getItem("iplHostRecoveryToken") || "",
-  );
+  const [hostRecoveryToken, setHostRecoveryToken] = useState("");
   const [recoveryInput, setRecoveryInput] = useState("");
   const [view, setView] = useState(
     new URLSearchParams(window.location.search).get("identity")
       ? "identity"
-      : new URLSearchParams(window.location.search).get("room")
+      : roomCode
         ? "join"
         : "create",
+  );
+  const [seatOffer, setSeatOffer] = useState(null);
+  const [seatStatus, setSeatStatus] = useState(() =>
+    roomCode &&
+    !new URLSearchParams(window.location.search).has("identity") &&
+    !wasSeatReplaced(roomCode)
+      ? "checking"
+      : null,
   );
   useEffect(() => {
     fetch("/api/identity", { credentials: "same-origin" })
@@ -269,31 +286,107 @@ function App() {
   }, []);
 
   useEffect(() => {
-    let waitingForRejoin = false;
-    const onConnected = () => {
+    let request = 0;
+    let ready = false;
+    let reconnectTimer;
+    const finishRestore = () => {
+      setSeatStatus(null);
       setAppOnline(true);
-      const storedId = localStorage.getItem("iplUserId");
-      const storedCode = localStorage.getItem("iplRoomCode");
-      const reconnectToken = localStorage.getItem("iplReconnectToken");
-      const urlRoom = new URLSearchParams(window.location.search).get("room");
-      if (
-        storedId &&
-        storedCode &&
-        reconnectToken &&
-        (!urlRoom || urlRoom.toUpperCase() === storedCode.toUpperCase())
-      ) {
-        waitingForRejoin = true;
-        socket.emit("room:rejoin", {
-          code: storedCode,
-          userId: storedId,
-          reconnectToken,
+    };
+    const findSeat = async (code, currentRequest, fallback) => {
+      const result = await socket
+        .timeout(5000)
+        .emitWithAck("room:findSeat", { code });
+      if (request !== currentRequest) return;
+      if (!result?.ok) throw new Error(result?.message);
+      finishRestore();
+      attachedSeat.current = null;
+      setRoom(null);
+      setMeId(null);
+      setView("join");
+      setSeatOffer(result.seat);
+      setError(result.seat ? "" : fallback || "");
+    };
+    restoreSeat.current = async (code, explicit = false) => {
+      desiredRoom.current = code;
+      const currentRequest = ++request;
+      setSeatOffer(null);
+      setSeatStatus("checking");
+      setError("");
+      const saved =
+        attachedSeat.current?.code === code
+          ? attachedSeat.current
+          : readRoomSession(code);
+      try {
+        if (!saved)
+          return await findSeat(
+            code,
+            currentRequest,
+            explicit
+              ? "No saved seat was found. Sign in with the identity you used to join, then try again."
+              : "",
+          );
+        const result = await socket.timeout(5000).emitWithAck("room:rejoin", {
+          code,
+          userId: saved.userId,
+          reconnectToken: saved.reconnectToken,
         });
-      } else if (urlRoom) {
-        setRoomCode(urlRoom.toUpperCase());
-        setView("join");
+        if (request !== currentRequest || result?.ok) return;
+        if (result?.code === "ROOM_SEAT_INVALID")
+          return await findSeat(code, currentRequest, result.message);
+        if (!result?.code) throw new Error();
+        attachedSeat.current = null;
+        setRoom(null);
+        setMeId(null);
+        const signIn = result.code === "ROOM_IDENTITY_REQUIRED";
+        setView(signIn ? "identity" : "join");
+        if (signIn) setIdentity(null);
+        finishRestore();
+        setError(result.message);
+      } catch {
+        if (request !== currentRequest) return;
+        setSeatStatus("retry");
+        setAppOnline(socket.connected && !attachedSeat.current);
+        setError(
+          "The room couldn’t confirm your seat. Your saved credentials are still here.",
+        );
       }
     };
-    const onDisconnected = () => setAppOnline(false);
+    cancelRestore.current = () => {
+      request++;
+      desiredRoom.current = "";
+      resumeRequested.current = false;
+      setSeatOffer(null);
+      setSeatStatus(null);
+      setError("");
+      setAppOnline(socket.connected);
+    };
+    const onConnected = () => {
+      const code = desiredRoom.current;
+      if (
+        code &&
+        (resumeRequested.current ||
+          (replacedRoom.current !== code &&
+            !wasSeatReplaced(code) &&
+            (ready ||
+              !new URLSearchParams(window.location.search).has("identity"))))
+      ) {
+        const explicit = resumeRequested.current;
+        resumeRequested.current = false;
+        restoreSeat.current(code, explicit);
+      } else setAppOnline(true);
+      ready = true;
+    };
+    const onDisconnected = (reason) => {
+      request++;
+      setAppOnline(false);
+      setSeatOffer(null);
+      const code = desiredRoom.current;
+      if (code && replacedRoom.current !== code && !wasSeatReplaced(code))
+        setSeatStatus("checking");
+      if (reason === "io server disconnect")
+        reconnectTimer = window.setTimeout(() => socket.connect(), 500);
+    };
     const onJoined = ({
       roomCode: code,
       userId,
@@ -302,22 +395,31 @@ function App() {
       reconnectToken,
       hostRecoveryToken: recoveryToken,
     }) => {
-      waitingForRejoin = false;
+      request++;
       roomVersion.current = null;
+      desiredRoom.current = code;
+      replacedRoom.current = null;
+      const saved = readRoomSession(code);
+      const existing = saved?.userId === userId ? saved : null;
+      const session = {
+        userId,
+        reconnectToken: reconnectToken || existing?.reconnectToken,
+        hostRecoveryToken: host
+          ? recoveryToken || existing?.hostRecoveryToken
+          : undefined,
+      };
+      attachedSeat.current = { code, ...session };
       setRoomCode(code);
       setMeId(userId);
       setIdentifiedSeat(identified);
       setPrivateRtmState({ playerId: null, isHolder: false, isOn: false });
       setRetention(null);
       setOwnSquadOvrs({});
-      localStorage.setItem("iplRoomCode", code);
-      localStorage.setItem("iplUserId", userId);
-      if (reconnectToken)
-        localStorage.setItem("iplReconnectToken", reconnectToken);
-      if (recoveryToken) {
-        localStorage.setItem("iplHostRecoveryToken", recoveryToken);
-        setHostRecoveryToken(recoveryToken);
-      }
+      if (session.reconnectToken) saveRoomSession(code, session);
+      setRoomUrl(code);
+      setHostRecoveryToken(session.hostRecoveryToken || "");
+      setSeatOffer(null);
+      finishRestore();
       setView("room");
       setError("");
       setNotice(host ? "Host session connected." : "You joined the room.");
@@ -325,11 +427,9 @@ function App() {
     const onUpdate = (next) => {
       roomVersion.current = next.version;
       setRoom(next);
-      if (next.currentMatch?.live && next.currentMatch.liveScore) {
-        const score = next.currentMatch.liveScore;
-        setCurrentBall({ ...score, score: score.runs });
-        setBallTrail(next.currentMatch.recentBalls || []);
-      }
+      const score = next.currentMatch?.live && next.currentMatch.liveScore;
+      setCurrentBall(score ? { ...score, score: score.runs } : null);
+      setBallTrail(next.currentMatch?.recentBalls || []);
       if (next.phase === "complete")
         setMatchBanner({ championId: next.championId });
     };
@@ -355,17 +455,13 @@ function App() {
     const onAppError = (payload) => {
       const message = payload?.message || "Something went wrong.";
       if (payload?.code === "ROOM_IDENTITY_REQUIRED") {
-        waitingForRejoin = false;
+        request++;
+        attachedSeat.current = null;
         setRoom(null);
         setMeId(null);
+        setIdentity(null);
+        setSeatStatus(null);
         setView("identity");
-      } else if (waitingForRejoin) {
-        waitingForRejoin = false;
-        setRoom(null);
-        setMeId(null);
-        setView("join");
-        localStorage.removeItem("iplUserId");
-        localStorage.removeItem("iplReconnectToken");
       }
       setError(message);
       setNotice("");
@@ -479,11 +575,23 @@ function App() {
     const onChampion = () => flashFx("win");
     socket.on("connect", onConnected);
     socket.on("disconnect", onDisconnected);
+    const onConnectError = () => {
+      const code = desiredRoom.current;
+      if (code && replacedRoom.current !== code && !wasSeatReplaced(code)) {
+        setSeatStatus("retry");
+        setError("Trying to reconnect to the room. Your seat is still saved.");
+      }
+    };
+    socket.on("connect_error", onConnectError);
     socket.on("room:joined", onJoined);
     const onKicked = ({ message } = {}) => {
-      localStorage.removeItem("iplUserId");
-      localStorage.removeItem("iplRoomCode");
-      localStorage.removeItem("iplReconnectToken");
+      request++;
+      const seat = attachedSeat.current;
+      if (seat) forgetRoomSession(seat.code, seat.userId);
+      attachedSeat.current = null;
+      desiredRoom.current = "";
+      setRoomUrl("");
+      setSeatStatus(null);
       setRoom(null);
       setMeId(null);
       setRoomCode("");
@@ -492,14 +600,23 @@ function App() {
       setNotice("");
     };
     const onReplaced = ({ message } = {}) => {
+      request++;
+      replacedRoom.current = desiredRoom.current;
+      markSeatReplaced(desiredRoom.current);
+      attachedSeat.current = null;
       setRoom(null);
       setMeId(null);
       setAppOnline(false);
+      setSeatStatus("retry");
       setView("join");
       setError(message || "This seat was opened in another tab or browser.");
     };
     const onHostRecoveryToken = ({ hostRecoveryToken: recoveryToken }) => {
-      localStorage.setItem("iplHostRecoveryToken", recoveryToken);
+      const seat = attachedSeat.current;
+      if (seat) {
+        seat.hostRecoveryToken = recoveryToken;
+        saveRoomSession(seat.code, seat);
+      }
       setHostRecoveryToken(recoveryToken);
       setNotice(
         "Your host recovery code has changed. Save the new code somewhere safe.",
@@ -521,8 +638,11 @@ function App() {
     socket.on("simulation:champion", onChampion);
     if (socket.connected) onConnected();
     return () => {
+      request++;
+      window.clearTimeout(reconnectTimer);
       socket.off("connect", onConnected);
       socket.off("disconnect", onDisconnected);
+      socket.off("connect_error", onConnectError);
       socket.off("room:joined", onJoined);
       socket.off("room:kicked", onKicked);
       socket.off("room:replaced", onReplaced);
@@ -575,7 +695,7 @@ function App() {
   }, [canEditBetweenStages]);
 
   const emitAction = (event, ...args) => {
-    if (!socket.connected) {
+    if (!socket.connected || (room && !appOnline)) {
       setError("You are disconnected. Reconnect before continuing.");
       return;
     }
@@ -585,9 +705,56 @@ function App() {
     setError("");
     emitAction("room:create", { name: displayName, teamId });
   };
-  const joinRoom = () => {
+  const retrySeat = () => {
+    const code = roomCode.trim().toUpperCase();
+    desiredRoom.current = code;
+    if (socket.connected) restoreSeat.current(code, true);
+    else {
+      resumeRequested.current = true;
+      setSeatStatus("checking");
+      socket.connect();
+    }
+  };
+  const joinRoom = async () => {
+    const code = roomCode.trim().toUpperCase();
+    if (readRoomSession(code)) return retrySeat();
+    if (!socket.connected) return;
+    desiredRoom.current = code;
     setError("");
-    emitAction("room:join", { code: roomCode, name: displayName, teamId });
+    try {
+      const result = await socket
+        .timeout(5000)
+        .emitWithAck("room:join", { code, name: displayName, teamId });
+      if (result.seat) setSeatOffer(result.seat);
+      if (!result.ok) {
+        setError(result.message);
+        if (result.code === "ROOM_IDENTITY_REQUIRED") {
+          setIdentity(null);
+          setView("identity");
+        }
+      }
+    } catch {
+      setError("The join wasn’t confirmed. Try returning to your seat.");
+    }
+  };
+  const recoverSeat = async () => {
+    if (!seatOffer || !socket.connected) return;
+    const { code, recoveryId } = seatOffer;
+    setSeatStatus("checking");
+    try {
+      const result = await socket
+        .timeout(5000)
+        .emitWithAck("room:recoverSeat", { code, recoveryId });
+      if (!result.ok) {
+        setSeatOffer(null);
+        setSeatStatus("retry");
+        setError(result.message);
+      }
+    } catch {
+      setSeatOffer(null);
+      setSeatStatus("retry");
+      setError("Recovery wasn’t confirmed. Check for your saved seat again.");
+    }
   };
   const recoverHost = () => {
     if (!socket.connected) {
@@ -948,7 +1115,13 @@ function App() {
       <div className="ambient ambient-one" />
       <div className="ambient ambient-two" />
       <header className="topbar">
-        <ArenaBrand onClick={() => !room && setView("create")} />
+        <ArenaBrand
+          onClick={() => {
+            if (room) return;
+            cancelRestore.current();
+            setView("create");
+          }}
+        />
         <div className="topbar-right">
           {room && (
             <>
@@ -995,12 +1168,29 @@ function App() {
         />
       )}
 
+      {room && seatStatus && (
+        <div className="wrap room-reconnect" role="status">
+          {seatStatus === "checking"
+            ? "Reconnecting to your seat…"
+            : "Your seat is still saved."}
+          {seatStatus === "retry" && (
+            <button className="button secondary small" onClick={retrySeat}>
+              Retry connection
+            </button>
+          )}
+        </div>
+      )}
+
       {!room && (
         <LandingScreen
           {...{
             playerCount,
             view,
-            setView,
+            setView: (next) => {
+              cancelRestore.current();
+              if (next === "identity") desiredRoom.current = roomCode;
+              setView(next);
+            },
             displayName,
             setDisplayName,
             createRoom,
@@ -1018,6 +1208,15 @@ function App() {
             identity,
             setIdentity,
             clearError: () => setError(""),
+            onSignedOut: () => cancelRestore.current(),
+            seatStatus,
+            seatOffer,
+            retrySeat,
+            recoverSeat,
+            dismissSeatRecovery: () => {
+              cancelRestore.current();
+              setView("join");
+            },
           }}
         />
       )}

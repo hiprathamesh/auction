@@ -649,6 +649,11 @@ function rejectRoomIdentity(socket, user, acknowledge) {
   emitError(socket, message, "ROOM_IDENTITY_REQUIRED");
   if (typeof acknowledge === "function") acknowledge({ ok: false, message });
 }
+function roomFailure(socket, acknowledge, code, message) {
+  if (typeof acknowledge === "function")
+    acknowledge({ ok: false, code, message });
+  else emitError(socket, message, code);
+}
 function verifyHost(socket, room, user) {
   if (!room || !user) {
     emitError(
@@ -765,6 +770,8 @@ io.on("connection", (socket) => {
     "room:create",
     "room:join",
     "room:rejoin",
+    "room:findSeat",
+    "room:recoverSeat",
     "room:recoverHost",
     "host:transfer",
     "host:kickUser",
@@ -805,7 +812,12 @@ io.on("connection", (socket) => {
       objectEvents.has(event) &&
       (!payload || typeof payload !== "object" || Array.isArray(payload))
     ) {
-      emitError(socket, "Invalid action data.");
+      roomFailure(
+        socket,
+        packet.at(-1),
+        "INVALID_ACTION",
+        "Invalid action data.",
+      );
       return;
     }
     if (booleanEvents.has(event) && typeof payload !== "boolean") {
@@ -833,6 +845,9 @@ io.on("connection", (socket) => {
           !stringField("userId") ||
           !stringField("reconnectToken"))) ||
       (event === "room:join" && !stringField("code", 32)) ||
+      (event === "room:findSeat" && !stringField("code", 32)) ||
+      (event === "room:recoverSeat" &&
+        (!stringField("code", 32) || !stringField("recoveryId"))) ||
       (event === "lobby:retain" &&
         (!stringField("playerId") || typeof payload.selected !== "boolean")) ||
       (event === "auction:bid" &&
@@ -854,11 +869,12 @@ io.on("connection", (socket) => {
       (event === "trade:respond" &&
         (!stringField("offerId") || typeof payload.accept !== "boolean"));
     if (invalid) {
-      const message = "Invalid action data.";
-      emitError(socket, message);
-      const acknowledgement = packet[packet.length - 1];
-      if (typeof acknowledgement === "function")
-        acknowledgement({ ok: false, message });
+      roomFailure(
+        socket,
+        packet.at(-1),
+        "INVALID_ACTION",
+        "Invalid action data.",
+      );
       return;
     }
     if (event === "lineup:set") {
@@ -911,49 +927,126 @@ io.on("connection", (socket) => {
     joinSocket(socket, room, user, reconnectToken, hostRecoveryToken);
   });
 
+  const seatForIdentity = (room, identityId) =>
+    identityId
+      ? room.users.find((user) => user.identityId === identityId)
+      : null;
+
+  function offerSeatRecovery(room, user) {
+    const recoveryId = newCredential();
+    socket.data.seatRecovery = {
+      recoveryId,
+      code: room.code,
+      userId: user.id,
+      credentialHash: user.credentialHash,
+      expiresAt: Date.now() + 5 * 60 * 1000,
+    };
+    return {
+      recoveryId,
+      code: room.code,
+      name: user.name,
+      teamName: user.teamName,
+    };
+  }
+
+  onAction("room:findSeat", ({ code }, acknowledge) => {
+    if (typeof acknowledge !== "function") return;
+    const room = rooms.get(code.trim().toUpperCase());
+    const identityId = socketIdentity(socket);
+    const user = room && seatForIdentity(room, identityId);
+    acknowledge({
+      ok: true,
+      seat: user ? offerSeatRecovery(room, user) : null,
+    });
+  });
+
+  onAction("room:recoverSeat", ({ code, recoveryId }, acknowledge) => {
+    const offer = socket.data.seatRecovery;
+    const room = rooms.get(code.trim().toUpperCase());
+    const user = room && seatForIdentity(room, socketIdentity(socket));
+    if (
+      !offer ||
+      offer.recoveryId !== recoveryId ||
+      offer.code !== room?.code ||
+      !user ||
+      user.id !== offer.userId ||
+      user.credentialHash !== offer.credentialHash ||
+      Date.now() >= offer.expiresAt
+    ) {
+      return roomFailure(
+        socket,
+        acknowledge,
+        "ROOM_RECOVERY_EXPIRED",
+        "Check for your saved seat again, then confirm to continue.",
+      );
+    }
+    delete socket.data.seatRecovery;
+    const reconnectToken = newCredential();
+    user.credentialHash = credentialHash(reconnectToken);
+    const hostRecoveryToken =
+      user.id === room.hostId ? newCredential() : undefined;
+    if (hostRecoveryToken)
+      room.hostRecoveryHash = credentialHash(hostRecoveryToken);
+    joinSocket(socket, room, user, reconnectToken, hostRecoveryToken);
+    if (typeof acknowledge === "function") acknowledge({ ok: true });
+  });
+
   onAction(
     "room:join",
-    ({ code: rawCode, name: rawName, teamId, resumeUserId } = {}) => {
-      if (typeof rawCode !== "string" || rawCode.length > 32)
-        return emitError(socket, "Invalid room code.");
+    (
+      { code: rawCode, name: rawName, teamId, resumeUserId } = {},
+      acknowledge,
+    ) => {
+      const fail = (code, message) =>
+        roomFailure(socket, acknowledge, code, message);
       const code = rawCode
         .trim()
         .toUpperCase()
         .replace(/[^A-Z0-9]/g, "");
       const room = rooms.get(code);
       if (!room)
-        return emitError(
-          socket,
+        return fail(
+          "ROOM_NOT_FOUND",
           "Room not found. Check the code and make sure the host server is running.",
         );
       if (resumeUserId)
-        return emitError(
-          socket,
+        return fail(
+          "ROOM_SEAT_INVALID",
           "Use your saved session credentials to rejoin.",
         );
-      const name = normalizeName(rawName);
-      if (name.length < 2)
+      const identityId = socketIdentity(socket);
+      const existing = seatForIdentity(room, identityId);
+      if (existing) {
+        if (typeof acknowledge === "function")
+          return acknowledge({
+            ok: true,
+            seat: offerSeatRecovery(room, existing),
+          });
         return emitError(
           socket,
+          "This identity already has a seat. Update the page to recover it.",
+          "ROOM_SEAT_EXISTS",
+        );
+      }
+      const name = normalizeName(rawName);
+      if (name.length < 2)
+        return fail(
+          "ROOM_JOIN_INVALID",
           "Choose a display name with at least 2 characters.",
         );
       const user = buildUser(name, teamId);
-      if (!user) return emitError(socket, "Choose an IPL franchise first.");
-      user.identityId = socketIdentity(socket);
+      if (!user)
+        return fail("ROOM_JOIN_INVALID", "Choose an IPL franchise first.");
+      user.identityId = identityId;
       if (room.settings.identifiedOnly && !user.identityId)
-        return rejectRoomIdentity(socket);
-      if (
-        user.identityId &&
-        room.users.some((entry) => entry.identityId === user.identityId)
-      )
-        return emitError(
-          socket,
-          "This identity already has a seat in the room. Rejoin your saved seat instead.",
+        return fail(
+          "ROOM_IDENTITY_REQUIRED",
+          "Identify yourself before joining this room.",
         );
       const reconnectToken = newCredential();
       user.credentialHash = credentialHash(reconnectToken);
       const result = game.addUser(room, user);
-      if (result.error) return emitError(socket, result.error);
+      if (result.error) return fail("ROOM_JOIN_INVALID", result.error);
       if (room.phase === "auction") {
         game.refreshCurrentLotRtmHolder(room);
         setNotice(room, {
@@ -962,26 +1055,36 @@ io.on("connection", (socket) => {
         });
       }
       joinSocket(socket, room, user, reconnectToken);
+      if (typeof acknowledge === "function") acknowledge({ ok: true });
     },
   );
 
-  onAction("room:rejoin", ({ code, userId, reconnectToken } = {}) => {
-    if (
-      typeof code !== "string" ||
-      code.length > 32 ||
-      typeof userId !== "string"
-    )
-      return emitError(socket, "Invalid session credentials.");
-    const room = rooms.get(code.toUpperCase());
-    const user = room && room.users.find((u) => u.id === userId);
-    if (!room || !validCredential(user, reconnectToken))
-      return emitError(
+  onAction("room:rejoin", ({ code, userId, reconnectToken }, acknowledge) => {
+    const room = rooms.get(code.trim().toUpperCase());
+    if (!room)
+      return roomFailure(
         socket,
-        "Saved session or credentials not found. Create a new room or join using the room code.",
+        acknowledge,
+        "ROOM_NOT_FOUND",
+        "This room is no longer available. Check the room code with the host.",
+      );
+    const user = room && room.users.find((u) => u.id === userId);
+    if (!validCredential(user, reconnectToken))
+      return roomFailure(
+        socket,
+        acknowledge,
+        "ROOM_SEAT_INVALID",
+        "Your saved seat credentials could not be verified. Identify yourself to recover it.",
       );
     if (room.settings.identifiedOnly && !hasSeatIdentity(socket, user))
-      return rejectRoomIdentity(socket, user);
-    joinSocket(socket, room, user);
+      return roomFailure(
+        socket,
+        acknowledge,
+        "ROOM_IDENTITY_REQUIRED",
+        "Identify yourself with the ID you used for this seat to continue.",
+      );
+    joinSocket(socket, room, user, reconnectToken);
+    if (typeof acknowledge === "function") acknowledge({ ok: true });
   });
 
   onAction("room:sync", () => {

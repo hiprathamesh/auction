@@ -556,6 +556,32 @@ p {
   margin-top: 19px;
   min-height: 48px;
 }
+.room-seat-panel h2 {
+  margin: 0 0 7px;
+  font-size: 16px;
+}
+.room-seat-panel .identity-actions {
+  flex-wrap: wrap;
+}
+.seat-retry-link {
+  border: 0;
+  background: transparent;
+  padding: 2px 0 8px;
+  color: #ffb27d;
+  font: inherit;
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.room-reconnect {
+  margin-top: 10px;
+  padding-block: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 12px;
+}
 .secure-note {
   display: flex;
   align-items: center;
