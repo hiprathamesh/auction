@@ -1827,9 +1827,31 @@ details[open] > .arena-disclosure::after {
   color: #cc8c98;
 }
 .bid-hint {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   margin-top: 10px;
   color: #738099;
   font-size: 9px;
+}
+.bid-hint-copy {
+  flex: 1;
+  text-align: center;
+}
+.bid-hint-action {
+  flex-shrink: 0;
+  border: 0;
+  padding: 6px 0;
+  background: none;
+  color: #a9b7ce;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+}
+.bid-hint-action:hover:not(:disabled),
+.bid-hint-action[aria-pressed="true"] {
+  color: var(--text);
 }
 .notice-line {
   display: flex;

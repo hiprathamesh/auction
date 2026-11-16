@@ -127,12 +127,9 @@ module.exports = function registerHandlers({
         teamName: user.teamName,
         price: bid,
       });
-      if (game.shouldFastSettleLot(room)) {
-        game.settleLot(io, room, false, true);
-        if (typeof acknowledgement === "function") acknowledgement(accepted);
-        return;
-      }
-      game.broadcast(io, room, true, true);
+      game.applyAutoSkips(room);
+      if (!game.settleUncontestedLot(io, room))
+        game.broadcast(io, room, true, true);
       if (typeof acknowledgement === "function") acknowledgement(accepted);
     },
   );
@@ -187,7 +184,9 @@ module.exports = function registerHandlers({
       if (currentState) {
         lot.rtmOptInUserId = null;
         room.lastNotice = null;
-        game.broadcast(io, room, false, true);
+        game.applyAutoSkips(room);
+        if (!game.settleUncontestedLot(io, room))
+          game.broadcast(io, room, false, true);
       }
       return;
     }
@@ -246,28 +245,32 @@ module.exports = function registerHandlers({
     }
 
     lot.outUserIds.push(user.id);
-    const allTeamsOutWithoutABid =
-      !lot.currentBidderId &&
-      room.users.length > 0 &&
-      room.users.every((roomUser) => lot.outUserIds.includes(roomUser.id));
-
-    if (allTeamsOutWithoutABid) {
-      // Settle now instead of leaving an entirely unwanted player on the timer.
-      game.settleLot(io, room, false);
-      return;
-    }
-
     setNotice(room, {
       kind: "out",
       text: `${user.teamName} is out of bidding for ${lot.player.name}.`,
       playerName: lot.player.name,
       teamName: user.teamName,
     });
-    if (game.shouldFastSettleLot(room)) {
-      game.settleLot(io, room, false, true);
-      return;
-    }
-    game.broadcast(io, room);
+    if (!game.settleUncontestedLot(io, room)) game.broadcast(io, room);
+  });
+
+  onAction("auction:autoSkip", (enabled) => {
+    const { room, user } = getRoomAndUser(socket);
+    if (!room || !user || room.phase !== "auction")
+      return emitError(socket, "Auto Skip is available during the auction.");
+    if (Boolean(user.autoSkip) === enabled) return;
+    user.autoSkip = enabled;
+    game.applyAutoSkips(room);
+    if (!game.settleUncontestedLot(io, room))
+      game.broadcast(io, room, false, true);
+  });
+
+  onAction("host:skipPlayer", ({ lotId }) => {
+    const { room, user } = getRoomAndUser(socket);
+    if (!verifyHost(socket, room, user)) return;
+    if (room.phase !== "auction" || room.currentLot?.id !== lotId)
+      return emitError(socket, "The auction lot has changed.");
+    game.skipCurrentPlayer(io, room);
   });
 
   onAction("host:pauseAuction", () => {
@@ -313,11 +316,7 @@ module.exports = function registerHandlers({
       game.openNextLot(io, room);
     }
     setNotice(room, { kind: "resume", text: "Auction resumed." });
-    if (room.currentLot && game.shouldFastSettleLot(room)) {
-      game.settleLot(io, room, false, true);
-      return;
-    }
-    game.broadcast(io, room);
+    if (!game.settleUncontestedLot(io, room)) game.broadcast(io, room);
   });
 
   onAction("host:endAuction", () => {

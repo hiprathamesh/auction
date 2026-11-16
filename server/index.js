@@ -776,6 +776,7 @@ io.on("connection", (socket) => {
     "host:transfer",
     "host:kickUser",
     "host:settings",
+    "host:skipPlayer",
     "lobby:retain",
     "auction:bid",
     "auction:rtmToggle",
@@ -784,7 +785,11 @@ io.on("connection", (socket) => {
     "trade:respond",
     "simulation:chooseToss",
   ]);
-  const booleanEvents = new Set(["lobby:ready", "lineup:ready"]);
+  const booleanEvents = new Set([
+    "lobby:ready",
+    "lineup:ready",
+    "auction:autoSkip",
+  ]);
   let eventWindow = Date.now();
   let eventCount = 0;
   socket.use((packet, next) => {
@@ -860,6 +865,7 @@ io.on("connection", (socket) => {
       (event === "auction:rtmToggle" &&
         (!stringField("lotId") || typeof payload.enabled !== "boolean")) ||
       (event === "auction:out" && !stringField("lotId")) ||
+      (event === "host:skipPlayer" && !stringField("lotId")) ||
       (event === "simulation:chooseToss" &&
         (!stringField("matchId") || !stringField("decision", 4))) ||
       (event === "trade:propose" &&

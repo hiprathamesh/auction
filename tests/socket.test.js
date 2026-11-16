@@ -306,6 +306,142 @@ test("pause and resume between lots does not discard a player; stale bids are re
   assert.match((await rejected).message, /lot|player|changed/i);
 });
 
+test("Auto Skip follows each seat and the host settles only the displayed lot", async (t) => {
+  const server = await startServer(t);
+  const host = await server.connect();
+  const owner = await createRoom(host);
+  const peer = await server.connect();
+  const seat = await joinRoom(peer, owner.roomCode);
+  const third = await server.connect();
+  const bidder = await joinRoom(third, owner.roomCode, "Third", "RCB");
+  const ready = nextRoom(host, (room) =>
+    room.users.every((user) => user.ready),
+  );
+  for (const socket of [host, peer, third]) socket.emit("lobby:ready", true);
+  await ready;
+  let changed = nextRoom(host, (room) => Boolean(room.currentLot));
+  host.emit("host:startAuction");
+  const first = (await changed).currentLot;
+
+  const denied = nextEvent(peer, "app:error");
+  peer.emit("host:skipPlayer", { lotId: first.id });
+  assert.match((await denied).message, /only the host/i);
+  const preference = nextEvent(
+    peer,
+    "room:privateState",
+    (state) => state.autoSkip,
+  );
+  changed = nextRoom(host, (room) =>
+    room.currentLot?.outUserIds.includes(seat.userId),
+  );
+  peer.emit("auction:autoSkip", true);
+  await preference;
+  assert.deepEqual((await changed).currentLot.outUserIds, [seat.userId]);
+
+  changed = nextRoom(
+    host,
+    (room) => room.currentLot && room.currentLot.id !== first.id,
+  );
+  host.emit("host:skipPlayer", { lotId: first.id });
+  const afterSkip = await changed;
+  const second = afterSkip.currentLot;
+  assert.deepEqual(second.outUserIds, [seat.userId]);
+  assert.equal(afterSkip.unsold[0].playerId, first.player.id);
+
+  const stale = nextEvent(host, "app:error");
+  host.emit("host:skipPlayer", { lotId: first.id });
+  assert.match((await stale).message, /lot has changed/i);
+
+  const returning = await server.connect();
+  const restoredPreference = nextEvent(returning, "room:privateState");
+  returning.emit("room:rejoin", {
+    code: owner.roomCode,
+    userId: seat.userId,
+    reconnectToken: seat.reconnectToken,
+  });
+  assert.equal((await restoredPreference).autoSkip, true);
+  const turnedOff = nextEvent(
+    returning,
+    "room:privateState",
+    (state) => !state.autoSkip,
+  );
+  returning.emit("auction:autoSkip", false);
+  await turnedOff;
+  assert.deepEqual(returning.testRoom.currentLot.outUserIds, [seat.userId]);
+
+  const bid = (socket, lot, actionId, expectedBid = lot.basePrice) =>
+    socket
+      .timeout(2000)
+      .emitWithAck("auction:bid", { lotId: lot.id, actionId, expectedBid });
+  assert.equal((await bid(third, second, "skip-test-standing-bid")).ok, true);
+  changed = nextRoom(
+    host,
+    (room) => room.currentLot && room.currentLot.id !== second.id,
+  );
+  host.emit("host:skipPlayer", { lotId: second.id });
+  const afterSale = await changed;
+  const thirdLot = afterSale.currentLot;
+  assert.deepEqual(thirdLot.outUserIds, []);
+  assert.equal(afterSale.sold[0].playerId, second.player.id);
+  assert.equal(afterSale.sold[0].userId, bidder.userId);
+  assert.equal(afterSale.sold[0].price, second.basePrice);
+  assert.equal(
+    afterSale.users.find((user) => user.id === bidder.userId).squadCount,
+    1,
+  );
+
+  assert.equal(
+    (await bid(returning, thirdLot, "skip-test-leading-bid")).ok,
+    true,
+  );
+  const turnedOn = nextEvent(
+    returning,
+    "room:privateState",
+    (state) => state.autoSkip,
+  );
+  returning.emit("auction:autoSkip", true);
+  await turnedOn;
+  assert.equal(returning.testRoom.currentLot.currentBidderId, seat.userId);
+  assert.deepEqual(returning.testRoom.currentLot.outUserIds, []);
+  const { calculateBidAmount } = require("../server/game");
+  assert.equal(
+    (
+      await bid(
+        host,
+        thirdLot,
+        "skip-test-outbid",
+        calculateBidAmount(returning.testRoom.currentLot, 1),
+      )
+    ).ok,
+    true,
+  );
+  assert.deepEqual(host.testRoom.currentLot.outUserIds, [seat.userId]);
+
+  changed = nextRoom(host, (room) => room.auctionPaused);
+  host.emit("host:pauseAuction");
+  await changed;
+  changed = nextRoom(
+    host,
+    (room) => room.currentLot && room.currentLot.id !== thirdLot.id,
+  );
+  host.emit("host:skipPlayer", { lotId: thirdLot.id });
+  const whilePaused = await changed;
+  assert.equal(whilePaused.auctionPaused, true);
+  assert.equal(whilePaused.currentLot.endsAt, null);
+  assert.deepEqual(whilePaused.currentLot.outUserIds, [seat.userId]);
+  const fourth = whilePaused.currentLot;
+  changed = nextRoom(host, (room) => room.currentLot?.outUserIds.length === 3);
+  host.emit("auction:autoSkip", true);
+  third.emit("auction:autoSkip", true);
+  await changed;
+  changed = nextRoom(host, (room) =>
+    room.unsold.some((lot) => lot.playerId === fourth.player.id),
+  );
+  host.emit("host:resumeAuction");
+  await changed;
+  await nextRoom(host, (room) => room.unsold.length === 3);
+});
+
 test("an optional checkpoint restores an auction paused with its private seat credentials", async (t) => {
   const directory = fs.mkdtempSync(
     path.join(os.tmpdir(), "auction-checkpoint-test-"),

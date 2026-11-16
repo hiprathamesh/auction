@@ -98,6 +98,25 @@ test("private RTM activation is visible only to its holder", async (t) => {
   host.emit("auction:rtmToggle", { lotId: "rtm-lot", enabled: true });
   assert.equal((await personal).isRtmHolder, true);
   assert.equal((await shared).currentLot.rtmIsOn, false);
+
+  const resumed = nextRoom(peer, (state) => !state.auctionPaused);
+  host.emit("host:resumeAuction");
+  await resumed;
+  assert.equal(
+    (
+      await peer.timeout(2000).emitWithAck("auction:bid", {
+        lotId: "rtm-lot",
+        expectedBid: player.basePrice,
+        actionId: "rtm-skip-standing-bid",
+      })
+    ).ok,
+    true,
+  );
+  const settled = nextRoom(peer, (state) => state.phase === "auctionResults");
+  host.emit("host:skipPlayer", { lotId: "rtm-lot" });
+  const result = await settled;
+  assert.equal(result.sold[0].userId, "user-1");
+  assert.equal(result.lotHistory[0].rtm, false);
 });
 
 test("new RTM-only auctions give no right when the latest squad does not supply a current manager", (t) => {

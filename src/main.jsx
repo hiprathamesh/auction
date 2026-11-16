@@ -209,6 +209,7 @@ function App() {
   const [error, setError] = useState("");
   const [notice, setNotice] = useState("");
   const [auctionToast, setAuctionToast] = useState("");
+  const [autoSkip, setAutoSkip] = useState(false);
   // Private per-viewer RTM state is delivered separately from the shared room snapshot.
   // Keeping an explicit default prevents the RTM holder's render from referencing
   // an undeclared value when private activation is enabled.
@@ -412,6 +413,7 @@ function App() {
       setRoomCode(code);
       setMeId(userId);
       setIdentifiedSeat(identified);
+      setAutoSkip(false);
       setPrivateRtmState({ playerId: null, isHolder: false, isOn: false });
       setRetention(null);
       setOwnSquadOvrs({});
@@ -467,6 +469,7 @@ function App() {
       setNotice("");
     };
     const onPrivateRoomState = (payload = {}) => {
+      setAutoSkip(Boolean(payload.autoSkip));
       setRetention(payload.retention ?? null);
       setPrivateRtmState({
         playerId: payload.rtmPlayerId || null,
@@ -1267,6 +1270,7 @@ function App() {
             bidPriceFor,
             configuredMultipliers,
             canMarkOut,
+            autoSkip,
             isMyRtmArmed,
             emitAction,
             rtmIsOnForMe,

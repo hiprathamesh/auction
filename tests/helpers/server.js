@@ -1,5 +1,8 @@
 const { spawn } = require("node:child_process");
-const { EventEmitter } = require("node:events");
+const { EventEmitter, once } = require("node:events");
+const fs = require("node:fs");
+const os = require("node:os");
+const path = require("node:path");
 const { io } = require("socket.io-client");
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
@@ -33,12 +36,18 @@ async function startServer(t, extraEnv = {}) {
     };
     require('./server/index');
   `;
+  const temporaryRoot = path.resolve(os.tmpdir());
+  const dataDir = extraEnv.SEASONS_DB_PATH
+    ? null
+    : fs.mkdtempSync(path.join(temporaryRoot, "auction-server-test-"));
   const child = spawn(process.execPath, ["-e", bootstrap], {
-    cwd: require("node:path").resolve(__dirname, "../.."),
+    cwd: path.resolve(__dirname, "../.."),
     env: {
       ...process.env,
       PORT: "0",
       ROOM_CHECKPOINTS: "0",
+      SEASONS_DB_PATH:
+        extraEnv.SEASONS_DB_PATH || path.join(dataDir, "seasons.sqlite"),
       ARCHIVE_OWNER_KEY: "test-only-owner-key-0123456789abcdef",
       ...extraEnv,
     },
@@ -50,9 +59,15 @@ async function startServer(t, extraEnv = {}) {
   child.stderr.on("data", (chunk) => {
     stderr += chunk.toString();
   });
-  t.after(() => {
+  t.after(async () => {
     sockets.forEach((socket) => socket.disconnect());
-    child.kill();
+    if (child.exitCode === null && child.signalCode === null) {
+      const exited = once(child, "exit");
+      child.kill();
+      await exited;
+    }
+    if (dataDir && path.dirname(dataDir) === temporaryRoot)
+      fs.rmSync(dataDir, { recursive: true, force: true });
   });
   const port = await new Promise((resolve, reject) => {
     const timeout = setTimeout(

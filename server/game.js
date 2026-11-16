@@ -1028,11 +1028,11 @@ function refreshCurrentLotRtmHolder(room) {
   return holder || null;
 }
 
-function openNextLot(io, room) {
+function openNextLot(io, room, { whilePaused = false } = {}) {
   if (
     room.destroyed ||
     room.phase !== "auction" ||
-    room.auctionPaused ||
+    (room.auctionPaused && !whilePaused) ||
     room.currentLot
   )
     return;
@@ -1046,6 +1046,7 @@ function openNextLot(io, room) {
 
   if (!room.auctionQueue.length) {
     room.currentLot = null;
+    room.auctionPaused = false;
     room.phase = "auctionResults";
     room.lastNotice = {
       kind: "auctionComplete",
@@ -1076,8 +1077,10 @@ function openNextLot(io, room) {
     rtmOptInUserId: null,
   };
   refreshCurrentLotRtmHolder(room);
-  room.auctionEndsAt = Date.now() + room.settings.bidSeconds * 1000;
   room.auctionRemainingMs = room.settings.bidSeconds * 1000;
+  room.auctionEndsAt = room.auctionPaused
+    ? null
+    : Date.now() + room.auctionRemainingMs;
   room.lastNotice =
     skippedLegendCount > 0
       ? {
@@ -1085,11 +1088,55 @@ function openNextLot(io, room) {
           text: `Skipped ${skippedLegendCount} remaining legend lot${skippedLegendCount === 1 ? "" : "s"} because every team has filled all ${getLegendAuctionLimit(room.settings)} legend purchase slots.`,
         }
       : null;
-  room.auctionTimeout = setTimeout(
-    () => settleLot(io, room, false),
-    room.settings.bidSeconds * 1000,
-  );
+  applyAutoSkips(room);
+  if (settleUncontestedLot(io, room)) return;
+  if (!room.auctionPaused) {
+    room.auctionTimeout = setTimeout(
+      () => settleLot(io, room),
+      room.auctionRemainingMs,
+    );
+  }
   broadcast(io, room);
+}
+
+function applyAutoSkips(room) {
+  const lot = room.currentLot;
+  if (!lot) return;
+  lot.outUserIds ||= [];
+  for (const user of room.users) {
+    if (
+      user.autoSkip &&
+      user.id !== lot.currentBidderId &&
+      user.id !== lot.rtmOptInUserId &&
+      !lot.outUserIds.includes(user.id)
+    ) {
+      lot.outUserIds.push(user.id);
+    }
+  }
+}
+
+function settleUncontestedLot(io, room) {
+  const lot = room.currentLot;
+  if (room.phase !== "auction" || room.auctionPaused || !lot) return false;
+  if (shouldFastSettleLot(room)) {
+    settleLot(io, room, false, true);
+    return true;
+  }
+  if (
+    lot.currentBidderId ||
+    !room.users.length ||
+    !room.users.every((user) => lot.outUserIds?.includes(user.id))
+  )
+    return false;
+  settleLot(io, room);
+  return true;
+}
+
+function skipCurrentPlayer(io, room) {
+  // The host awards the standing bid. Ordinary lot closures can exercise RTM.
+  room.currentLot.rtmOptInUserId = null;
+  settleLot(io, room, true);
+  openNextLot(io, room, { whilePaused: true });
 }
 
 function hasEligibleNextBidder(room, lot, highestBidder) {
@@ -1848,6 +1895,7 @@ function privateState(room, user) {
     (room.previousSeason === undefined || room.verifySeatIdentity?.(user)),
   );
   return {
+    autoSkip: Boolean(user.autoSkip),
     rtmPlayerId: lot?.player?.id || null,
     isRtmHolder,
     rtmIsOn: Boolean(isRtmHolder && lot.rtmOptInUserId === user.id),
@@ -1949,6 +1997,9 @@ module.exports = {
   makePlayerSquadView,
   startAuction,
   openNextLot,
+  applyAutoSkips,
+  settleUncontestedLot,
+  skipCurrentPlayer,
   settleLot,
   broadcast,
   sendSnapshot,

@@ -264,6 +264,27 @@ test(
     await expect(returning.locator(".bid-button")).toContainText(
       "HIGHEST BIDDER",
     );
+    const hostSkip = host.getByRole("button", { name: "Skip this player" });
+    const toggle = returning.getByRole("button", { name: "Auto Skip OFF" });
+    await expect(hostSkip).toBeVisible();
+    await expect(
+      returning.getByRole("button", { name: "Skip this player" }),
+    ).toHaveCount(0);
+    await expect(toggle).toHaveCSS("text-decoration-line", "underline");
+    await toggle.click();
+    await expect(
+      returning.getByRole("button", { name: "Auto Skip ON" }),
+    ).toHaveAttribute("aria-pressed", "true");
+    await hostSkip.click();
+    await expect(returning.locator(".auction-player-name")).not.toHaveText(
+      name,
+    );
+    await expect(returning.locator(".out-button")).toHaveText("YOU’RE OUT");
+    await expect(
+      returning.getByText("Bidding is paused by the host."),
+    ).toBeVisible();
+    const mobileHint = await returning.locator(".bid-hint").boundingBox();
+    assert.ok(mobileHint.x >= 0 && mobileHint.x + mobileHint.width <= 390);
     await freshContext.close();
     assert.deepEqual(errors, []);
     await hostContext.close();

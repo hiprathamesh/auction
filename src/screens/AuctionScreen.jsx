@@ -26,6 +26,7 @@ export function AuctionScreen(props) {
     bidPriceFor,
     configuredMultipliers,
     canMarkOut,
+    autoSkip,
     isMyRtmArmed,
     emitAction,
     rtmIsOnForMe,
@@ -471,17 +472,40 @@ export function AuctionScreen(props) {
                 </div>
               )}
               <div className="bid-hint">
-                {isMyOut
-                  ? "You are OUT for this player. You cannot bid or activate RTM again until the next lot."
-                  : isMyRtmArmed
-                    ? "Your Right to Match is ON. Turn it OFF before opting out."
-                    : isMyBid
-                      ? "You cannot opt out while you are the highest bidder."
-                      : room.auctionPaused
-                        ? "Bidding is paused by the host."
-                        : currentLot.currentBidderId
-                          ? "Every new bid resets the timer."
-                          : "No bid? The player goes unsold when everyone opts out or the timer ends."}
+                {isHost && (
+                  <button
+                    type="button"
+                    className="bid-hint-action"
+                    disabled={!appOnline}
+                    onClick={() =>
+                      hostAction("host:skipPlayer", { lotId: currentLot.id })
+                    }
+                  >
+                    Skip this player
+                  </button>
+                )}
+                <span className="bid-hint-copy">
+                  {room.auctionPaused
+                    ? "Bidding is paused by the host."
+                    : isMyOut
+                      ? "You are OUT for this player."
+                      : isMyRtmArmed
+                        ? "Turn off Right to Match to opt out of this lot."
+                        : isMyBid
+                          ? "You cannot opt out while you are the highest bidder."
+                          : currentLot.currentBidderId
+                            ? "Every new bid resets the timer."
+                            : "The player goes unsold when everyone opts out or the timer ends."}
+                </span>
+                <button
+                  type="button"
+                  className="bid-hint-action"
+                  disabled={!appOnline}
+                  aria-pressed={autoSkip}
+                  onClick={() => emitAction("auction:autoSkip", !autoSkip)}
+                >
+                  Auto Skip {autoSkip ? "ON" : "OFF"}
+                </button>
               </div>
             </div>
           ) : (
