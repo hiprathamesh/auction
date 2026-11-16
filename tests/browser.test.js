@@ -231,6 +231,15 @@ test(
     });
     await identifyFriend(freshContext);
     const returning = await freshContext.newPage();
+    await returning.addInitScript((code) => {
+      localStorage.setItem(
+        `iplRoomSession:${code}`,
+        JSON.stringify({
+          userId: { broken: true },
+          reconnectToken: "incomplete",
+        }),
+      );
+    }, roomCode);
     await returning.goto(`${url}/?room=${roomCode}`);
     await expect(
       returning.getByRole("heading", {

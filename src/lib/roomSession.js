@@ -17,6 +17,20 @@ function writeStorage(type, key, value) {
 
 const sessionKey = (code) => `iplRoomSession:${code}`;
 const replacementKey = (code) => `iplRoomReplaced:${code}`;
+const hasSeatCredentials = (session) =>
+  typeof session?.userId === "string" &&
+  session.userId.length > 0 &&
+  typeof session.reconnectToken === "string" &&
+  /^[A-Za-z0-9_-]{43}$/.test(session.reconnectToken);
+
+function storedRoomSession(storage, code) {
+  try {
+    const session = JSON.parse(readStorage(storage, sessionKey(code)));
+    return hasSeatCredentials(session) ? session : null;
+  } catch {
+    return null;
+  }
+}
 
 export function initialRoomCode() {
   const urlCode = new URLSearchParams(window.location.search).get("room");
@@ -32,17 +46,13 @@ export function initialRoomCode() {
 
 export function readRoomSession(code) {
   for (const storage of ["localStorage", "sessionStorage"]) {
-    try {
-      const session = JSON.parse(readStorage(storage, sessionKey(code)));
-      if (session?.userId && session?.reconnectToken) return session;
-    } catch {
-      // Continue to the other store or the legacy credentials.
-    }
+    const session = storedRoomSession(storage, code);
+    if (session) return session;
   }
   if (readStorage("localStorage", "iplRoomCode") === code) {
     const userId = readStorage("localStorage", "iplUserId");
     const reconnectToken = readStorage("localStorage", "iplReconnectToken");
-    if (userId && reconnectToken)
+    if (hasSeatCredentials({ userId, reconnectToken }))
       return {
         userId,
         reconnectToken,
@@ -71,9 +81,12 @@ export function saveRoomSession(code, session) {
 
 export function forgetRoomSession(code, userId) {
   for (const storage of ["localStorage", "sessionStorage"]) {
-    if (readRoomSession(code)?.userId === userId)
-      writeStorage(storage, sessionKey(code), null);
-    if (readStorage(storage, "iplRoomCode") === code)
+    const saved = storedRoomSession(storage, code);
+    if (saved?.userId === userId) writeStorage(storage, sessionKey(code), null);
+    if (
+      (!saved || saved.userId === userId) &&
+      readStorage(storage, "iplRoomCode") === code
+    )
       writeStorage(storage, "iplRoomCode", null);
   }
   if (readStorage("localStorage", "iplUserId") === userId) {
