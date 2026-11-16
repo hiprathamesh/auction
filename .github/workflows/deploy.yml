@@ -13,9 +13,11 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  build:
     if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'push' && github.event.workflow_run.head_branch == 'main'
     runs-on: ubuntu-24.04-arm
+    outputs:
+      current: ${{ steps.release.outputs.current }}
     steps:
       - uses: actions/checkout@v7
         with:
@@ -39,21 +41,42 @@ jobs:
           npm run build
           npm prune --omit=dev
           tar -czf "$RUNNER_TEMP/auction-release.tar.gz" dist server shared data public scripts package.json package-lock.json node_modules
+      - if: steps.release.outputs.current == 'true'
+        uses: actions/upload-artifact@v5
+        with:
+          name: auction-release-${{ github.event.workflow_run.head_sha }}
+          path: ${{ runner.temp }}/auction-release.tar.gz
+          compression-level: 0
+          retention-days: 2
+
+  deliver:
+    needs: build
+    if: needs.build.outputs.current == 'true'
+    runs-on: [self-hosted, linux, arm64, auction-release]
+    timeout-minutes: 10
+    steps:
+      - uses: actions/download-artifact@v6
+        with:
+          name: auction-release-${{ github.event.workflow_run.head_sha }}
+          path: ${{ runner.temp }}/artifact
       - name: Deliver verified release
-        if: steps.release.outputs.current == 'true'
         env:
           RELEASE_SHA: ${{ github.event.workflow_run.head_sha }}
           DEPLOY_HOST: ${{ vars.VM_DEPLOY_HOST }}
           DEPLOY_KEY: ${{ secrets.VM_DEPLOY_PRIVATE_KEY }}
           KNOWN_HOSTS: ${{ secrets.VM_A1_KNOWN_HOSTS }}
         run: |
+          set -euo pipefail
           test -n "$DEPLOY_HOST"
           test -n "$DEPLOY_KEY"
           test -n "$KNOWN_HOSTS"
-          printf '%s\n' "$DEPLOY_KEY" > "$RUNNER_TEMP/deploy-key"
-          chmod 600 "$RUNNER_TEMP/deploy-key"
-          printf '%s\n' "$KNOWN_HOSTS" > "$RUNNER_TEMP/known-hosts"
+          umask 077
+          identity="$(mktemp -d "$RUNNER_TEMP/auction-identity.XXXXXXXX")"
+          trap 'rm -f -- "$identity/deploy-key" "$identity/known-hosts"; rmdir -- "$identity"' EXIT
+          printf '%s\n' "$DEPLOY_KEY" > "$identity/deploy-key"
+          printf '%s\n' "$KNOWN_HOSTS" > "$identity/known-hosts"
           ssh -T -o BatchMode=yes -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile="$RUNNER_TEMP/known-hosts" \
-            -i "$RUNNER_TEMP/deploy-key" "ubuntu@$DEPLOY_HOST" "$RELEASE_SHA" \
-            < "$RUNNER_TEMP/auction-release.tar.gz"
+            -o HostKeyAlias="$DEPLOY_HOST" \
+            -o UserKnownHostsFile="$identity/known-hosts" \
+            -i "$identity/deploy-key" ubuntu@127.0.0.1 "$RELEASE_SHA" \
+            < "$RUNNER_TEMP/artifact/auction-release.tar.gz"
