@@ -290,8 +290,9 @@
   },
   "ms-dhoni": {
     "batting": 94,
+    "battingBoost": 2,
     "bowling": 24,
-    "fielding": 95,
+    "fielding": 97,
     "basePrice": 2.0,
     "preferredBattingPositions": [
       4,
@@ -361,7 +362,7 @@
     }
   },
   "rohit-sharma": {
-    "ovr": 97,
+    "battingBoost": 6,
     "photo": "/player-portraits/rohit-sharma.webp",
     "photoAttribution": {
       "source": "Cricbuzz",

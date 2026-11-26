@@ -1172,46 +1172,6 @@
       }
     },
     {
-      "id": "ms-dhoni",
-      "name": "MS Dhoni",
-      "set": "Marquee Set 1",
-      "role": "Wicketkeeper",
-      "nationality": "Indian",
-      "overseas": false,
-      "legend": false,
-      "ovr": 88,
-      "batting": 87,
-      "bowling": 24,
-      "fielding": 95,
-      "basePrice": 2.0,
-      "preferredBattingPositions": [
-        4,
-        5,
-        6,
-        7
-      ],
-      "rtmTeamId": "CSK",
-      "photo": "/player-portraits/ms-dhoni.webp",
-      "photoAttribution": {
-        "source": "Cricbuzz",
-        "sourceUrl": "https://www.cricbuzz.com/profiles/265/ms-dhoni",
-        "author": "Cricbuzz"
-      },
-      "ratingPrior": {
-        "batting": 94,
-        "bowling": 24
-      },
-      "skills": {
-        "survival": 91,
-        "rotation": 84,
-        "hitting": 86,
-        "prevention": 24,
-        "wickets": 24,
-        "control": 24,
-        "battingPhase": "death"
-      }
-    },
-    {
       "id": "naman-dhir",
       "name": "Naman Dhir",
       "set": "Marquee Set 1",
@@ -1855,8 +1815,8 @@
       "nationality": "Indian",
       "overseas": false,
       "legend": false,
-      "ovr": 85,
-      "batting": 84,
+      "ovr": 90,
+      "batting": 90,
       "bowling": 44,
       "fielding": 91,
       "basePrice": 2.0,
@@ -1877,9 +1837,9 @@
         "bowling": 58
       },
       "skills": {
-        "survival": 82,
-        "rotation": 82,
-        "hitting": 87,
+        "survival": 88,
+        "rotation": 88,
+        "hitting": 93,
         "prevention": 44,
         "wickets": 44,
         "control": 44,
@@ -4154,6 +4114,46 @@
         "wickets": 87,
         "control": 85,
         "bowlingPhase": "death"
+      }
+    },
+    {
+      "id": "ms-dhoni",
+      "name": "MS Dhoni",
+      "set": "Marquee Set 1",
+      "role": "Wicketkeeper",
+      "nationality": "Indian",
+      "overseas": false,
+      "legend": true,
+      "ovr": 93,
+      "batting": 92,
+      "bowling": 24,
+      "fielding": 97,
+      "basePrice": 2.0,
+      "preferredBattingPositions": [
+        4,
+        5,
+        6,
+        7
+      ],
+      "rtmTeamId": "CSK",
+      "photo": "/player-portraits/ms-dhoni.webp",
+      "photoAttribution": {
+        "source": "Cricbuzz",
+        "sourceUrl": "https://www.cricbuzz.com/profiles/265/ms-dhoni",
+        "author": "Cricbuzz"
+      },
+      "ratingPrior": {
+        "batting": 94,
+        "bowling": 24
+      },
+      "skills": {
+        "survival": 95,
+        "rotation": 91,
+        "hitting": 91,
+        "prevention": 24,
+        "wickets": 24,
+        "control": 24,
+        "battingPhase": "death"
       }
     },
     {

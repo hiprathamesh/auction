@@ -88,7 +88,7 @@ The tests use isolated loopback servers, simulated seasons, and a headless brows
 ## Game rules
 
 - Up to ten people can manage unique franchises. There are no bot teams.
-- The database contains 288 active-pool players and 58 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, Player Retain, and trades.
+- The database contains 287 active-pool players and 59 optional legends. Settings include the purse, timer, rating visibility, legend purchase limit, bid multipliers, Right to Match, Player Retain, and trades.
 - Right to Match follows the identified manager who held the player in the latest recorded season's final squad, even if the manager changes franchise. The option expires after one season and costs the final winning bid when exercised.
 - With Player Retain enabled, managers can select up to the host's limit of one to three eligible players in the lobby. Those players join their squads for free and skip the auction. Retaining a player makes them ineligible for retention in the next recorded season. They remain eligible for RTM.
 - On an opening bid, the base price counts as the first step: for example, ×2 bids the base plus one increment. After bidding begins, ×2 adds two increments to the current bid. Increments follow the price ladder and may change at its thresholds.
@@ -103,7 +103,7 @@ The tests use isolated loopback servers, simulated seasons, and a headless brows
 
 `data/auction_players_list.txt` defines the active pool and auction-set order. `data/players.json` is the runtime database. Ratings, base prices, roles, and nationality flags are game-balancing estimates. Franchise RTM associations are used for in-progress auctions saved before season-based RTM.
 
-Manual role, price, preferred position, RTM, and portrait changes belong in `data/player-overrides.json`, keyed by player ID. The batting and bowling ratings there serve as starting estimates. The simulation profiles use [Cricsheet IPL delivery data](https://cricsheet.org/downloads/) and [Cricsheet player identifiers](https://cricsheet.org/register/) under the Open Data Commons Attribution License. Active estimates use 2023–25 IPL data where available, and legends use a three-season IPL peak. Players with sparse data rely more on role estimates. To regenerate the profile file, run `python scripts/build_simulation_ratings.py <IPL JSON zip> <People CSV>`. After updating the source list, profiles, or overrides, regenerate the runtime database:
+Manual role, price, preferred position, RTM, and portrait changes belong in `data/player-overrides.json`, keyed by player ID. The batting and bowling ratings there serve as starting estimates. An optional `battingBoost` adds points to survival, rotation, and hitting after the simulation profile is applied. The simulation profiles use [Cricsheet IPL delivery data](https://cricsheet.org/downloads/) and [Cricsheet player identifiers](https://cricsheet.org/register/) under the Open Data Commons Attribution License. Active estimates use 2023–25 IPL data where available, and legends use a three-season IPL peak. Players with sparse data rely more on role estimates. To regenerate the profile file, run `python scripts/build_simulation_ratings.py <IPL JSON zip> <People CSV>`. After updating the source list, profiles, or overrides, regenerate the runtime database:
 
 ```powershell
 python scripts/build_player_db.py

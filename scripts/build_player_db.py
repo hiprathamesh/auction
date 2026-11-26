@@ -68,7 +68,6 @@ skill_overrides = {
     'Sanju Samson': (97, 40, 95),
     'Shreyas Iyer': (98, 50, 90),
     'Yashasvi Jaiswal': (99, 55, 90),
-    'MS Dhoni': (92, 40, 94),
     'Trent Boult': (60, 96, 92),
     'Bhuvneshwar Kumar': (65, 97, 94),
 }
@@ -96,6 +95,7 @@ legends = [
     ('Dwayne Bravo', 'Marquee Set 1', 'All-rounder', 'Overseas', 96, 96, 99, 94),
     ('Kieron Pollard', 'Marquee Set 1', 'All-rounder', 'Overseas', 98, 96, 96, 94),
     ('Lasith Malinga', 'Marquee Set 1', 'Bowler', 'Overseas', 99, 60, 99, 92),
+    ('MS Dhoni', 'Marquee Set 1', WK, 'Indian', 95, 94, 24, 95),
     ('Shane Warne', 'Marquee Set 1', 'Bowler', 'Overseas', 99, 70, 99, 94),
     ('Shane Watson', 'Marquee Set 1', 'All-rounder', 'Overseas', 97, 98, 96, 94),
     ('Suresh Raina', 'Marquee Set 1', 'Batter', 'Indian', 95, 97, 55, 96),
@@ -476,6 +476,11 @@ for p in players:
         key: profile.get(key, batting_prior if key in ('survival', 'rotation', 'hitting') else bowling_prior)
         for key in ('survival', 'rotation', 'hitting', 'prevention', 'wickets', 'control')
     }
+    batting_boost = old.get('battingBoost', 0)
+    if type(batting_boost) is not int or not 0 <= batting_boost <= 99:
+        raise ValueError(f'Invalid battingBoost override for {name}')
+    for key in ('survival', 'rotation', 'hitting'):
+        skills[key] = min(99, skills[key] + batting_boost)
     for key in ('battingPhase', 'bowlingPhase'):
         if key in profile:
             skills[key] = profile[key]

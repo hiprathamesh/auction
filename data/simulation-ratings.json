@@ -1962,17 +1962,17 @@
     ]
   },
   "ms-dhoni": {
-    "batBalls": 271,
+    "batBalls": 800,
     "battingPhase": "death",
     "bowlBalls": 0,
-    "hitting": 86,
+    "hitting": 89,
     "id": "4a8a2e3b",
-    "rotation": 84,
-    "survival": 91,
+    "rotation": 89,
+    "survival": 93,
     "years": [
-      2023,
-      2024,
-      2025
+      2011,
+      2012,
+      2013
     ]
   },
   "mukesh-choudhary": {
